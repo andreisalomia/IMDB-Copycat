@@ -1,6 +1,6 @@
 public class Admin<T extends Comparable<T>> extends Staff<T> {
-    public Admin(Information info, AccountType type, String username) {
-        super(info, type, username);
+    public Admin(Information info, AccountType type, String username, int experience) {
+        super(info, type, username, experience);
     }
 
     public void addUser(User<?> user) {

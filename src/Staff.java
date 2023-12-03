@@ -1,12 +1,31 @@
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 public abstract class Staff<T extends Comparable<T>> extends User<T> implements StaffInterface {
     List<Request> userRequests;
-    SortedSet<T> productions;
-    public Staff(Information info, AccountType type, String username) {
-        super(info, type, username);
+    SortedSet<T> contributions;
+    public Staff(Information info, AccountType type, String username, int experience) {
+        super(info, type, username, experience);
+        this.userRequests = new ArrayList<>();
+        this.contributions = new TreeSet<>(new NameComparator());
+    }
+
+    private class NameComparator implements Comparator<Object> {
+        @Override
+        public int compare(Object o1, Object o2) {
+            String name1 = getName(o1);
+            String name2 = getName(o2);
+            return name1.compareTo(name2);
+        }
+
+        private String getName(Object o) {
+            if (o instanceof Actor) {
+                return ((Actor) o).name;
+            }
+            else if (o instanceof Production) {
+                return ((Production) o).title;
+            }
+            throw new IllegalArgumentException("Object is not an Actor or Production");
+        }
     }
 
     @Override

@@ -1,6 +1,10 @@
+import java.util.Comparator;
+import java.util.TreeSet;
+
 public class Regular<T extends Comparable<T>> extends User<T> implements RequestsManager {
-    public Regular(Information info, AccountType type, String username) {
-        super(info, type, username);
+    public Regular(Information info, AccountType type, String username, int experience) {
+        super(info, type, username, experience);
+        favourites = new TreeSet<>();
     }
 
     @Override

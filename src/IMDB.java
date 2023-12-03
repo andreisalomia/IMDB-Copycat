@@ -1,12 +1,18 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.time.format.DateTimeFormatter;
+
+import org.json.simple.*;
+import org.json.simple.parser.*;
+
+import java.io.*;
 
 public class IMDB {
     private static IMDB instance = null;
-    private List<User> users;
-    private List<Actor> actors;
-    private List<Request> requests;
-    private List<Production> productions;
+    List<User> users;
+    List<Actor> actors;
+    List<Request> requests;
+    List<Production> productions;
 
     // Constructor
     private IMDB() {
@@ -25,14 +31,33 @@ public class IMDB {
 
     public void run() {
         loadDataJSON();
-        login();
-        startFlow();
+//        TODO: check if the lists have been correctly loaded
+        for (User user : users) {
+            System.out.println("User: " + user.username);
+
+            // Print Credentials
+            Credentials credentials = user.userInformation.getCredentials();
+            if (credentials != null) {
+                System.out.println("Credentials: " + credentials.toString());
+            } else {
+                System.out.println("No credentials");
+            }
+
+            System.out.println();  // Add a newline between users
+        }
+
+//        login();
+//        startFlow();
     }
 
-    private void loadDataJSON() {
-        // load data from JSON files
-        // initialize lists of users, actors, requests, movies
+    public void loadDataJSON() {
+        actors = Parser.parseActors("src/actors.json");
+        productions = Parser.parseProductions("src/production.json");
+        requests = Parser.parseRequests("src/requests.json");
+        users = Parser.parseUsers("src/accounts.json");
     }
+
+
 
     private void login() {
         // login user

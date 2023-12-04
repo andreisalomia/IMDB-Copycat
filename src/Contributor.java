@@ -1,3 +1,4 @@
+
 public class Contributor<T extends Comparable<T>> extends Staff<T> implements RequestsManager {
     public Contributor(Information info, AccountType type, String username, int experience) {
         super(info, type, username, experience);

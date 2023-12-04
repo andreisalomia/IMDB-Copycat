@@ -123,8 +123,8 @@
     "experience": "6",
     "information": {
       "credentials": {
-        "email": "peter.jones@example.com",
-        "password": "P3t3r!#38J0n3s"
+        "email": "a",
+        "password": "b"
       },
       "name": "Peter Jones",
       "country": "Italy",

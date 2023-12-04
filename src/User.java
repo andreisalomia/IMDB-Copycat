@@ -1,3 +1,4 @@
+//package org.example;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -5,9 +6,6 @@ import java.util.stream.Collectors;
 
 public abstract class User<T extends Comparable<T>> {
 
-    public interface MarketItem {
-        String getMarketItemName();
-    }
 
     public static class Information {
         private Credentials credentials;
@@ -44,12 +42,12 @@ public abstract class User<T extends Comparable<T>> {
 
     }
 
-    Information userInformation;
-    AccountType accountType;
-    String username;
-    int experience;
-    List<String> notifications;
-    SortedSet<MarketItem> favourites;
+    public Information userInformation;
+    public AccountType accountType;
+    public String username;
+    public int experience;
+    public List<String> notifications;
+    public SortedSet<Comparable> favorites;
 
     public User(Information information, AccountType accountType, String username, int experience) {
         this.userInformation = information;
@@ -57,21 +55,21 @@ public abstract class User<T extends Comparable<T>> {
         this.username = username;
         this.experience = experience;
         this.notifications = new ArrayList<>();
-        this.favourites = new TreeSet<>(new NameComparator());
+        this.favorites = new TreeSet<>(new NameComparator());
     }
 
     //add to favourites
-    public void addProductionToFavourites(MarketItem production) {
-        favourites.add(production);
+    public void addProductionToFavorites(Comparable production) {
+        favorites.add(production);
     }
 
-    public void addActorToFavourites(MarketItem actor) {
-        favourites.add(actor);
+    public void addActorToFavorites(Comparable actor) {
+        favorites.add(actor);
     }
 
     //remove from favourites
     public void removeFromFavourites(T item) {
-        favourites.remove(item);
+        favorites.remove(item);
     }
 
     @Override
@@ -94,8 +92,8 @@ public abstract class User<T extends Comparable<T>> {
         joiner.add("notifications=" + notifications);
 
         // Append favorites
-        if (!favourites.isEmpty()) {
-            String favoritesString = favourites.stream()
+        if (!favorites.isEmpty()) {
+            String favoritesString = favorites.stream()
                     .map(Object::toString)
                     .collect(Collectors.joining(", "));
             joiner.add("favourites=" + favoritesString);
@@ -106,12 +104,21 @@ public abstract class User<T extends Comparable<T>> {
         return joiner.toString();
     }
 
-    private class NameComparator implements Comparator<MarketItem> {
+    private class NameComparator implements Comparator<Comparable> {
         @Override
-        public int compare(MarketItem o1, MarketItem o2) {
-            String name1 = o1.getMarketItemName();
-            String name2 = o2.getMarketItemName();
+        public int compare(Comparable o1, Comparable o2) {
+            String name1 = getName(o1);
+            String name2 = getName(o2);
             return name1.compareTo(name2);
+        }
+
+        private String getName(Comparable obj) {
+            if (obj instanceof Actor) {
+                return ((Actor) obj).name;
+            } else if (obj instanceof Production) {
+                return ((Production) obj).title;
+            }
+            throw new IllegalArgumentException("Object is not an Actor or Production");
         }
     }
 

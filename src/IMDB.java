@@ -1,18 +1,13 @@
-import java.time.LocalDateTime;
 import java.util.*;
-import java.time.format.DateTimeFormatter;
-
-import org.json.simple.*;
-import org.json.simple.parser.*;
-
-import java.io.*;
 
 public class IMDB {
     private static IMDB instance = null;
-    List<User> users;
-    List<Actor> actors;
-    List<Request> requests;
-    List<Production> productions;
+    public User currentUser;
+    public UserInterface userInterface;
+    public List<User> users;
+    public List<Actor> actors;
+    public List<Request> requests;
+    public List<Production> productions;
 
     // Constructor
     private IMDB() {
@@ -31,23 +26,10 @@ public class IMDB {
 
     public void run() {
         loadDataJSON();
-//        TODO: check if the lists have been correctly loaded
-        for (User user : users) {
-            System.out.println("User: " + user.username);
-
-            // Print Credentials
-            Credentials credentials = user.userInformation.getCredentials();
-            if (credentials != null) {
-                System.out.println("Credentials: " + credentials.toString());
-            } else {
-                System.out.println("No credentials");
-            }
-
-            System.out.println();  // Add a newline between users
-        }
-
-//        login();
-//        startFlow();
+        chooseInterface();
+        userInterface.displayOutput("Welcome back to IMDB! Please enter your email and password to login.\n");
+        login();
+        startFlow(currentUser);
     }
 
     public void loadDataJSON() {
@@ -57,17 +39,63 @@ public class IMDB {
         users = Parser.parseUsers("src/accounts.json");
     }
 
+    private void chooseInterface() {
+        System.out.println("Choose an interface: ");
+        System.out.println("1. Terminal");
+        System.out.println("2. GUI");
+        Scanner scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+
+        switch (choice) {
+            case 1:
+                userInterface = new TerminalUI();
+                System.out.println("Terminal interface selected");
+                break;
+            case 2:
+                userInterface = new GUI();
+                System.out.println("GUI interface selected");
+                break;
+            default:
+                System.out.println("Invalid choice");
+                chooseInterface();
+        }
+    }
+
+    public void startFlow(User user) {
+        if(user == null) {
+            System.out.println("Error: User is null");
+            return;
+        }
+        switch(user.accountType) {
+            case Regular:
+                Flow.startRegularFlow((Regular) user, instance);
+                break;
+            case Admin:
+                Flow.startAdminFlow((Admin) user, instance);
+                break;
+            case Contributor:
+                Flow.startContributorFlow((Contributor) user, instance);
+                break;
+        }
+    }
 
 
     private void login() {
-        // login user
+        String email = ((TerminalUI) userInterface).getEmail();
+        String password = ((TerminalUI) userInterface).getPassword();
+        for(User user : users) {
+            Credentials credentials = user.userInformation.getCredentials();
+            if(credentials.getEmail().equals(email) && credentials.getPassword().equals(password)) {
+                userInterface.displayOutput("Welcome back user " + user.username + "!\n");
+                userInterface.displayOutput("Username: " + user.username + "\n");
+                userInterface.displayOutput("User experience: " + user.experience + "\n");
+                currentUser = user;
+                return;
+            }
+        }
+        userInterface.displayOutput("Invalid credentials. Please try again.\n");
+        login();
     }
-
-    private void startFlow() {
-        // start flow based on user role
-    }
-
-    // Other methods to manage user choices
 
     public static void main(String[] args) {
         IMDB imdb = IMDB.getInstance();
@@ -75,17 +103,17 @@ public class IMDB {
     }
 
     public static class RequestsHolder {
-        private static List<String> requests = new ArrayList<>();
+        private static List<Request> requests = new ArrayList<>();
 
-        public static void addRequest(String request) {
+        public static void addRequest(Request request) {
             requests.add(request);
         }
 
-        public static void removeRequest(String request) {
+        public static void removeRequest(Request request) {
             requests.remove(request);
         }
 
-        public static List<String> getRequests() {
+        public static List<Request> getRequests() {
             return new ArrayList<>(requests);
         }
     }

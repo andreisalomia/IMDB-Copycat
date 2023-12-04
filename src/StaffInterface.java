@@ -1,3 +1,4 @@
+//package org.example;
 public interface StaffInterface {
     void addProductionSystem(Production p);
     void addActorSystem(Actor a);

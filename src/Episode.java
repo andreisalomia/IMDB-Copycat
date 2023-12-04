@@ -1,6 +1,7 @@
+
 public class Episode {
-    String title;
-    int duration;
+    public String title;
+    public int duration;
 
     public Episode(String title, int duration) {
         this.title = title;

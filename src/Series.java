@@ -1,10 +1,12 @@
+//package org.example;
+
 import java.util.Map;
 import java.util.List;
 
-public class Series extends Production{
-    int releaseYear;
-    int numberOfSeasons;
-    Map<String, List<Episode>> episodes;
+public class Series extends Production {
+    public int releaseYear;
+    public int numberOfSeasons;
+    public Map<String, List<Episode>> episodes;
 
     public Series(String title, List<String> directors, List<String> actors, List<Genre> genres, List<Rating> ratings, String description, int releaseYear, int numberOfSeasons, Map<String, List<Episode>> episodes) {
         super(title, directors, actors, genres, ratings, description);
@@ -15,38 +17,35 @@ public class Series extends Production{
 
     @Override
     public void displayInfo() {
-        System.out.println("Title: " + title);
-        if (directors != null) System.out.println("Directors: " + directors);
-        if (actors != null) System.out.println("Actors: " + actors);
-        if (genres != null) System.out.println("Genres: " + genres);
-        if (ratings != null) System.out.println("Ratings: " + ratings);
-        if (description != null) System.out.println("Description: " + description);
-        if (releaseYear != 0) System.out.println("Release Year: " + releaseYear);
-        if (numberOfSeasons != 0) System.out.println("Number of Seasons: " + numberOfSeasons);
-        if (averageRating != 0) System.out.println("Average Rating: " + averageRating);
+        StringBuilder builder = new StringBuilder();
+        builder.append("Title: ").append(title).append("\n");
+
+        if (directors != null)
+            builder.append("Directors: ").append(directors).append("\n");
+
+        if (actors != null)
+            builder.append("Actors: ").append(actors).append("\n");
+
+        if (genres != null)
+            builder.append("Genres: ").append(genres).append("\n");
+
+        if (ratings != null)
+            builder.append("Ratings: ").append(ratings).append("\n");
+
+        if (description != null)
+            builder.append("Description: ").append(description).append("\n");
+
+        if (releaseYear != 0)
+            builder.append("Release Year: ").append(releaseYear).append("\n");
+
+        if (numberOfSeasons != 0)
+            builder.append("Number of Seasons: ").append(numberOfSeasons).append("\n");
+
+        if (averageRating != 0)
+            builder.append(String.format("Average Rating: %.2f\n", averageRating));
+
+        builder.append("----------------------------\n"); // Separator for better readability
+        System.out.println(builder.toString());
     }
 
-//    public int getReleaseYear() {
-//        return releaseYear;
-//    }
-//
-//    public int getNumberOfSeasons() {
-//        return numberOfSeasons;
-//    }
-//
-//    public Map<String, List<Episode>> getEpisodes() {
-//        return episodes;
-//    }
-//
-//    public void setReleaseYear(int releaseYear) {
-//        this.releaseYear = releaseYear;
-//    }
-//
-//    public void setNumberOfSeasons(int numberOfSeasons) {
-//        this.numberOfSeasons = numberOfSeasons;
-//    }
-//
-//    public void setEpisodes(Map<String, List<Episode>> episodes) {
-//        this.episodes = episodes;
-//    }
 }

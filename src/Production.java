@@ -1,13 +1,14 @@
+//package org.example;
 import java.util.List;
 
 public abstract class Production implements Comparable<Object> {
-    String title;
-    List<String> directors;
-    List<String> actors;
-    List<Genre> genres;
-    List<Rating> ratings;
-    String description;
-    double averageRating;
+    public String title;
+    public List<String> directors;
+    public List<String> actors;
+    public List<Genre> genres;
+    public List<Rating> ratings;
+    public String description;
+    public double averageRating;
 
     public Production(String title, List<String> directors, List<String> actors, List<Genre> genres, List<Rating> ratings, String description) {
         this.title = title;
@@ -35,7 +36,7 @@ public abstract class Production implements Comparable<Object> {
     double calculateAverageRating(List<Rating> ratings) {
         double sum = 0;
         for (Rating rating : ratings) {
-            sum += rating.getRating();
+            sum += rating.rating;
         }
         return sum / ratings.size();
     }

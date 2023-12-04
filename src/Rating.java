@@ -1,7 +1,8 @@
+//package org.example;
 public class Rating {
-    private String username;
-    private int rating;
-    private String review;
+    public String username;
+    public int rating;
+    public String review;
 
     public Rating(String username, int rating, String review) {
         this.username = username;
@@ -9,27 +10,12 @@ public class Rating {
         this.review = review;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public String getReview() {
-        return review;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
-    public void setReview(String review) {
-        this.review = review;
+    @Override
+    public String toString() {
+        return "Rating{" +
+                "username='" + username + '\'' +
+                ", rating=" + rating +
+                ", review='" + review + '\'' +
+                '}';
     }
 }

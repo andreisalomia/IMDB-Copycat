@@ -81,13 +81,16 @@ public class Parser {
                     String movieTitle = (String) jsonObject.get("movieTitle");
                     Request request = new Request(RequestTypes.valueOf(type), createdDate, userFrom, movieTitle, userTo, description);
                     requests.add(request);
+                    reqHolder(request);
                 } else if (jsonObject.get("actorName") != null) {
                     String actorName = (String) jsonObject.get("actorName");
                     Request request = new Request(RequestTypes.valueOf(type), createdDate, userFrom, actorName, userTo, description);
                     requests.add(request);
+                    reqHolder(request);
                 } else {
                     Request request = new Request(RequestTypes.valueOf(type), createdDate, userFrom, userTo, description);
                     requests.add(request);
+                    reqHolder(request);
                 }
             }
         } catch (FileNotFoundException e) {
@@ -178,7 +181,7 @@ public class Parser {
                 JSONObject userJson = (JSONObject) element;
 
                 String username = (String) userJson.get("username");
-                String userType = ((String) userJson.get("userType")).toUpperCase();
+                String userType = ((String) userJson.get("userType"));
                 Object experienceObj = userJson.get("experience");
                 long experience = -1;  // Default value for undefined experience
 
@@ -216,7 +219,7 @@ public class Parser {
                         String title = (String) production;
                         for (Production p : IMDB.getInstance().productions) {
                             if (p.title.equals(title)) {
-                                user.addProductionToFavourites(p);
+                                user.addProductionToFavorites(p);
                             }
                         }
                     }
@@ -226,7 +229,7 @@ public class Parser {
                         String name = (String) actor;
                         for (Actor a : IMDB.getInstance().actors) {
                             if (a.name.equals(name)) {
-                                user.addActorToFavourites(a);
+                                user.addActorToFavorites(a);
                             }
                         }
                     }
@@ -281,17 +284,22 @@ public class Parser {
         User.Information userInformation = new User.Information(credentials, name, country, age, gender, birthDate);
 
         switch (type) {
-            case REGULAR:
-                return new Regular<>(userInformation, AccountType.REGULAR, username, experience);
-            case CONTRIBUTOR:
-                return new Contributor<>(userInformation, AccountType.CONTRIBUTOR, username, experience);
-            case ADMIN:
-                return new Admin<>(userInformation, AccountType.ADMIN, username, experience);
+            case Regular:
+                return new Regular<>(userInformation, AccountType.Regular, username, experience);
+            case Contributor:
+                return new Contributor<>(userInformation, AccountType.Contributor, username, experience);
+            case Admin:
+                return new Admin<>(userInformation, AccountType.Admin, username, experience);
             default:
                 throw new IllegalArgumentException("InvalidUserException");
         }
     }
 
+    private static void reqHolder(Request request) {
+        if (request.type == RequestTypes.OTHERS || request.type == RequestTypes.DELETE_ACCOUNT) {
+            IMDB.RequestsHolder.addRequest(request);
+        }
+    }
 
     private static Credentials parseCredentials(JSONObject credentialsJSon) {
         String email = (String) credentialsJSon.get("email");

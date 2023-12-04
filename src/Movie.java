@@ -1,7 +1,8 @@
+//package org.example;
 import java.util.List;
 public class Movie extends Production {
-    private int duration;
-    private int releaseYear;
+    public int duration;
+    public int releaseYear;
 
     public Movie(String title, List<String> directors, List<String> actors, List<Genre> genres, List<Rating> ratings, String description, int duration, int releaseYear) {
         super(title, directors, actors, genres, ratings, description);
@@ -11,31 +12,19 @@ public class Movie extends Production {
 
     @Override
     public void displayInfo() {
-        System.out.println("Title: " + title);
-        if (directors != null) System.out.println("Directors: " + directors);
-        if (actors != null) System.out.println("Actors: " + actors);
-        if (genres != null) System.out.println("Genres: " + genres);
-        if (ratings != null) System.out.println("Ratings: " + ratings);
-        if (description != null) System.out.println("Description: " + description);
-        if (duration != 0) System.out.println("Duration: " + duration);
-        if (releaseYear != 0) System.out.println("Release Year: " + releaseYear);
-        if (averageRating != 0) System.out.println("Average Rating: " + averageRating);
-    }
+        StringBuilder builder = new StringBuilder();
+        builder.append("Title: ").append(title).append("\n");
 
-    public int getDuration() {
-        return duration;
-    }
+        if (directors != null) builder.append("Directors: ").append(directors).append("\n");
+        if (actors != null) builder.append("Actors: ").append(actors).append("\n");
+        if (genres != null) builder.append("Genres: ").append(genres).append("\n");
+        if (ratings != null) builder.append("Ratings: ").append(ratings).append("\n");
+        if (description != null) builder.append("Description: ").append(description).append("\n");
+        if (duration != 0) builder.append("Duration: ").append(duration).append("\n");
+        if (releaseYear != 0) builder.append("Release Year: ").append(releaseYear).append("\n");
+        if (averageRating != 0) builder.append("Average Rating: ").append(averageRating).append("\n");
 
-    public int getReleaseYear() {
-        return releaseYear;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public void setReleaseYear(int releaseYear) {
-        this.releaseYear = releaseYear;
+        System.out.println(builder.toString());
     }
 
 }

@@ -1,14 +1,16 @@
 import java.util.*;
 
 public class Filter {
-    public static void filterProductions(IMDB imdb) {
+    public static void filterProductions() {
+        IMDB imdb = IMDB.getInstance();
         Set<Production> displayedProductions = new HashSet<>(IMDB.getInstance().productions);
         Set<Production> helper = new HashSet<>();
-        filterProductionsFunction(imdb, helper, displayedProductions);
+        filterProductionsFunction(helper, displayedProductions);
     }
 
-    public static void filterProductionsFunction(IMDB imdb, Set<Production> helper, Set<Production> displayedProductions) {
-        int filterChoice = Options.filterProductionsOptions(imdb);
+    public static void filterProductionsFunction(Set<Production> helper, Set<Production> displayedProductions) {
+        IMDB imdb = IMDB.getInstance();
+        int filterChoice = Options.filterProductionsOptions();
         Scanner scanner = new Scanner(System.in);
         helper.clear();
 
@@ -18,10 +20,10 @@ public class Filter {
             Genre genre = getGenre(genreInput);
             if (genre == null) {
                 imdb.userInterface.displayOutput("Genre not found. Please try again.\n");
-                filterProductions(imdb);
+                filterProductions();
             } else {
                 for (Production prod : imdb.productions) {
-                    for(Production prod2 : displayedProductions) {
+                    for (Production prod2 : displayedProductions) {
                         if (prod.genres.contains(genre) && prod2.genres.contains(genre)) {
                             helper.add(prod2);
                         }
@@ -31,15 +33,15 @@ public class Filter {
                 displayedProductions.addAll(helper);
             }
         }
-        if(filterChoice == 2) {
+        if (filterChoice == 2) {
             imdb.userInterface.displayOutput("Enter the number of ratings: ");
             int numberOfRatings = ((TerminalUI) imdb.userInterface).getNumber();
             boolean validInput = false;
-            for(Production prod2 : displayedProductions) {
-                    if (prod2.ratings.size() >= numberOfRatings) {
-                        helper.add(prod2);
-                        validInput = true;
-                    }
+            for (Production prod2 : displayedProductions) {
+                if (prod2.ratings.size() >= numberOfRatings) {
+                    helper.add(prod2);
+                    validInput = true;
+                }
             }
             if (!validInput) {
                 imdb.userInterface.displayOutput("No productions found with the given number of ratings.\n");
@@ -53,7 +55,7 @@ public class Filter {
             return;
         }
         if (filterChoice == 4) {
-            filterProductions(imdb);
+            filterProductions();
         }
         if (filterChoice == 5) {
             imdb.userInterface.displayOutput("Enter the title of the production: ");
@@ -74,13 +76,14 @@ public class Filter {
             }
             return;
         }
-        for(Production prod : displayedProductions) {
+        for (Production prod : displayedProductions) {
             imdb.userInterface.displayOutput(prod.title + "\n");
         }
-        filterProductionsFunction(imdb, helper, displayedProductions);
+        filterProductionsFunction(helper, displayedProductions);
     }
 
-    public static void listAllProductions(IMDB imdb) {
+    public static void listAllProductions() {
+        IMDB imdb = IMDB.getInstance();
         for(Production production : imdb.productions) {
             imdb.userInterface.displayOutput(production.title + "\n");
         }
@@ -102,18 +105,20 @@ public class Filter {
         }
     }
 
-    public static void listAllActors(IMDB imdb) {
-        listActors(imdb.actors, imdb);
+    public static void listAllActors() {
+        listActors(IMDB.getInstance().actors);
     }
 
-    public static void listActorsAlphabetically(IMDB imdb) {
+    public static void listActorsAlphabetically() {
         // Sort the actors alphabetically
+        IMDB imdb = IMDB.getInstance();
         List<Actor> actors = new ArrayList<>(imdb.actors);
         Collections.sort(actors);
-        listActors(actors, imdb);
+        listActors(actors);
     }
 
-    public static void listActors(List<Actor> actors, IMDB imdb) {
+    public static void listActors(List<Actor> actors) {
+        IMDB imdb = IMDB.getInstance();
         for(Actor actor : actors) {
             imdb.userInterface.displayOutput(actor.name + "\n");
         }

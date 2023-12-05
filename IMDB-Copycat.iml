@@ -17,5 +17,6 @@
         <jarDirectory url="file://$USER_HOME$/Downloads/json-simple-1.1.jar" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="json-simple-1.1" level="project" />
   </component>
 </module>

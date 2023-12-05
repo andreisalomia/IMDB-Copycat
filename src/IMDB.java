@@ -68,13 +68,13 @@ public class IMDB {
         }
         switch(user.accountType) {
             case Regular:
-                Flow.startRegularFlow((Regular) user, instance);
+                Flow.startRegularFlow((Regular) user);
                 break;
             case Admin:
-                Flow.startAdminFlow((Admin) user, instance);
+                Flow.startAdminFlow((Admin) user);
                 break;
             case Contributor:
-                Flow.startContributorFlow((Contributor) user, instance);
+                Flow.startContributorFlow((Contributor) user);
                 break;
         }
     }

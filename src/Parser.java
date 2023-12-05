@@ -307,4 +307,50 @@ public class Parser {
         return new Credentials(email, password);
     }
 
+    public static <T extends Comparable<T>> void insertFavProduction(User tUser, Comparable production) {
+//        TODO: insert production in json file
+        // Assume users are stored in a JSON file named "users.json"
+        String filePath = "src/accounts.json";
+
+//        TODO: find user and delete his favorite productions. Rewrite the sections using items
+//        TODO: from user.favorites
+
+        try {
+            // Read existing users from the JSON file
+            JSONArray jsonArray = (JSONArray) new JSONParser().parse(new FileReader(filePath));
+
+            // Find the user in the JSONArray and update the favoriteProductions
+            for (Object element : jsonArray) {
+                JSONObject userJson = (JSONObject) element;
+                String username = (String) userJson.get("username");
+
+                if (tUser.username.equals(username)) {
+                    // Delete existing favoriteProductions
+                    userJson.remove("favoriteProductions");
+
+                    // Add the productions from user.favorites to favoriteProductions array
+                    JSONArray favoriteProductions = new JSONArray();
+                    for (Object favProduction : tUser.favorites) {
+                        if (favProduction instanceof Production) {
+                            String productionTitle = ((Production) favProduction).title;
+                            favoriteProductions.add(productionTitle);
+                        }
+                    }
+
+                    userJson.put("favoriteProductions", favoriteProductions);
+                    break;
+                }
+            }
+
+            // Write the updated JSON array back to the file
+            try (FileWriter fileWriter = new FileWriter(filePath)) {
+                fileWriter.write(jsonArray.toJSONString());
+                fileWriter.flush();
+            }
+
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

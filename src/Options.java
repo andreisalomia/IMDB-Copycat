@@ -1,5 +1,6 @@
 public class Options {
-    public static int regularOptions(IMDB imdb) {
+    public static int regularOptions() {
+        IMDB imdb = IMDB.getInstance();
         imdb.userInterface.displayOutput("Choose action: \n");
         imdb.userInterface.displayOutput("\t1) View productions details\n");
         imdb.userInterface.displayOutput("\t2) View actors details\n");
@@ -10,26 +11,29 @@ public class Options {
         imdb.userInterface.displayOutput("\t7) Add/Delete review\n");
         imdb.userInterface.displayOutput("\t8) Logout\n");
 
-        return returnChoice(imdb, 8);
+        return returnChoice(8);
     }
 
-    public static int filterProductionsOptions(IMDB imdb) {
+    public static int filterProductionsOptions() {
+        IMDB imdb = IMDB.getInstance();
         imdb.userInterface.displayOutput("Choose filter: \n");
         imdb.userInterface.displayOutput("\t1) Filter by genre\n");
         imdb.userInterface.displayOutput("\t2) Filter by number of ratings\n");
         imdb.userInterface.displayOutput("\t3) Exit\n");
         imdb.userInterface.displayOutput("\t4) Clear filters\n");
         imdb.userInterface.displayOutput("\t5) Select production to display details\n");
-        return returnChoice(imdb, 5);
+        return returnChoice(5);
     }
 
-    public static int displayProductionsChoices(IMDB imdb) {
+    public static int displayProductionsChoices() {
+        IMDB imdb = IMDB.getInstance();
         imdb.userInterface.displayOutput("\t1) View all productions\n");
         imdb.userInterface.displayOutput("\t2) Filter productions\n");
-        return returnChoice(imdb, 2);
+        return returnChoice(2);
     }
 
-    private static int returnChoice(IMDB imdb, int margin) {
+    private static int returnChoice(int margin) {
+        IMDB imdb = IMDB.getInstance();
         try {
             int choice = ((TerminalUI) imdb.userInterface).getNumber();
             validateUserInput(choice, margin);
@@ -47,10 +51,27 @@ public class Options {
         }
     }
 
-    public static int displayActorsChoices(IMDB imdb) {
+    public static int displayActorsChoices() {
+        IMDB imdb = IMDB.getInstance();
         imdb.userInterface.displayOutput("Choose option: \n");
         imdb.userInterface.displayOutput("\t1) List all Actors\n");
         imdb.userInterface.displayOutput("\t2) Sort alphabetically\n");
-        return returnChoice(imdb, 2);
+        return returnChoice(2);
+    }
+
+    public static int addDeleteFavouritesChoices() {
+        IMDB imdb = IMDB.getInstance();
+        imdb.userInterface.displayOutput("Choose option: \n");
+        imdb.userInterface.displayOutput("\t1) Add actor/movie/series to favourites\n");
+        imdb.userInterface.displayOutput("\t2) Delete actor/movie/series from favourites\n");
+        return returnChoice(2);
+    }
+
+    public static int chooseActorProduction() {
+        IMDB imdb = IMDB.getInstance();
+        imdb.userInterface.displayOutput("Choose option: \n");
+        imdb.userInterface.displayOutput("\t1) Choose actor\n");
+        imdb.userInterface.displayOutput("\t2) Choose production\n");
+        return returnChoice(2);
     }
 }

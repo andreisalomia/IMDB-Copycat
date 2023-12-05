@@ -61,6 +61,7 @@ public abstract class User<T extends Comparable<T>> {
     //add to favourites
     public void addProductionToFavorites(Comparable production) {
         favorites.add(production);
+        Parser.insertFavProduction(this, production);
     }
 
     public void addActorToFavorites(Comparable actor) {
@@ -68,7 +69,11 @@ public abstract class User<T extends Comparable<T>> {
     }
 
     //remove from favourites
-    public void removeFromFavourites(T item) {
+    public void removeActorFromFavourites(Actor item) {
+        favorites.remove(item);
+    }
+
+    public void removeProductionFromFavourites(Production item) {
         favorites.remove(item);
     }
 

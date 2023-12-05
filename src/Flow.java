@@ -14,6 +14,7 @@ public class Flow {
                 break;
             case 3:
                 // View notifications
+                Choices.viewNotifications(user, imdb);
                 break;
             case 4:
                 // Search for actor/movie/series

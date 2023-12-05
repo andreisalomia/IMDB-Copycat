@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Scanner;
 
 public class Choices {
@@ -24,5 +25,17 @@ public class Choices {
                 Filter.listActorsAlphabetically(imdb);
                 break;
         }
+    }
+
+    public static void viewNotifications(Regular user, IMDB imdb) {
+        List<String> notifs = user.notifications;
+        if(notifs.isEmpty()) {
+            imdb.userInterface.displayOutput("No notifications!\n");
+            return;
+        }
+        for(String notif : notifs) {
+            imdb.userInterface.displayOutput(notif + "\n");
+        }
+        imdb.userInterface.displayOutput("\n");
     }
 }

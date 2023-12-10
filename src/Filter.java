@@ -147,5 +147,47 @@ public class Filter {
             return null; // Genre not found in the enum
         }
     }
+
+    public static void listFavorites(User user) {
+        IMDB imdb = IMDB.getInstance();
+        imdb.userInterface.displayOutput("Favorite Productions: \n");
+        for(Object obj : user.favorites) {
+            if(obj instanceof Production) {
+                Production prod = (Production) obj;
+                imdb.userInterface.displayOutput(prod.title + "\n");
+            }
+        }
+        imdb.userInterface.displayOutput("Favorite Actors: \n");
+        for(Object obj : user.favorites) {
+            if(obj instanceof Actor) {
+                Actor actor = (Actor) obj;
+                imdb.userInterface.displayOutput(actor.name + "\n");
+            }
+        }
+    }
+
+    public static boolean actorCheckExists(User user, String actorName) {
+        for(Object obj : user.favorites) {
+            if(obj instanceof Actor) {
+                Actor actor2 = (Actor) obj;
+                if(actor2.name.equals(actorName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean productionCheckExists(User user, String productionName) {
+        for(Object obj : user.favorites) {
+            if(obj instanceof Production) {
+                Production prod2 = (Production) obj;
+                if(prod2.title.equals(productionName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
 

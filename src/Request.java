@@ -41,4 +41,56 @@ public class Request {
         sb.append('}');
         return sb.toString();
     }
+
+    public static Request RequestBuilder(User user, String problem, int issueNumber) {
+        IMDB imdb = IMDB.getInstance();
+        RequestTypes type = RequestTypes.values()[issueNumber - 1];
+        String createdDate = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String userFrom = user.username;
+        System.out.println(userFrom);
+        String description = problem;
+//        Search the lists of productions and actors to get actorName or productionName from String problem
+        String problemName = null;
+        if (type == RequestTypes.ACTOR_ISSUE || type == RequestTypes.MOVIE_ISSUE) {
+            for (Actor actor : imdb.actors) {
+                if (problem.contains(actor.name)) {
+                    problemName = actor.name;
+                    break;
+                }
+            }
+            for (Production production : imdb.productions) {
+                if (problem.contains(production.title)) {
+                    problemName = production.title;
+                    break;
+                }
+            }
+        }
+        String userTo = null;
+        if (type == RequestTypes.DELETE_ACCOUNT || type == RequestTypes.OTHERS) {
+            userTo = "ADMIN";
+        }
+//        Search all contributors/admins lists of added contributions to see if problemName appears
+        if (type == RequestTypes.ACTOR_ISSUE || type == RequestTypes.MOVIE_ISSUE) {
+            for (User client : imdb.users) {
+                if (client instanceof Contributor) {
+                    for (Object contribution : ((Contributor) client).contributions) {
+                        if (contribution instanceof Actor) {
+                            if (((Actor) contribution).name.equals(problemName)) {
+                                userTo = client.username;
+                                break;
+                            }
+                        } else if (contribution instanceof Production) {
+                            if (((Production) contribution).title.equals(problemName)) {
+                                userTo = client.username;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return new Request(type, createdDate, userFrom, problemName, userTo, description);
+
+    }
 }

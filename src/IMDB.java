@@ -32,6 +32,12 @@ public class IMDB {
         startFlow(currentUser);
     }
 
+    public void restartApp() {
+        userInterface.displayOutput("Welcome back to IMDB! Please enter your email and password to login.\n");
+        login();
+        startFlow(currentUser);
+    }
+
     public void loadDataJSON() {
         actors = Parser.parseActors("src/actors.json");
         productions = Parser.parseProductions("src/production.json");
@@ -115,6 +121,12 @@ public class IMDB {
 
         public static List<Request> getRequests() {
             return new ArrayList<>(requests);
+        }
+
+        public static void printRequests() {
+            for(Request request : requests) {
+                System.out.println(request);
+            }
         }
     }
 

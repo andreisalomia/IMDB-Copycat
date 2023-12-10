@@ -66,15 +66,18 @@ public abstract class User<T extends Comparable<T>> {
 
     public void addActorToFavorites(Comparable actor) {
         favorites.add(actor);
+        Parser.insertFavActor(this, actor);
     }
 
     //remove from favourites
     public void removeActorFromFavourites(Actor item) {
         favorites.remove(item);
+        Parser.insertFavActor(this, item);
     }
 
     public void removeProductionFromFavourites(Production item) {
         favorites.remove(item);
+        Parser.insertFavProduction(this, item);
     }
 
     @Override

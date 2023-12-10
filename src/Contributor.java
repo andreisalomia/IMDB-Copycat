@@ -6,7 +6,24 @@ public class Contributor<T extends Comparable<T>> extends Staff<T> implements Re
 
     @Override
     public void createRequest(Request r) {
-        // generate request using Request class
+        IMDB imdb = IMDB.getInstance();
+        imdb.requests.add(r);
+        Parser.writeRequests();
+        if (r.type == RequestTypes.ACTOR_ISSUE || r.type == RequestTypes.MOVIE_ISSUE) {
+            for (User user : imdb.users) {
+                if (user.username.equals(r.userTo)) {
+                    if (user instanceof Admin) {
+                        ((Admin) user).userRequests.add(r);
+                    } else if (user instanceof Contributor) {
+                        ((Contributor) user).userRequests.add(r);
+                    }
+                    break;
+                }
+            }
+        }
+        if(r.type == RequestTypes.OTHERS || r.type == RequestTypes.DELETE_ACCOUNT) {
+            IMDB.RequestsHolder.addRequest(r);
+        }
     }
 
     @Override

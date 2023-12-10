@@ -219,7 +219,7 @@ public class Parser {
                         String title = (String) production;
                         for (Production p : IMDB.getInstance().productions) {
                             if (p.title.equals(title)) {
-                                user.addProductionToFavorites(p);
+                                user.favorites.add(p);
                             }
                         }
                     }
@@ -229,7 +229,7 @@ public class Parser {
                         String name = (String) actor;
                         for (Actor a : IMDB.getInstance().actors) {
                             if (a.name.equals(name)) {
-                                user.addActorToFavorites(a);
+                                user.favorites.add(a);
                             }
                         }
                     }
@@ -308,12 +308,7 @@ public class Parser {
     }
 
     public static <T extends Comparable<T>> void insertFavProduction(User tUser, Comparable production) {
-//        TODO: insert production in json file
-        // Assume users are stored in a JSON file named "users.json"
         String filePath = "src/accounts.json";
-
-//        TODO: find user and delete his favorite productions. Rewrite the sections using items
-//        TODO: from user.favorites
 
         try {
             // Read existing users from the JSON file
@@ -352,5 +347,139 @@ public class Parser {
             e.printStackTrace();
         }
 
+    }
+
+
+    public static <T extends Comparable<T>> void insertFavActor(User tUser, Comparable production) {
+        String filePath = "src/accounts.json";
+
+        try {
+            // Read existing users from the JSON file
+            JSONArray jsonArray = (JSONArray) new JSONParser().parse(new FileReader(filePath));
+
+            // Find the user in the JSONArray and update the favoriteProductions
+            for (Object element : jsonArray) {
+                JSONObject userJson = (JSONObject) element;
+                String username = (String) userJson.get("username");
+
+                if (tUser.username.equals(username)) {
+                    // Delete existing favoriteProductions
+                    userJson.remove("favoriteActors");
+
+                    // Add the productions from user.favorites to favoriteProductions array
+                    JSONArray favoriteActors = new JSONArray();
+                    for (Object favActor : tUser.favorites) {
+                        if (favActor instanceof Actor) {
+                            String actorTitle = ((Actor) favActor).name;
+                            favoriteActors.add(actorTitle);
+                        }
+                    }
+
+                    userJson.put("favoriteActors", favoriteActors);
+                    break;
+                }
+            }
+
+            // Write the updated JSON array back to the file
+            try (FileWriter fileWriter = new FileWriter(filePath)) {
+                fileWriter.write(jsonArray.toJSONString());
+                fileWriter.flush();
+            }
+
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void writeRequests() {
+        String filePath = "src/requests.json";
+
+        try {
+            // Convert requests to JSON array
+            JSONArray jsonArray = new JSONArray();
+            for (Request request : IMDB.getInstance().requests) {
+                JSONObject requestJson = new JSONObject();
+                requestJson.put("type", request.type.name());
+                requestJson.put("createdDate", request.createdDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                if(request.type == RequestTypes.ACTOR_ISSUE || request.type == RequestTypes.MOVIE_ISSUE) {
+                    //check if it's a movie title or a actor name use a for to check all lists of productions and actors
+                    for (Production production : IMDB.getInstance().productions) {
+                        if (production.title.equals(request.problemName)) {
+                            requestJson.put("movieTitle", request.problemName);
+                            break;
+                        }
+                    }
+                    for (Actor actor : IMDB.getInstance().actors) {
+                        if (actor.name.equals(request.problemName)) {
+                            requestJson.put("actorName", request.problemName);
+                            break;
+                        }
+                    }
+                }
+                requestJson.put("description", request.description);
+                requestJson.put("username", request.userFrom);
+                requestJson.put("to", request.userTo);
+                jsonArray.add(requestJson);
+            }
+
+            // Write the JSON array to the file
+            try (FileWriter fileWriter = new FileWriter(filePath)) {
+                fileWriter.write(jsonArray.toJSONString());
+                fileWriter.flush();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeRatings() {
+        IMDB imdb = IMDB.getInstance();
+        String filePath = "src/production.json";
+
+        try {
+            // Read existing productions from the JSON file
+            JSONArray jsonArray = (JSONArray) new JSONParser().parse(new FileReader(filePath));
+
+            // Update the ratings in the JSONArray
+            for (Object element : jsonArray) {
+                JSONObject productionJson = (JSONObject) element;
+                String title = (String) productionJson.get("title");
+
+                // Find the production in the JSONArray and remove existing ratings
+                for (Production production : imdb.productions) {
+                    if (production.title.equals(title)) {
+                        productionJson.remove("ratings");
+                        productionJson.put("ratings", convertRatingsToJsonArray(production.ratings));
+                        productionJson.remove("averageRating");
+                        productionJson.put("averageRating", production.averageRating);
+                        break;
+                    }
+                }
+            }
+
+            // Write the updated JSON array back to the file
+            try (FileWriter fileWriter = new FileWriter(filePath)) {
+                fileWriter.write(jsonArray.toJSONString());
+                fileWriter.flush();
+            }
+
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static JSONArray convertRatingsToJsonArray(List<Rating> ratings) {
+        JSONArray ratingsArray = new JSONArray();
+        for (Rating rating : ratings) {
+            JSONObject ratingJson = new JSONObject();
+            ratingJson.put("username", rating.username);
+            ratingJson.put("rating", rating.rating);
+            ratingJson.put("comment", rating.review);
+
+            ratingsArray.add(ratingJson);
+        }
+        return ratingsArray;
     }
 }

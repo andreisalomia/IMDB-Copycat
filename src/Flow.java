@@ -6,34 +6,35 @@ public class Flow {
         int choice = Options.regularOptions();
         switch (choice) {
             case 1:
-                // View productions details
                 Choices.viewProductionDetails();
                 break;
             case 2:
-                // View actors details
                 Choices.viewActorDetails();
                 break;
             case 3:
-                // View notifications
                 Choices.viewNotifications(user);
                 break;
             case 4:
-                // Search for actor/movie/series
                 Choices.searchForActorMovieSeries();
                 break;
             case 5:
-                // Add/Delete actor/movie/series from favourites
                 Choices.addDeleteFavourites(user);
                 break;
             case 6:
-                // Add/Delete request
+                Choices.addDeleteRequest(user);
                 break;
             case 7:
-                // Add/Delete review
+                Choices.addDeleteRating(user);
                 break;
             case 8:
-                // Logout
-                return;
+                user.logout();
+                int option = Options.startOptions();
+                if(option == 1) {
+                    imdb.restartApp();
+                }
+                else {
+                    System.exit(0);
+                }
 
         }
         startRegularFlow(user);

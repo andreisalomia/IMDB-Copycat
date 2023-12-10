@@ -19,11 +19,11 @@
     "userType": "Contributor",
     "experience": "8",
     "favoriteProductions": [
+      "The Shawshank Redemption",
       "Schindler's List",
-      "The Departed",
       "The Lord of the Rings: The Return of the King",
-      "The Pianist",
-      "The Shawshank Redemption"
+      "The Departed",
+      "The Pianist"
     ],
     "favoriteActors": [
       "Viola Davis",
@@ -41,8 +41,8 @@
       "country": "USA",
       "gender": "Female",
       "credentials": {
-        "password": "R8F!b&e9m3U6",
-        "email": "susan.smith@example.com"
+        "password": "2",
+        "email": "1"
       },
       "name": "Susan Smith",
       "birthDate": "1988-11-25",
@@ -50,6 +50,9 @@
     },
     "userType": "Regular",
     "experience": "3",
+    "favoriteActors": [
+      "Johnny Depp"
+    ],
     "username": "susan_smith_123"
   },
   {
@@ -88,8 +91,8 @@
     "userType": "Contributor",
     "experience": "2",
     "favoriteProductions": [
-      "Mad Max: Fury Road",
-      "The Mandalorian"
+      "The Mandalorian",
+      "Mad Max: Fury Road"
     ],
     "favoriteActors": [
       "Robert Downey Jr.",
@@ -137,9 +140,7 @@
       "Squid Game"
     ],
     "favoriteActors": [
-      "Leonardo DiCaprio",
-      "Johnny Depp",
-      "Cate"
+      "Charlize Theron"
     ],
     "username": "peter_jones_1415"
   },
@@ -214,14 +215,14 @@
     "experience": "9",
     "favoriteProductions": [
       "1917",
-      "Eternal Sunshine of the Spotless Mind",
-      "La La Land",
-      "Squid Game",
       "The Irishman",
       "The Mandalorian",
       "The Queen's Gambit",
+      "Squid Game",
+      "Whiplash",
       "The Social Network",
-      "Whiplash"
+      "Eternal Sunshine of the Spotless Mind",
+      "La La Land"
     ],
     "favoriteActors": [
       "Robert Downey Jr.",

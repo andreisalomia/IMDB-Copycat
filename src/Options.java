@@ -64,7 +64,8 @@ public class Options {
         imdb.userInterface.displayOutput("Choose option: \n");
         imdb.userInterface.displayOutput("\t1) Add actor/movie/series to favourites\n");
         imdb.userInterface.displayOutput("\t2) Delete actor/movie/series from favourites\n");
-        return returnChoice(2);
+        imdb.userInterface.displayOutput("\t3) List all favorites\n");
+        return returnChoice(3);
     }
 
     public static int chooseActorProduction() {
@@ -72,6 +73,41 @@ public class Options {
         imdb.userInterface.displayOutput("Choose option: \n");
         imdb.userInterface.displayOutput("\t1) Choose actor\n");
         imdb.userInterface.displayOutput("\t2) Choose production\n");
+        return returnChoice(2);
+    }
+
+    public static int addDeleteRequestChoices() {
+        IMDB imdb = IMDB.getInstance();
+        imdb.userInterface.displayOutput("Choose option: \n");
+        imdb.userInterface.displayOutput("\t1) Add actor/movie/series request\n");
+        imdb.userInterface.displayOutput("\t2) Delete actor/movie/series request\n");
+        return returnChoice(2);
+    }
+
+    public static int issueTypeChoices() {
+        IMDB imdb = IMDB.getInstance();
+        imdb.userInterface.displayOutput("Choose issue type: \n");
+        imdb.userInterface.displayOutput("\t1) Delete Account\n");
+        imdb.userInterface.displayOutput("\t2) Actor Issue\n");
+        imdb.userInterface.displayOutput("\t3) Movie Issue\n");
+        imdb.userInterface.displayOutput("\t4) Others\n");
+        return returnChoice(4);
+    }
+
+    public static int addDeleteRatingChoices() {
+        IMDB imdb = IMDB.getInstance();
+        imdb.userInterface.displayOutput("Choose option: \n");
+        imdb.userInterface.displayOutput("\t1) Add production rating\n");
+        imdb.userInterface.displayOutput("\t2) Delete production rating\n");
+        imdb.userInterface.displayOutput("\t3) Exit\n");
+        return returnChoice(3);
+    }
+
+    public static int startOptions() {
+        IMDB imdb = IMDB.getInstance();
+        imdb.userInterface.displayOutput("Choose option: \n");
+        imdb.userInterface.displayOutput("\t1) Login\n");
+        imdb.userInterface.displayOutput("\t2) Close the app\n");
         return returnChoice(2);
     }
 }

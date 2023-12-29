@@ -33,7 +33,7 @@ public class Regular<T extends Comparable<T>> extends User<T> implements Request
     @Override
     public void removeRequest(Request r) {
         IMDB imdb = IMDB.getInstance();
-        System.out.println(r.description);
+        imdb.userInterface.displayOutput(r.description + "\n");
         imdb.requests.remove(r);
         Parser.writeRequests();
         if (r.type == RequestTypes.ACTOR_ISSUE || r.type == RequestTypes.MOVIE_ISSUE) {

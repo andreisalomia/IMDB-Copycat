@@ -19,6 +19,7 @@ public class Series extends Production {
     public void displayInfo() {
         StringBuilder builder = new StringBuilder();
         builder.append("Title: ").append(title).append("\n");
+        builder.append("Type: Series\n");
 
         if (directors != null)
             builder.append("Directors: ").append(directors).append("\n");

@@ -52,6 +52,7 @@ public class Filter {
         if (filterChoice == 3) {
             displayedProductions.clear();
             helper.clear();
+            Flow.startContributorFlow((Contributor) IMDB.getInstance().currentUser);
             return;
         }
         if (filterChoice == 4) {

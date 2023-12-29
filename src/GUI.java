@@ -15,6 +15,7 @@ public class GUI implements UserInterface {
 
     @Override
     public void displayOutput(String output) {
-        System.out.println(output);
+        UserInterface userInterface = IMDB.getInstance().userInterface;
+        userInterface.displayOutput(output);
     }
 }

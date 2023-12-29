@@ -1,16 +1,17 @@
 [
   {
     "productionsContribution": [
-      "The Shawshank Redemption",
+      "Schindler's List",
+      "Sulea Movie",
       "The Godfather",
-      "Schindler's List"
+      "The Shawshank Redemption"
     ],
     "information": {
       "country": "UK",
       "gender": "Female",
       "credentials": {
-        "password": "P@ssw0rd!23",
-        "email": "emily.wilson@example.com"
+        "password": "4",
+        "email": "3"
       },
       "name": "Emily Wilson",
       "birthDate": "1991-03-17",
@@ -32,8 +33,8 @@
     ],
     "username": "emily_wilson_789",
     "actorsContribution": [
-      "Viola Davis",
-      "Brad Pitt"
+      "Brad Pitt",
+      "Viola Davis"
     ]
   },
   {
@@ -41,8 +42,8 @@
       "country": "USA",
       "gender": "Female",
       "credentials": {
-        "password": "2",
-        "email": "1"
+        "password": "w",
+        "email": "q"
       },
       "name": "Susan Smith",
       "birthDate": "1988-11-25",
@@ -490,8 +491,8 @@
       "country": "RO",
       "gender": "Female",
       "credentials": {
-        "password": "test",
-        "email": "cont@tributor.ro"
+        "password": "2",
+        "email": "1"
       },
       "nume": "Contributor",
       "birthDate": "1997-06-22",
@@ -504,6 +505,7 @@
       "Vasile Versaci, cel mai bun pregratar gateste orez cu lapte!"
     ],
     "favoriteActors": [
+      "Brad Pitt",
       "Test Actor"
     ],
     "notifications": [
@@ -514,6 +516,7 @@
     ],
     "username": "testContributor",
     "actorsContribution": [
+      "Nigga",
       "Test Actor"
     ]
   }

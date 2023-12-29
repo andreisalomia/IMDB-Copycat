@@ -47,7 +47,6 @@ public class Request {
         RequestTypes type = RequestTypes.values()[issueNumber - 1];
         String createdDate = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         String userFrom = user.username;
-        System.out.println(userFrom);
         String description = problem;
 //        Search the lists of productions and actors to get actorName or productionName from String problem
         String problemName = null;

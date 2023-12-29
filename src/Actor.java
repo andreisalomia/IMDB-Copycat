@@ -34,7 +34,8 @@ public class Actor implements Comparable<Object> {
         }
 
         builder.append("----------------------------\n"); // Separator for better readability
-        System.out.println(builder.toString());
+        UserInterface userInterface = IMDB.getInstance().userInterface;
+        userInterface.displayOutput(builder.toString());
     }
 
     public static class Pair<T, U> {

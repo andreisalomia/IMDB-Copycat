@@ -146,7 +146,11 @@ public class Parser {
                     ratingsList.add(rating1);
                 }
                 String description = (String) jsonObject.get("plot");
-                double avgRating = (Double) jsonObject.get("averageRating");
+                double avgRating;
+                if (jsonObject.get("averageRating") == null)
+                    jsonObject.put("averageRating", 0.0);
+                else
+                    avgRating = (Double) jsonObject.get("averageRating");
                 if (type.equals("MOVIE")) {
                     String duration = (String) jsonObject.get("duration");
                     String numericDuration = duration.replaceAll("[^0-9]", "");
@@ -194,7 +198,7 @@ public class Parser {
                 }
 
                 JSONObject informationJson = (JSONObject) userJson.get("information");
-                User<?> user = userFactory(AccountType.valueOf(userType), username,
+                User<?> user = UserFactory.createUser(AccountType.valueOf(userType), username,
                         parseCredentials((JSONObject) informationJson.get("credentials")),
                         (String) informationJson.get("name"),
                         (String) informationJson.get("country"),
@@ -278,21 +282,6 @@ public class Parser {
             System.out.println("Parse Exception");
         }
         return users;
-    }
-
-    private static User<?> userFactory(AccountType type, String username, Credentials credentials, String name, String country, int age, char gender, LocalDate birthDate, int experience) {
-        User.Information userInformation = new User.Information(credentials, name, country, age, gender, birthDate);
-
-        switch (type) {
-            case Regular:
-                return new Regular<>(userInformation, AccountType.Regular, username, experience);
-            case Contributor:
-                return new Contributor<>(userInformation, AccountType.Contributor, username, experience);
-            case Admin:
-                return new Admin<>(userInformation, AccountType.Admin, username, experience);
-            default:
-                throw new IllegalArgumentException("InvalidUserException");
-        }
     }
 
     private static void reqHolder(Request request) {
@@ -481,5 +470,409 @@ public class Parser {
             ratingsArray.add(ratingJson);
         }
         return ratingsArray;
+    }
+
+    public static void addActor(Actor actor) {
+        String filePath = "src/actors.json";
+
+        try {
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(filePath));
+
+            JSONArray jsonArray;
+
+            if (obj instanceof JSONArray) {
+                jsonArray = (JSONArray) obj;
+            } else {
+                jsonArray = new JSONArray();
+            }
+
+            JSONObject actorJson = new JSONObject();
+
+            actorJson.put("name", actor.name);
+
+            JSONArray performancesJson = new JSONArray();
+            for (Actor.Pair<String, Actor.Type> performance : actor.filmography) {
+                JSONObject performanceJson = new JSONObject();
+                performanceJson.put("title", performance.name);
+                performanceJson.put("type", performance.type.toString());
+                performancesJson.add(performanceJson);
+            }
+            actorJson.put("performances", performancesJson);
+
+            actorJson.put("biography", actor.biography);
+
+            jsonArray.add(actorJson);
+
+//            System.out.println(actorJson.toJSONString());
+
+            try (FileWriter fileWriter = new FileWriter(filePath)) {
+
+                fileWriter.write(jsonArray.toJSONString());
+                fileWriter.flush();
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addSeries(Series series) {
+        String filePath = "src/production.json";
+
+        try {
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(filePath));
+
+            JSONArray jsonArray;
+
+            if (obj instanceof JSONArray) {
+                jsonArray = (JSONArray) obj;
+            } else {
+                jsonArray = new JSONArray();
+            }
+
+            JSONObject seriesJson = new JSONObject();
+            seriesJson.put("title", series.title);
+            seriesJson.put("type", "Series"); // Indicate that it's a series
+
+            // Add other series-specific attributes (releaseYear, numberOfSeasons, episodes)
+            seriesJson.put("releaseYear", series.releaseYear);
+            seriesJson.put("numSeasons", series.numberOfSeasons);
+
+            // Convert episodes to JSON
+            JSONObject seasonsJson = new JSONObject();
+            for (Map.Entry<String, List<Episode>> entry : series.episodes.entrySet()) {
+                String seasonName = entry.getKey();
+                JSONArray seasonEpisodesJson = new JSONArray();
+
+                for (Episode episode : entry.getValue()) {
+                    JSONObject episodeJson = new JSONObject();
+                    episodeJson.put("episodeName", episode.title);
+                    episodeJson.put("duration", episode.duration + " minutes");
+                    seasonEpisodesJson.add(episodeJson);
+                }
+
+                seasonsJson.put(seasonName, seasonEpisodesJson);
+            }
+            seriesJson.put("seasons", seasonsJson);
+
+            // Add common production attributes (directors, actors, genres, ratings, description)
+            seriesJson.put("directors", series.directors);
+            seriesJson.put("actors", series.actors);
+            seriesJson.put("genres", series.genres);
+
+            JSONArray genresJson = new JSONArray();
+            for (Genre genre : series.genres) {
+                genresJson.add(genre.toString()); // Assuming Genre.toString() returns the genre name
+            }
+            seriesJson.put("genres", genresJson);
+
+            seriesJson.put("ratings", new JSONArray()); // Assuming you want to initialize ratings as an empty array
+            seriesJson.put("plot", series.description);
+
+            jsonArray.add(seriesJson);
+
+            try (FileWriter fileWriter = new FileWriter(filePath)) {
+                fileWriter.write(jsonArray.toJSONString());
+                fileWriter.flush();
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addMovie(Movie movie) {
+        String filePath = "src/production.json";
+
+        try {
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(filePath));
+
+            JSONArray jsonArray;
+
+            if (obj instanceof JSONArray) {
+                jsonArray = (JSONArray) obj;
+            } else {
+                jsonArray = new JSONArray();
+            }
+
+            JSONObject movieJson = new JSONObject();
+            movieJson.put("title", movie.title);
+            movieJson.put("type", "Movie"); // Indicate that it's a movie
+
+            // Add other movie-specific attributes (duration, releaseYear)
+            movieJson.put("duration", movie.duration + " minutes");
+            movieJson.put("releaseYear", movie.releaseYear);
+
+            // Add common production attributes (directors, actors, genres, ratings, description)
+            movieJson.put("directors", movie.directors);
+            movieJson.put("actors", movie.actors);
+
+            JSONArray genresJson = new JSONArray();
+            for (Genre genre : movie.genres) {
+                genresJson.add(genre.toString());
+            }
+            movieJson.put("genres", genresJson);
+
+            movieJson.put("ratings", new JSONArray()); // Assuming you want to initialize ratings as an empty array
+            movieJson.put("description", movie.description);
+
+            jsonArray.add(movieJson);
+
+            try (FileWriter fileWriter = new FileWriter(filePath)) {
+                fileWriter.write(jsonArray.toJSONString());
+                fileWriter.flush();
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void removeProduction(Production p) {
+        String filePath = "src/production.json";
+
+        try {
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(filePath));
+
+            if (obj instanceof JSONArray) {
+                JSONArray jsonArray = (JSONArray) obj;
+
+                // Iterate over the productions in the array
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    JSONObject productionJson = (JSONObject) jsonArray.get(i);
+                    String title = (String) productionJson.get("title");
+
+                    // Check if the current production matches the one to be removed
+                    if (title.equals(p.title)) {
+                        // Remove the production from the array
+                        jsonArray.remove(i);
+
+                        // Update the JSON file
+                        try (FileWriter fileWriter = new FileWriter(filePath)) {
+                            fileWriter.write(jsonArray.toJSONString());
+                            fileWriter.flush();
+                        }
+
+                        return; // Exit the method after removing the production
+                    }
+                }
+
+                System.out.println("Production not found.");
+            } else {
+                System.out.println("Invalid JSON file structure.");
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void removeActor(Actor actor) {
+        String filePath = "src/actors.json";
+
+        try {
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(filePath));
+
+            if (obj instanceof JSONArray) {
+                JSONArray jsonArray = (JSONArray) obj;
+
+                // Iterate over the actors in the array
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    JSONObject actorJson = (JSONObject) jsonArray.get(i);
+                    String actorName = (String) actorJson.get("name");
+
+                    // Check if the current actor matches the one to be removed
+                    if (actorName.equals(actor.name)) {
+                        // Remove the actor from the array
+                        jsonArray.remove(i);
+
+                        // Update the JSON file
+                        try (FileWriter fileWriter = new FileWriter(filePath)) {
+                            fileWriter.write(jsonArray.toJSONString());
+                            fileWriter.flush();
+                        }
+
+                        System.out.println("Actor removed successfully.");
+                        return; // Exit the method after removing the actor
+                    }
+                }
+
+                System.out.println("Actor not found.");
+            } else {
+                System.out.println("Invalid JSON file structure.");
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateContributions(Staff user) {
+        String filePath = "src/accounts.json";
+        IMDB imdb = IMDB.getInstance();
+
+        try {
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(filePath));
+
+            JSONArray jsonArray;
+
+            if (obj instanceof JSONArray) {
+                jsonArray = (JSONArray) obj;
+            } else {
+                jsonArray = new JSONArray();
+            }
+
+            // Find the user's JSON object in the array
+            JSONObject userJson = null;
+            for (Object jsonObj : jsonArray) {
+                JSONObject jsonUser = (JSONObject) jsonObj;
+                String username = (String) jsonUser.get("username");
+                if (username.equals(user.username)) {
+                    userJson = jsonUser;
+                    break;
+                }
+            }
+
+            if (userJson != null) {
+                // Remove existing contributions
+                userJson.remove("actorsContribution");
+                userJson.remove("productionsContribution");
+
+                // Add new contributions based on the user's contributions list
+                JSONArray actorContributions = new JSONArray();
+                JSONArray productionContributions = new JSONArray();
+
+                for (Object contribution : user.contributions) {
+                    if (contribution instanceof Actor) {
+                        actorContributions.add(((Actor) contribution).name);
+                    } else if (contribution instanceof Production) {
+                        productionContributions.add(((Production) contribution).title);
+                    }
+                }
+
+                userJson.put("actorsContribution", actorContributions);
+                userJson.put("productionsContribution", productionContributions);
+            }
+
+            // Rewrite the updated array to the file
+            try (FileWriter fileWriter = new FileWriter(filePath)) {
+                fileWriter.write(jsonArray.toJSONString());
+                fileWriter.flush();
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeProductions(List<Production> productions) {
+        String filePath = "src/production.json";
+        JSONArray jsonArray = new JSONArray();
+
+        for (Production production : productions) {
+            JSONObject productionJson = new JSONObject();
+
+            productionJson.put("type", production instanceof Movie ? "MOVIE" : "SERIES");
+            productionJson.put("title", production.title);
+            productionJson.put("releaseYear", production instanceof Movie ? ((Movie) production).releaseYear : ((Series) production).releaseYear);
+
+            // Add common production attributes (directors, actors, genres, ratings, description)
+            productionJson.put("directors", production.directors);
+            productionJson.put("actors", production.actors);
+
+            JSONArray genresJson = new JSONArray();
+            for (Genre genre : production.genres) {
+                genresJson.add(genre.toString());
+            }
+            productionJson.put("genres", genresJson);
+
+            JSONArray ratingsJson = new JSONArray();
+            for (Rating rating : production.ratings) {
+                JSONObject ratingJson = new JSONObject();
+                ratingJson.put("username", rating.username);
+                ratingJson.put("rating", rating.rating);
+                ratingJson.put("comment", rating.review);
+                ratingsJson.add(ratingJson);
+            }
+            productionJson.put("ratings", ratingsJson);
+
+            productionJson.put("plot", production.description);
+
+            // Add specific attributes based on the production type
+            if (production instanceof Movie) {
+                Movie movie = (Movie) production;
+                productionJson.put("duration", movie.duration + " minutes");
+            } else if (production instanceof Series) {
+                Series series = (Series) production;
+                productionJson.put("numSeasons", series.numberOfSeasons);
+
+                JSONObject seasonsJson = new JSONObject();
+                for (Map.Entry<String, List<Episode>> entry : series.episodes.entrySet()) {
+                    String seasonName = entry.getKey();
+                    JSONArray seasonEpisodesJson = new JSONArray();
+
+                    for (Episode episode : entry.getValue()) {
+                        JSONObject episodeJson = new JSONObject();
+                        episodeJson.put("episodeName", episode.title);
+                        episodeJson.put("duration", episode.duration + " minutes");
+                        seasonEpisodesJson.add(episodeJson);
+                    }
+
+                    seasonsJson.put(seasonName, seasonEpisodesJson);
+                }
+                productionJson.put("seasons", seasonsJson);
+            }
+
+            jsonArray.add(productionJson);
+        }
+
+        // Write the JSON array to the file
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+            fileWriter.write(jsonArray.toJSONString());
+            fileWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeActors(List<Actor> actors) {
+        String filePath = "src/actors.json";
+        JSONArray jsonArray = new JSONArray();
+
+        for (Actor actor : actors) {
+            JSONObject actorJson = new JSONObject();
+
+            actorJson.put("name", actor.name);
+            actorJson.put("biography", actor.biography);
+
+            JSONArray performancesJson = new JSONArray();
+            for (Actor.Pair<String, Actor.Type> performance : actor.filmography) {
+                JSONObject performanceJson = new JSONObject();
+                performanceJson.put("title", performance.name);
+                if (performance.type == Actor.Type.MOVIE)
+                    performanceJson.put("type", "Movie");
+                else
+                    performanceJson.put("type", "Series");
+                performancesJson.add(performanceJson);
+            }
+            actorJson.put("performances", performancesJson);
+
+            jsonArray.add(actorJson);
+        }
+
+        // Write the JSON array to the file
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+            fileWriter.write(jsonArray.toJSONString());
+            fileWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateLists() {
+        IMDB imdb = IMDB.getInstance();
+        imdb.actors = Parser.parseActors("src/actors.json");
+        imdb.productions = Parser.parseProductions("src/production.json");
+        imdb.requests = Parser.parseRequests("src/requests.json");
+        imdb.users = Parser.parseUsers("src/accounts.json");
     }
 }

@@ -43,6 +43,21 @@ public class IMDB {
         productions = Parser.parseProductions("src/production.json");
         requests = Parser.parseRequests("src/requests.json");
         users = Parser.parseUsers("src/accounts.json");
+//        for each movie/actor issue request type add it to the userRequests list of the userTo
+        for(Request request : requests) {
+            if(request.type == RequestTypes.ACTOR_ISSUE || request.type == RequestTypes.MOVIE_ISSUE) {
+                for(User user : users) {
+                    if(user.username.equals(request.userTo)) {
+                        if(user instanceof Admin) {
+                            ((Admin) user).userRequests.add(request);
+                        } else if(user instanceof Contributor) {
+                            ((Contributor) user).userRequests.add(request);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     private void chooseInterface() {
@@ -69,7 +84,7 @@ public class IMDB {
 
     public void startFlow(User user) {
         if(user == null) {
-            System.out.println("Error: User is null");
+            userInterface.displayOutput("Invalid user. Please try again.\n");
             return;
         }
         switch(user.accountType) {
@@ -108,7 +123,7 @@ public class IMDB {
         imdb.run();
     }
 
-    public static class RequestsHolder {
+    public class RequestsHolder {
         private static List<Request> requests = new ArrayList<>();
 
         public static void addRequest(Request request) {
@@ -123,9 +138,9 @@ public class IMDB {
             return new ArrayList<>(requests);
         }
 
-        public static void printRequests() {
+        public void printRequests() {
             for(Request request : requests) {
-                System.out.println(request);
+                userInterface.displayOutput(request.toString());
             }
         }
     }

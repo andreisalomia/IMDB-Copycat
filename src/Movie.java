@@ -15,6 +15,7 @@ public class Movie extends Production {
         StringBuilder builder = new StringBuilder();
         builder.append("Title: ").append(title).append("\n");
 
+        builder.append("Type: Movie\n");
         if (directors != null) builder.append("Directors: ").append(directors).append("\n");
         if (actors != null) builder.append("Actors: ").append(actors).append("\n");
         if (genres != null) builder.append("Genres: ").append(genres).append("\n");
@@ -24,7 +25,7 @@ public class Movie extends Production {
         if (releaseYear != 0) builder.append("Release Year: ").append(releaseYear).append("\n");
         if (averageRating != 0) builder.append("Average Rating: ").append(averageRating).append("\n");
 
-        System.out.println(builder.toString());
+        IMDB.getInstance().userInterface.displayOutput(builder.toString());
     }
 
 }

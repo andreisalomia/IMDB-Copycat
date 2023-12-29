@@ -3,7 +3,15 @@ import java.time.LocalDate;
 public class UserFactory {
 
     public static User<?> createUser(AccountType type, String username, Credentials credentials, String name, String country, int age, char gender, LocalDate birthDate, int experience) {
-        User.Information userInformation = new User.Information(credentials, name, country, age, gender, birthDate);
+        User.Information.Builder informationBuilder = new User.Information.Builder()
+                .setCredentials(credentials)
+                .setName(name)
+                .setCountry(country)
+                .setAge(age)
+                .setGender(gender)
+                .setBirthDate(birthDate);
+
+        User.Information userInformation = informationBuilder.build();
 
         switch (type) {
             case Regular:

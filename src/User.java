@@ -1,11 +1,11 @@
 //package org.example;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class User<T extends Comparable<T>> {
-
 
     public static class Information {
         private Credentials credentials;
@@ -15,7 +15,7 @@ public abstract class User<T extends Comparable<T>> {
         char gender;
         LocalDate birthDate;
 
-        public Information(Credentials credentials, String name, String country, int age, char gender, LocalDate birthDate) {
+        private Information(Credentials credentials, String name, String country, int age, char gender, LocalDate birthDate) {
             this.credentials = credentials;
             this.name = name;
             this.country = country;
@@ -24,23 +24,61 @@ public abstract class User<T extends Comparable<T>> {
             this.birthDate = birthDate;
         }
 
-        public Credentials getCredentials() {
-            return this.credentials;
-        }
+        public static class Builder {
+            private Credentials credentials;
+            private String name;
+            private String country;
+            private int age;
+            private char gender;
+            private LocalDate birthDate;
 
-        public Credentials setCredentials(Credentials credentials) {
-            this.credentials = credentials;
-            return this.credentials;
-        }
-
-            @Override
-            public String toString() {
-                return String.format("Information{name='%s', country='%s', age=%d, gender=%c, birthDate=%s}",
-                        name, country, age, gender, birthDate.format(DateTimeFormatter.ISO_DATE));
+            public Builder setCredentials(Credentials credentials) {
+                this.credentials = credentials;
+                return this;
             }
 
+            public Builder setName(String name) {
+                this.name = name;
+                return this;
+            }
 
+            public Builder setCountry(String country) {
+                this.country = country;
+                return this;
+            }
+
+            public Builder setAge(int age) {
+                this.age = age;
+                return this;
+            }
+
+            public Builder setGender(char gender) {
+                this.gender = gender;
+                return this;
+            }
+
+            public Builder setBirthDate(LocalDate birthDate) {
+                this.birthDate = birthDate;
+                return this;
+            }
+
+            public Information build() {
+                return new Information(credentials, name, country, age, gender, birthDate);
+            }
+
+        }
+
+        @Override
+        public String toString() {
+            return String.format("Information{name='%s', country='%s', age=%d, gender=%c, birthDate=%s}",
+                    name, country, age, gender, birthDate.format(DateTimeFormatter.ISO_DATE));
+        }
+
+        public Credentials getCredentials() {
+            return credentials;
+        }
     }
+
 
     public Information userInformation;
     public AccountType accountType;
@@ -131,7 +169,9 @@ public abstract class User<T extends Comparable<T>> {
     }
 
     // update experience of user
-    public void updateExperience(int experience) {}
+    public void updateExperience(int experience) {
+    }
 
-    public void logout() {}
+    public void logout() {
+    }
 }

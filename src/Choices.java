@@ -43,7 +43,7 @@ public class Choices {
         imdb.userInterface.displayOutput("\n");
     }
 
-    public static void searchForActorMovieSeries() {
+    public static void searchForActorMovieSeries(User user) {
         IMDB imdb = IMDB.getInstance();
         imdb.userInterface.displayOutput("Enter actor/movie/series name: ");
         String input = imdb.userInterface.getInput();
@@ -51,12 +51,44 @@ public class Choices {
             for (Production prod : imdb.productions) {
                 if (prod.title.equals(input)) {
                     prod.displayInfo();
+//            if the user is a contributor and he added the actor/production to the system then he can update it
+                    if (user instanceof Contributor) {
+                        if (((Contributor) user).contributions.contains(prod)) {
+                            int choice = Options.updateInfoChoices();
+                            if (choice == 1) {
+                                ((Contributor) user).updateProduction((Contributor) user, prod.title);
+                            }
+                        }
+                    }
+//                    if the user is an admin then he can update the actor/production
+                    if (user instanceof Admin) {
+                        int choice = Options.updateInfoChoices();
+                        if (choice == 1) {
+                            ((Admin) user).updateProduction((Admin) user, prod.title);
+                        }
+                    }
                     return;
                 }
             }
             for (Actor actor : imdb.actors) {
                 if (actor.name.equals(input)) {
                     actor.displayInfo();
+//            if the user is a contributor and he added the actor/production to the system then he can update it
+                    if (user instanceof Contributor) {
+                        if (((Contributor) user).contributions.contains(actor)) {
+                            int choice = Options.updateInfoChoices();
+                            if (choice == 1) {
+                                ((Contributor) user).updateActor((Contributor) user, actor.name);
+                            }
+                        }
+                    }
+//                    if the user is an admin then he can update the actor/production
+                    if (user instanceof Admin) {
+                        int choice = Options.updateInfoChoices();
+                        if (choice == 1) {
+                            ((Admin) user).updateActor((Admin) user, actor.name);
+                        }
+                    }
                     return;
                 }
             }
@@ -310,45 +342,57 @@ public class Choices {
                     break;
                 case 2:
                     if (item == 1) {
-                        imdb.userInterface.displayOutput("Enter actor name: ");
-                        String input = imdb.userInterface.getInput();
+//                        show the user a list of actors that he can delete, if the user is a contributor the list will have only actors that he himself added, if
+//                        the user is an admin it will have all the actors in the system
+                        List<Actor> actors = new ArrayList<>();
+                        int index = 1;
                         for (Actor actor : imdb.actors) {
-                            if (actor.name.equals(input)) {
-//                                if the user is a contributor then he can only remove an actor that he added
-                                if (user instanceof Contributor) {
-                                    if (!((Contributor) user).contributions.contains(actor)) {
-                                        imdb.userInterface.displayOutput("You can only remove actors that you added.\n");
-                                        return;
-                                    }
+                            if (user instanceof Contributor) {
+                                if (((Contributor) user).contributions.contains(actor)) {
+                                    imdb.userInterface.displayOutput(index + ". " + actor.name + "\n");
+                                    index++;
+                                    actors.add(actor);
                                 }
-                                ((Staff<?>) user).removeActorSystem(actor);
-                                found = true;
-                                return;
+                            } else {
+                                imdb.userInterface.displayOutput(index + ". " + actor.name + "\n");
+                                index++;
+                                actors.add(actor);
                             }
                         }
-                        if (!found) {
-                            imdb.userInterface.displayOutput("No actor found with the given name.\n");
+                        imdb.userInterface.displayOutput("Choose actor: ");
+                        int actorNumber = ((TerminalUI) imdb.userInterface).getNumber();
+                        if (actorNumber < 1 || actorNumber >= index) {
+                            imdb.userInterface.displayOutput("Invalid actor number.\n");
+                            return;
                         }
+                        Actor actor = actors.get(actorNumber - 1);
+                        ((Staff<?>) user).removeActorSystem(actor);
                     } else {
-                        imdb.userInterface.displayOutput("Enter production title: ");
-                        String input = imdb.userInterface.getInput();
+//                        show the user a list of productions that he can delete, if the user is a contributor the list will have only productions that he himself added, if
+//                        the user is an admin it will have all the productions in the system
+                        List<Production> productions = new ArrayList<>();
+                        int index = 1;
                         for (Production prod : imdb.productions) {
-                            if (prod.title.equals(input)) {
-//                                if the user is a contributor then he can only remove a production that he added
-                                if (user instanceof Contributor) {
-                                    if (!((Contributor) user).contributions.contains(prod)) {
-                                        imdb.userInterface.displayOutput("You can only remove productions that you added.\n");
-                                        return;
-                                    }
+                            if (user instanceof Contributor) {
+                                if (((Contributor) user).contributions.contains(prod)) {
+                                    imdb.userInterface.displayOutput(index + ". " + prod.title + "\n");
+                                    index++;
+                                    productions.add(prod);
                                 }
-                                ((Staff<?>) user).removeProductionSystem(prod);
-                                found = true;
-                                return;
+                            } else {
+                                imdb.userInterface.displayOutput(index + ". " + prod.title + "\n");
+                                index++;
+                                productions.add(prod);
                             }
                         }
-                        if (!found) {
-                            imdb.userInterface.displayOutput("No production found with the given title.\n");
+                        imdb.userInterface.displayOutput("Choose production: ");
+                        int productionNumber = ((TerminalUI) imdb.userInterface).getNumber();
+                        if (productionNumber < 1 || productionNumber >= index) {
+                            imdb.userInterface.displayOutput("Invalid production number.\n");
+                            return;
                         }
+                        Production prod = productions.get(productionNumber - 1);
+                        ((Staff<?>) user).removeProductionSystem(prod);
                     }
                     break;
             }
@@ -356,8 +400,29 @@ public class Choices {
     }
 
     public static void viewSolveRequests(Admin user) {
+//        ask the admin if he wants to see personal requests or all requests
+        IMDB imdb = IMDB.getInstance();
+        int choice = Options.viewPersonalAllRequests();
+        if(choice == 1) {
+            if(user.userRequests.isEmpty()) {
+                imdb.userInterface.displayOutput("No requests!\n");
+                return;
+            }
+            viewSolveRequestsContributor(user);
+            return;
+        }
+        if (choice == 2) {
+            if (IMDB.RequestsHolder.getRequests().isEmpty()) {
+                imdb.userInterface.displayOutput("No requests!\n");
+                return;
+            }
+            Admin.viewSolveRequestsAll(user);
+            return;
+        }
+
     }
-    public static void viewSolveRequests(Contributor user) {
+
+    public static void viewSolveRequestsContributor(Staff user) {
         IMDB imdb = IMDB.getInstance();
         if (user.userRequests.isEmpty()) {
             imdb.userInterface.displayOutput("No requests!\n");
@@ -369,139 +434,17 @@ public class Choices {
         }
         Request r = (Request) user.userRequests.get(choice - 1);
 //        ask the user if he wants to delete the request or to solve it
-        imdb.userInterface.displayOutput("Choose option: \n");
-        imdb.userInterface.displayOutput("\t1) Delete request\n");
-        imdb.userInterface.displayOutput("\t2) Solve request\n");
-        int option = ((TerminalUI) imdb.userInterface).getNumber();
-        if (option == 1) {
-//            TODO: notify the user that the request was deleted
-            user.removeRequest(r);
-            imdb.requests.remove(r);
-            Parser.writeRequests();
-            Parser.updateLists();
-        } else if (option == 2) {
-            user.removeRequest(r);
-            imdb.requests.remove(r);
-            Parser.writeRequests();
-            Parser.updateLists();
-//            TODO: notify user that the request was solved
-            user.solveRequest(r);
-        }
+        user.solveRequest(r);
     }
 
     public static void updateInfoActorProduction(Staff user) {
         IMDB imdb = IMDB.getInstance();
         int choice = Options.chooseActorProduction();
         if (choice == 1) {
-            imdb.userInterface.displayOutput("Enter the actor name: ");
-            String input = imdb.userInterface.getInput();
-            Actor a = null;
-            for (Actor actor : imdb.actors) {
-                if (actor.name.equals(input)) {
-                    a = actor;
-                }
-            }
-            if (a == null) {
-                imdb.userInterface.displayOutput("No actor found with the given name.\n");
-                return;
-            }
-//            if the user is a contributor then he can only update an actor that he added
-            if (user instanceof Contributor) {
-                if (!((Contributor) user).contributions.contains(a)) {
-                    imdb.userInterface.displayOutput("You can only update actors that you added.\n");
-                    return;
-                }
-            }
-            int option = Options.updateInfoActorChoices();
-            switch (option) {
-                case 1:
-                    Update.updateActorName(a);
-                    break;
-                case 2:
-                    Update.updateActorBio(a);
-                    break;
-                case 3:
-//               display all actor performances and remember the number the user chooses
-                    Update.updateActorPerformance(a);
-                    break;
-            }
-        }
-        else if (choice == 2) {
-            imdb.userInterface.displayOutput("Enter the production title: ");
-            String input = imdb.userInterface.getInput();
-            Production p = null;
-            for (Production prod : imdb.productions) {
-                if (prod.title.equals(input)) {
-                    p = prod;
-                }
-            }
-            if (p == null) {
-                imdb.userInterface.displayOutput("No production found with the given title.\n");
-                return;
-            }
-//            if the user is a contributor then he can only update a production that he added
-            if (user instanceof Contributor) {
-                if (!((Contributor) user).contributions.contains(p)) {
-                    imdb.userInterface.displayOutput("You can only update productions that you added.\n");
-                    return;
-                }
-            }
-            int option;
-            if(p instanceof Movie) {
-                option = Options.updateInfoMovieChoices();
-                switch (option) {
-                    case 1:
-                        Update.updateMovieTitle((Movie) p);
-                        break;
-                    case 2:
-                        Update.updateMovieDescription((Movie) p);
-                        break;
-                    case 3:
-                        Update.updateMovieDuration((Movie) p);
-                        break;
-                    case 4:
-                        Update.updateMovieReleaseDate((Movie) p);
-                        break;
-                    case 5:
-                        Update.updateMovieGenre((Movie) p);
-                        break;
-                    case 6:
-                        Update.updateMovieActors((Movie) p);
-                        break;
-                    case 7:
-                        Update.updateMovieDirectors((Movie) p);
-                        break;
-                }
-            }
-            else {
-                option = Options.updateInfoSeriesChoices();
-                switch (option) {
-                    case 1:
-                        Update.updateSeriesTitle((Series) p);
-                        break;
-                    case 2:
-                        Update.updateSeriesDescription((Series) p);
-                        break;
-                    case 3:
-                        Update.updateSeriesReleaseYear((Series) p);
-                        break;
-                    case 4:
-                        Update.updateSeriesGenre((Series) p);
-                        break;
-                    case 5:
-                        Update.updateSeriesActors((Series) p);
-                        break;
-                    case 6:
-                        Update.updateSeriesDirectors((Series) p);
-                        break;
-                    case 7:
-                        Update.updateSeriesNrSeasons((Series) p);
-                        break;
-                    case 8:
-                        Update.updateSeriesSeasons((Series) p);
-                        break;
-                }
-            }
+            user.updateActor(user, null);
+        } else if (choice == 2) {
+//            call update production method
+            user.updateProduction(user, null);
         }
     }
 
@@ -510,32 +453,10 @@ public class Choices {
         int choice = Options.addDeleteUserChoices();
         if (choice == 1) {
 //            add a user to the system
-        }
-        else if (choice == 2) {
+            Admin.addUser();
+        } else if (choice == 2) {
 //            delete a user from the system
-//            show the Admin a list of all the users that he can delete
-            int i = 1;
-            for(User u : imdb.users) {
-                if(u.accountType != AccountType.Admin) {
-                    imdb.userInterface.displayOutput(i + ". " + u.username + "\n");
-                    i++;
-                }
-            }
-            imdb.userInterface.displayOutput("Choose user: ");
-            int userNumber = ((TerminalUI) imdb.userInterface).getNumber();
-            if(userNumber < 1 || userNumber > i) {
-                imdb.userInterface.displayOutput("Invalid user number.\n");
-                return;
-            }
-            User u = imdb.users.get(userNumber - 1);
-            if(u.accountType == AccountType.Admin) {
-                imdb.userInterface.displayOutput("You cannot delete an admin.\n");
-                return;
-            }
-//            If we want to delete a contributor all of his contributions must be added to the
-            if(u.accountType == AccountType.Contributor) {
-
-            }
+            Admin.removeUser();
         }
     }
 }

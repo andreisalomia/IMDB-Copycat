@@ -83,11 +83,11 @@ public abstract class User<T extends Comparable<T>> {
     public Information userInformation;
     public AccountType accountType;
     public String username;
-    public int experience;
+    public Integer experience;
     public List<String> notifications;
     public SortedSet<Comparable> favorites;
 
-    public User(Information information, AccountType accountType, String username, int experience) {
+    public User(Information information, AccountType accountType, String username, Integer experience) {
         this.userInformation = information;
         this.accountType = accountType;
         this.username = username;

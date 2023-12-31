@@ -1,3 +1,4 @@
+import org.json.simple.JSONObject;
 
 public class Credentials {
     private String email;
@@ -7,6 +8,13 @@ public class Credentials {
     public Credentials(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public JSONObject toJSON() {
+        JSONObject credentials = new JSONObject();
+        credentials.put("email", this.email);
+        credentials.put("password", this.password);
+        return credentials;
     }
 
     public String getEmail() {

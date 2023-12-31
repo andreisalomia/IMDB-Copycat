@@ -285,7 +285,7 @@ public class Parser {
     }
 
     private static void reqHolder(Request request) {
-        if (request.type == RequestTypes.OTHERS || request.type == RequestTypes.DELETE_ACCOUNT) {
+        if (request.type == RequestTypes.OTHERS || request.type == RequestTypes.DELETE_ACCOUNT || request.userTo.equals("admin")) {
             IMDB.RequestsHolder.addRequest(request);
         }
     }
@@ -391,7 +391,7 @@ public class Parser {
                 JSONObject requestJson = new JSONObject();
                 requestJson.put("type", request.type.name());
                 requestJson.put("createdDate", request.createdDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-                if(request.type == RequestTypes.ACTOR_ISSUE || request.type == RequestTypes.MOVIE_ISSUE) {
+                if (request.type == RequestTypes.ACTOR_ISSUE || request.type == RequestTypes.MOVIE_ISSUE) {
                     //check if it's a movie title or a actor name use a for to check all lists of productions and actors
                     for (Production production : IMDB.getInstance().productions) {
                         if (production.title.equals(request.problemName)) {
@@ -666,6 +666,7 @@ public class Parser {
             e.printStackTrace();
         }
     }
+
     public static void removeActor(Actor actor) {
         String filePath = "src/actors.json";
 
@@ -868,11 +869,153 @@ public class Parser {
         }
     }
 
+    public static void addUserToJson(User user) {
+        String filePath = "src/accounts.json";
+        try (FileReader reader = new FileReader(filePath)) {
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(reader);
+            JSONArray userArray = (JSONArray) obj;
+
+            JSONObject userJson = new JSONObject();
+            userJson.put("username", user.username);
+            userJson.put("userType", user.accountType.name());
+            userJson.put("experience", user.experience);
+
+            JSONObject informationJson = new JSONObject();
+            informationJson.put("credentials", user.userInformation.getCredentials().toJSON());
+            informationJson.put("name", user.userInformation.name);
+            informationJson.put("country", user.userInformation.country);
+            informationJson.put("age", user.userInformation.age);
+            informationJson.put("gender", String.valueOf(user.userInformation.gender));
+            informationJson.put("birthDate", user.userInformation.birthDate.toString());
+
+            userJson.put("information", informationJson);
+
+            // Add notifications, favoriteProductions, favoriteActors, etc.
+            userJson.put("notifications", user.notifications);
+
+            // Add favoriteProductions and favoriteActors
+            JSONArray favProductions = new JSONArray();
+            JSONArray favActors = new JSONArray();
+
+            for (Object favorite : user.favorites) {
+                if (favorite instanceof Production) {
+                    favProductions.add(((Production) favorite).title);
+                } else if (favorite instanceof Actor) {
+                    favActors.add(((Actor) favorite).name);
+                }
+            }
+
+            userJson.put("favoriteProductions", favProductions);
+            userJson.put("favoriteActors", favActors);
+
+            // Add contributions for Contributor and Admin
+            if (user instanceof Contributor<?> || user instanceof Admin<?>) {
+                JSONArray productionsContributions = new JSONArray();
+                JSONArray actorsContributions = new JSONArray();
+
+                if (user instanceof Contributor) {
+                    for(Object contribution : ((Contributor) user).contributions) {
+                        if (contribution instanceof Production) {
+                            productionsContributions.add(((Production) contribution).title);
+                        } else if (contribution instanceof Actor) {
+                            actorsContributions.add(((Actor) contribution).name);
+                        }
+                    }
+                } else if (user instanceof Admin) {
+                    for(Object contribution : ((Admin) user).contributions) {
+                        if (contribution instanceof Production) {
+                            productionsContributions.add(((Production) contribution).title);
+                        } else if (contribution instanceof Actor) {
+                            actorsContributions.add(((Actor) contribution).name);
+                        }
+                    }
+                }
+
+                userJson.put("productionsContribution", productionsContributions);
+                userJson.put("actorsContribution", actorsContributions);
+            }
+
+            // Add the new user JSON to the existing array
+            userArray.add(userJson);
+
+            // Write the updated JSON array back to the file
+            try (FileWriter fileWriter = new FileWriter(filePath)) {
+                fileWriter.write(userArray.toJSONString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void updateLists() {
         IMDB imdb = IMDB.getInstance();
         imdb.actors = Parser.parseActors("src/actors.json");
         imdb.productions = Parser.parseProductions("src/production.json");
         imdb.requests = Parser.parseRequests("src/requests.json");
         imdb.users = Parser.parseUsers("src/accounts.json");
+    }
+
+    public static void removeUser(User user) {
+        String filePath = "src/accounts.json";
+        try (FileReader reader = new FileReader(filePath)) {
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(reader);
+            JSONArray userArray = (JSONArray) obj;
+
+            // Iterate over the array and remove the user
+            Iterator<JSONObject> iterator = userArray.iterator();
+            while (iterator.hasNext()) {
+                JSONObject userJson = iterator.next();
+                String username = (String) userJson.get("username");
+                if (username.equals(user.username)) {
+                    iterator.remove();  // Remove the user JSON object
+                    break;  // Assuming each username is unique
+                }
+            }
+
+            // Write the updated JSON array back to the file
+            try (FileWriter fileWriter = new FileWriter(filePath)) {
+                fileWriter.write(userArray.toJSONString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateNotifications(User user) {
+        String filePath = "src/accounts.json";
+        try (FileReader reader = new FileReader(filePath)) {
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(reader);
+            JSONArray jsonArray = (JSONArray) obj;
+
+            // Iterate through elements in the array
+            for (Object element : jsonArray) {
+                JSONObject userJson = (JSONObject) element;
+                String username = (String) userJson.get("username");
+
+                // Check if the current JSON object corresponds to the specified user
+                if (username.equals(user.username)) {
+                    // Update notifications for the user
+                    userJson.put("notifications", user.notifications);
+
+                    // Write the updated JSON array back to the file
+                    try (FileWriter fileWriter = new FileWriter(filePath)) {
+                        fileWriter.write(jsonArray.toJSONString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    return;  // Assuming each username is unique, no need to continue searching
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

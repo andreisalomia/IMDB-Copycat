@@ -2,7 +2,7 @@ import java.time.LocalDate;
 
 public class UserFactory {
 
-    public static User<?> createUser(AccountType type, String username, Credentials credentials, String name, String country, int age, char gender, LocalDate birthDate, int experience) {
+    public static User<?> createUser(AccountType type, String username, Credentials credentials, String name, String country, int age, char gender, LocalDate birthDate, Integer experience) {
         User.Information.Builder informationBuilder = new User.Information.Builder()
                 .setCredentials(credentials)
                 .setName(name)

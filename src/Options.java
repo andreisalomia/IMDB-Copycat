@@ -212,4 +212,20 @@ public class Options {
         imdb.userInterface.displayOutput("\t2) Delete user\n");
         return returnChoice(2);
     }
+
+    public static int updateInfoChoices() {
+        IMDB imdb = IMDB.getInstance();
+        imdb.userInterface.displayOutput("Choose option: \n");
+        imdb.userInterface.displayOutput("\t1) Update\n");
+        imdb.userInterface.displayOutput("\t2) Exit\n");
+        return returnChoice(2);
+    }
+
+    public static int viewPersonalAllRequests() {
+        IMDB imdb = IMDB.getInstance();
+        imdb.userInterface.displayOutput("Choose option: \n");
+        imdb.userInterface.displayOutput("\t1) View personal requests\n");
+        imdb.userInterface.displayOutput("\t2) View all requests\n");
+        return returnChoice(2);
+    }
 }

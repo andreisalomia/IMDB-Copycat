@@ -15,7 +15,7 @@ public class Flow {
                 Choices.viewNotifications(user);
                 break;
             case 4:
-                Choices.searchForActorMovieSeries();
+                Choices.searchForActorMovieSeries(user);
                 break;
             case 5:
                 Choices.addDeleteFavourites(user);
@@ -29,10 +29,9 @@ public class Flow {
             case 8:
                 user.logout();
                 int option = Options.startOptions();
-                if(option == 1) {
+                if (option == 1) {
                     imdb.restartApp();
-                }
-                else {
+                } else {
                     System.exit(0);
                 }
 
@@ -54,7 +53,7 @@ public class Flow {
                 Choices.viewNotifications(user);
                 break;
             case 4:
-                Choices.searchForActorMovieSeries();
+                Choices.searchForActorMovieSeries(user);
                 break;
             case 5:
                 Choices.addDeleteFavourites(user);
@@ -74,13 +73,13 @@ public class Flow {
             case 10:
                 user.logout();
                 int option = Options.startOptions();
-                if(option == 1) {
+                if (option == 1) {
                     imdb.restartApp();
-                }
-                else {
+                } else {
                     System.exit(0);
                 }
         }
+        startAdminFlow(user);
     }
 
     public static void startContributorFlow(Contributor user) {
@@ -97,7 +96,7 @@ public class Flow {
                 Choices.viewNotifications(user);
                 break;
             case 4:
-                Choices.searchForActorMovieSeries();
+                Choices.searchForActorMovieSeries(user);
                 break;
             case 5:
                 Choices.addDeleteFavourites(user);
@@ -109,7 +108,7 @@ public class Flow {
                 Choices.addDeleteActorProduction(user);
                 break;
             case 8:
-                Choices.viewSolveRequests(user);
+                Choices.viewSolveRequestsContributor(user);
                 break;
             case 9:
                 Choices.updateInfoActorProduction(user);
@@ -117,10 +116,9 @@ public class Flow {
             case 10:
                 user.logout();
                 int option = Options.startOptions();
-                if(option == 1) {
+                if (option == 1) {
                     imdb.restartApp();
-                }
-                else {
+                } else {
                     System.exit(0);
                 }
         }

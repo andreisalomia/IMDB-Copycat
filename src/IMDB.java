@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.*;
 
 public class IMDB {
@@ -26,6 +27,7 @@ public class IMDB {
 
     public void run() {
         loadDataJSON();
+        universalAdmin();
         chooseInterface();
         userInterface.displayOutput("Welcome back to IMDB! Please enter your email and password to login.\n");
         login();
@@ -44,13 +46,13 @@ public class IMDB {
         requests = Parser.parseRequests("src/requests.json");
         users = Parser.parseUsers("src/accounts.json");
 //        for each movie/actor issue request type add it to the userRequests list of the userTo
-        for(Request request : requests) {
-            if(request.type == RequestTypes.ACTOR_ISSUE || request.type == RequestTypes.MOVIE_ISSUE) {
-                for(User user : users) {
-                    if(user.username.equals(request.userTo)) {
-                        if(user instanceof Admin) {
+        for (Request request : requests) {
+            if (request.type == RequestTypes.ACTOR_ISSUE || request.type == RequestTypes.MOVIE_ISSUE) {
+                for (User user : users) {
+                    if (user.username.equals(request.userTo)) {
+                        if (user instanceof Admin) {
                             ((Admin) user).userRequests.add(request);
-                        } else if(user instanceof Contributor) {
+                        } else if (user instanceof Contributor) {
                             ((Contributor) user).userRequests.add(request);
                         }
                         break;
@@ -83,11 +85,11 @@ public class IMDB {
     }
 
     public void startFlow(User user) {
-        if(user == null) {
+        if (user == null) {
             userInterface.displayOutput("Invalid user. Please try again.\n");
             return;
         }
-        switch(user.accountType) {
+        switch (user.accountType) {
             case Regular:
                 Flow.startRegularFlow((Regular) user);
                 break;
@@ -104,9 +106,9 @@ public class IMDB {
     private void login() {
         String email = ((TerminalUI) userInterface).getEmail();
         String password = ((TerminalUI) userInterface).getPassword();
-        for(User user : users) {
+        for (User user : users) {
             Credentials credentials = user.userInformation.getCredentials();
-            if(credentials.getEmail().equals(email) && credentials.getPassword().equals(password)) {
+            if (credentials.getEmail().equals(email) && credentials.getPassword().equals(password)) {
                 userInterface.displayOutput("Welcome back user " + user.username + "!\n");
                 userInterface.displayOutput("Username: " + user.username + "\n");
                 userInterface.displayOutput("User experience: " + user.experience + "\n");
@@ -121,6 +123,22 @@ public class IMDB {
     public static void main(String[] args) {
         IMDB imdb = IMDB.getInstance();
         imdb.run();
+    }
+
+    private void universalAdmin() {
+//        check if in the users lists there is an admin with the username "admin"
+        for (User user : IMDB.getInstance().users) {
+            if (user.username.equals("admin")) {
+                return;
+            }
+        }
+//        if not create one
+        Credentials credentials = new Credentials("admin", "admin");
+        LocalDate birthDate = LocalDate.now();
+        User<?> admin = UserFactory.createUser(AccountType.Admin, "admin", credentials, "admin", null, 0, 'M', birthDate, null);
+        users.add(admin);
+        Parser.addUserToJson(admin);
+        Parser.parseUsers("src/accounts.json");
     }
 
     public class RequestsHolder {
@@ -139,7 +157,7 @@ public class IMDB {
         }
 
         public void printRequests() {
-            for(Request request : requests) {
+            for (Request request : requests) {
                 userInterface.displayOutput(request.toString());
             }
         }

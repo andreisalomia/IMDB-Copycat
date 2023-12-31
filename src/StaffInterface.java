@@ -4,6 +4,6 @@ public interface StaffInterface {
     void addActorSystem(String name);
     void removeProductionSystem(Production p);
     void removeActorSystem(Actor a);
-    void updateProduction(Production p);
-    void updateActor(Actor a);
+    void updateProduction(Staff user, String title);
+    void updateActor(Staff user, String title);
 }

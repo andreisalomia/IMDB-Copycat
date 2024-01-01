@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class User<T extends Comparable<T>> {
+public abstract class User<T extends Comparable<T>> implements Observer {
 
     public static class Information {
         private Credentials credentials;
@@ -15,57 +15,13 @@ public abstract class User<T extends Comparable<T>> {
         char gender;
         LocalDate birthDate;
 
-        private Information(Credentials credentials, String name, String country, int age, char gender, LocalDate birthDate) {
+        public Information(Credentials credentials, String name, String country, int age, char gender, LocalDate birthDate) {
             this.credentials = credentials;
             this.name = name;
             this.country = country;
             this.age = age;
             this.gender = gender;
             this.birthDate = birthDate;
-        }
-
-        public static class Builder {
-            private Credentials credentials;
-            private String name;
-            private String country;
-            private int age;
-            private char gender;
-            private LocalDate birthDate;
-
-            public Builder setCredentials(Credentials credentials) {
-                this.credentials = credentials;
-                return this;
-            }
-
-            public Builder setName(String name) {
-                this.name = name;
-                return this;
-            }
-
-            public Builder setCountry(String country) {
-                this.country = country;
-                return this;
-            }
-
-            public Builder setAge(int age) {
-                this.age = age;
-                return this;
-            }
-
-            public Builder setGender(char gender) {
-                this.gender = gender;
-                return this;
-            }
-
-            public Builder setBirthDate(LocalDate birthDate) {
-                this.birthDate = birthDate;
-                return this;
-            }
-
-            public Information build() {
-                return new Information(credentials, name, country, age, gender, birthDate);
-            }
-
         }
 
         @Override
@@ -77,8 +33,50 @@ public abstract class User<T extends Comparable<T>> {
         public Credentials getCredentials() {
             return credentials;
         }
-    }
 
+        public static class InformationBuilder {
+            private Credentials credentials;
+            private String name;
+            private String country;
+            private int age;
+            private char gender;
+            private LocalDate birthDate;
+
+            public InformationBuilder setCredentials(Credentials credentials) {
+                this.credentials = credentials;
+                return this;
+            }
+
+            public InformationBuilder setName(String name) {
+                this.name = name;
+                return this;
+            }
+
+            public InformationBuilder setCountry(String country) {
+                this.country = country;
+                return this;
+            }
+
+            public InformationBuilder setAge(int age) {
+                this.age = age;
+                return this;
+            }
+
+            public InformationBuilder setGender(char gender) {
+                this.gender = gender;
+                return this;
+            }
+
+            public InformationBuilder setBirthDate(LocalDate birthDate) {
+                this.birthDate = birthDate;
+                return this;
+            }
+
+            public Information build() {
+                return new Information(credentials, name, country, age, gender, birthDate);
+            }
+        }
+    }
 
     public Information userInformation;
     public AccountType accountType;
@@ -170,8 +168,25 @@ public abstract class User<T extends Comparable<T>> {
 
     // update experience of user
     public void updateExperience(int experience) {
+        if(this.accountType == AccountType.Admin) {
+            return;
+        }
+        this.experience += experience;
+        Parser.updateExperience(this);
+        Parser.updateLists();
     }
 
     public void logout() {
+    }
+
+    @Override
+    public void update(String message) {
+//        only add if the notification doesent already exist
+        if(this.notifications.contains(message)) {
+            return;
+        }
+        this.notifications.add(message);
+        Parser.updateNotifications(this);
+        Parser.updateLists();
     }
 }

@@ -1,3 +1,4 @@
+//package org.example;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -1003,6 +1004,38 @@ public class Parser {
                 if (username.equals(user.username)) {
                     // Update notifications for the user
                     userJson.put("notifications", user.notifications);
+
+                    // Write the updated JSON array back to the file
+                    try (FileWriter fileWriter = new FileWriter(filePath)) {
+                        fileWriter.write(jsonArray.toJSONString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    return;  // Assuming each username is unique, no need to continue searching
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateExperience(User user) {
+        String filePath = "src/accounts.json";
+        try (FileReader reader = new FileReader(filePath)) {
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(reader);
+            JSONArray jsonArray = (JSONArray) obj;
+
+            // Iterate through elements in the array
+            for (Object element : jsonArray) {
+                JSONObject userJson = (JSONObject) element;
+                String username = (String) userJson.get("username");
+
+                // Check if the current JSON object corresponds to the specified user
+                if (username.equals(user.username)) {
+                    // Update experience for the user
+                    userJson.put("experience", user.experience);
 
                     // Write the updated JSON array back to the file
                     try (FileWriter fileWriter = new FileWriter(filePath)) {

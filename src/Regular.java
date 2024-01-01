@@ -18,8 +18,12 @@ public class Regular<T extends Comparable<T>> extends User<T> implements Request
                 if (user.username.equals(r.userTo)) {
                     if (user instanceof Admin) {
                         ((Admin) user).userRequests.add(r);
+                        r.registerObserver((Admin) user);
+                        r.notifyObservers("new_request");
                     } else if (user instanceof Contributor) {
                         ((Contributor) user).userRequests.add(r);
+                        r.registerObserver((Contributor) user);
+                        r.notifyObservers("new_request");
                     }
                     break;
                 }
@@ -41,8 +45,10 @@ public class Regular<T extends Comparable<T>> extends User<T> implements Request
                 if (user.username.equals(r.userTo)) {
                     if (user instanceof Admin) {
                         ((Admin) user).userRequests.remove(r);
+                        r.removeObserver((Admin) user);
                     } else if (user instanceof Contributor) {
                         ((Contributor) user).userRequests.remove(r);
+                        r.removeObserver((Contributor) user);
                     }
                     break;
                 }
@@ -55,18 +61,22 @@ public class Regular<T extends Comparable<T>> extends User<T> implements Request
 
     public void addRating(Rating r, Production p) {
         IMDB imdb = IMDB.getInstance();
+        boolean alreadyRated = false;
         for(Production prod : imdb.productions) {
             if(prod.equals(p)) {
 //                If user has already rated this production, remove the old rating
                 for(Rating rating : prod.ratings) {
                     if(rating.username.equals(this.username)) {
                         prod.ratings.remove(rating);
+                        alreadyRated = true;
                         break;
                     }
                 }
                 prod.ratings.add(r);
                 prod.averageRating = Production.calculateAverageRating(prod.ratings);
                 Parser.writeRatings();
+                if(!alreadyRated)
+                    this.updateExperience(new ReviewStrategy().calculateExperience());
                 break;
             }
         }

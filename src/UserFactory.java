@@ -1,9 +1,10 @@
+//package org.example;
 import java.time.LocalDate;
 
 public class UserFactory {
 
     public static User<?> createUser(AccountType type, String username, Credentials credentials, String name, String country, int age, char gender, LocalDate birthDate, Integer experience) {
-        User.Information.Builder informationBuilder = new User.Information.Builder()
+        User.Information.InformationBuilder informationBuilder = new User.Information.InformationBuilder()
                 .setCredentials(credentials)
                 .setName(name)
                 .setCountry(country)

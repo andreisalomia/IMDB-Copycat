@@ -1,14 +1,17 @@
 //package org.example;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Request {
+public class Request implements Subject{
     public RequestTypes type;
     public LocalDateTime createdDate;
     public String problemName;
     public String description;
     public String userFrom;
     public String userTo;
+    public List<User> observers = new ArrayList<>();
 
     public Request(RequestTypes type, String createdDate, String userFrom, String problemName, String userTo, String description) {
         this.type = type;
@@ -91,5 +94,40 @@ public class Request {
 
         return new Request(type, createdDate, userFrom, problemName, userTo, description);
 
+    }
+
+    @Override
+    public void registerObserver(User observer) {
+        observers.add(observer);
+    }
+    @Override
+    public void removeObserver(User observer) {
+        observers.remove(observer);
+    }
+    @Override
+    public void notifyObservers(String type) {
+        IMDB imdb = IMDB.getInstance();
+//        notify the contributor/admin that he has received a request
+        if(type.equals("new_request")) {
+            for (User user : imdb.users) {
+                if (user.username.equals(userTo)) {
+                    user.update("You received a new request from " + userFrom + " regarding " + problemName + ":\n" + description);
+                }
+            }
+        }
+        if(type.equals("request_solved")) {
+            for (User user : imdb.users) {
+                if (user.username.equals(userFrom)) {
+                    user.update("Your request regarding " + problemName + " has been solved.");
+                }
+            }
+        }
+        if(type.equals("request_denied")) {
+            for (User user : imdb.users) {
+                if (user.username.equals(userFrom)) {
+                    user.update("Your request regarding " + problemName + " has been denied.");
+                }
+            }
+        }
     }
 }

@@ -1,3 +1,5 @@
+//package org.example;
+
 import org.json.simple.JSONObject;
 
 public class Credentials {

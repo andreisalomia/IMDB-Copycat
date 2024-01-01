@@ -1,3 +1,4 @@
+//package org.example;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -28,10 +29,31 @@ public class IMDB {
     public void run() {
         loadDataJSON();
         universalAdmin();
+        loadObservers();
         chooseInterface();
         userInterface.displayOutput("Welcome back to IMDB! Please enter your email and password to login.\n");
         login();
         startFlow(currentUser);
+    }
+
+    private static void loadObservers() {
+        IMDB imdb = IMDB.getInstance();
+        for (Request request : imdb.requests) {
+            if (request.type == RequestTypes.ACTOR_ISSUE || request.type == RequestTypes.MOVIE_ISSUE) {
+                for (User user : imdb.users) {
+                    if (user.username.equals(request.userTo)) {
+                        if (user instanceof Admin) {
+                            request.registerObserver((Admin) user);
+                            request.notifyObservers("new_request");
+                        } else if (user instanceof Contributor) {
+                            request.registerObserver((Contributor) user);
+                            request.notifyObservers("new_request");
+                        }
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     public void restartApp() {
@@ -111,7 +133,11 @@ public class IMDB {
             if (credentials.getEmail().equals(email) && credentials.getPassword().equals(password)) {
                 userInterface.displayOutput("Welcome back user " + user.username + "!\n");
                 userInterface.displayOutput("Username: " + user.username + "\n");
-                userInterface.displayOutput("User experience: " + user.experience + "\n");
+                if(user.accountType == AccountType.Admin) {
+                    userInterface.displayOutput("User experience: Admin" + "\n");
+                } else {
+                    userInterface.displayOutput("User experience: " + user.experience + "\n");
+                }
                 currentUser = user;
                 return;
             }

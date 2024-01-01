@@ -1,4 +1,4 @@
-
+//package org.example;
 public class Episode {
     public String title;
     public int duration;

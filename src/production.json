@@ -7,7 +7,7 @@
     ],
     "plot": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
     "genres": [
-      "Drama"
+      "DRAMA"
     ],
     "ratings": [
       {
@@ -34,10 +34,10 @@
     "directors": [
       "Frank Darabont"
     ],
-    "averageRating": 9.2,
+    "averageRating": 9.0,
+    "type": "MOVIE",
     "title": "The Shawshank Redemption",
-    "type": "Movie",
-    "releaseYear": 1994
+    "releaseYear": 12
   },
   {
     "actors": [
@@ -302,9 +302,9 @@
     },
     "plot": "A high school chemistry teacher turned methamphetamine manufacturing drug dealer navigates the dangerous criminal underworld.",
     "genres": [
-      "Crime",
-      "Drama",
-      "Thriller"
+      "CRIME",
+      "DRAMA",
+      "THRILLER"
     ],
     "ratings": [
       {
@@ -323,8 +323,8 @@
     ],
     "averageRating": 9.5,
     "numSeasons": 5,
+    "type": "SERIES",
     "title": "Breaking Bad",
-    "type": "Series",
     "releaseYear": 2008
   },
   {
@@ -335,8 +335,8 @@
     ],
     "plot": "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
     "genres": [
-      "Crime",
-      "Drama"
+      "CRIME",
+      "DRAMA"
     ],
     "ratings": [
       {
@@ -369,8 +369,8 @@
       "Quentin Tarantino"
     ],
     "averageRating": 8.8,
+    "type": "MOVIE",
     "title": "Pulp Fiction",
-    "type": "Movie",
     "releaseYear": 1994
   },
   {
@@ -381,8 +381,8 @@
     ],
     "plot": "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
     "genres": [
-      "Crime",
-      "Drama"
+      "CRIME",
+      "DRAMA"
     ],
     "ratings": [
       {
@@ -404,14 +404,19 @@
         "rating": 8,
         "comment": "A mob epic for the ages.",
         "username": "susan_smith_123"
+      },
+      {
+        "rating": 10,
+        "comment": "regele minim",
+        "username": "olivia_taylor_2425"
       }
     ],
     "directors": [
       "Francis Ford Coppola"
     ],
     "averageRating": 9.2,
+    "type": "MOVIE",
     "title": "The Godfather",
-    "type": "Movie",
     "releaseYear": 1972
   },
   {
@@ -422,8 +427,8 @@
     ],
     "plot": "In German-occupied Poland during World War II, industrialist Oskar Schindler gradually becomes concerned for his Jewish workforce after witnessing their persecution by the Nazis.",
     "genres": [
-      "Biography",
-      "Drama"
+      "BIOGRAPHY",
+      "DRAMA"
     ],
     "ratings": [
       {
@@ -451,8 +456,8 @@
       "Steven Spielberg"
     ],
     "averageRating": 9.5,
+    "type": "MOVIE",
     "title": "Schindler's List",
-    "type": "Movie",
     "releaseYear": 1993
   },
   {
@@ -464,9 +469,9 @@
     ],
     "plot": "Gandalf and Aragorn lead the World of Men against Sauron's army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring.",
     "genres": [
-      "Action",
-      "Adventure",
-      "Drama"
+      "ACTION",
+      "ADVENTURE",
+      "DRAMA"
     ],
     "ratings": [
       {
@@ -494,8 +499,8 @@
       "Peter Jackson"
     ],
     "averageRating": 9.5,
+    "type": "MOVIE",
     "title": "The Lord of the Rings: The Return of the King",
-    "type": "Movie",
     "releaseYear": 2003
   },
   {
@@ -506,8 +511,8 @@
     ],
     "plot": "A Polish Jewish musician struggles to survive the destruction of the Warsaw ghetto of World War II.",
     "genres": [
-      "Biography",
-      "Drama"
+      "BIOGRAPHY",
+      "DRAMA"
     ],
     "ratings": [
       {
@@ -535,8 +540,8 @@
       "Roman Polanski"
     ],
     "averageRating": 9.5,
+    "type": "MOVIE",
     "title": "The Pianist",
-    "type": "Movie",
     "releaseYear": 2002
   },
   {
@@ -547,7 +552,7 @@
     ],
     "plot": "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
     "genres": [
-      "Action",
+      "ACTION",
       "SF"
     ],
     "ratings": [
@@ -576,8 +581,8 @@
       "The Wachowskis"
     ],
     "averageRating": 9.0,
+    "type": "MOVIE",
     "title": "The Matrix",
-    "type": "Movie",
     "releaseYear": 1999
   },
   {
@@ -645,9 +650,9 @@
     },
     "plot": "A modern update finds the famous sleuth and his doctor partner solving crime in 21st century London.",
     "genres": [
-      "Crime",
-      "Drama",
-      "Mystery"
+      "CRIME",
+      "DRAMA",
+      "MYSTERY"
     ],
     "ratings": [
       {
@@ -677,8 +682,8 @@
     ],
     "averageRating": 8.5,
     "numSeasons": 4,
+    "type": "SERIES",
     "title": "Sherlock",
-    "type": "Series",
     "releaseYear": 2010
   },
   {
@@ -689,9 +694,9 @@
     ],
     "plot": "When the menace known as The Joker emerges, Batman must confront one of the greatest psychological and physical tests of his ability to fight injustice.",
     "genres": [
-      "Action",
-      "Crime",
-      "Drama"
+      "ACTION",
+      "CRIME",
+      "DRAMA"
     ],
     "ratings": [
       {
@@ -719,8 +724,8 @@
       "Christopher Nolan"
     ],
     "averageRating": 8.75,
+    "type": "MOVIE",
     "title": "The Dark Knight",
-    "type": "Movie",
     "releaseYear": 2008
   },
   {
@@ -731,8 +736,8 @@
     ],
     "plot": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
     "genres": [
-      "Action",
-      "Adventure",
+      "ACTION",
+      "ADVENTURE",
       "SF"
     ],
     "ratings": [
@@ -761,8 +766,8 @@
       "Christopher Nolan"
     ],
     "averageRating": 9.5,
+    "type": "MOVIE",
     "title": "Inception",
-    "type": "Movie",
     "releaseYear": 2010
   },
   {
@@ -880,9 +885,9 @@
     },
     "plot": "When a young boy disappears, his mother, a police chief, and his friends must confront terrifying supernatural forces in order to get him back.",
     "genres": [
-      "Drama",
-      "Fantasy",
-      "Horror"
+      "DRAMA",
+      "FANTASY",
+      "HORROR"
     ],
     "ratings": [
       {
@@ -911,8 +916,8 @@
     ],
     "averageRating": 7.5,
     "numSeasons": 3,
+    "type": "SERIES",
     "title": "Stranger Things",
-    "type": "Series",
     "releaseYear": 2016
   },
   {
@@ -923,8 +928,8 @@
     ],
     "plot": "The presidencies of Kennedy and Johnson, the events of Vietnam, Watergate, and other historical events unfold through the perspective of an Alabama man with an IQ of 75, whose only desire is to be reunited with his childhood sweetheart.",
     "genres": [
-      "Drama",
-      "Romance"
+      "DRAMA",
+      "ROMANCE"
     ],
     "ratings": [
       {
@@ -952,8 +957,8 @@
       "Robert Zemeckis"
     ],
     "averageRating": 8.5,
+    "type": "MOVIE",
     "title": "Forrest Gump",
-    "type": "Movie",
     "releaseYear": 1994
   },
   {
@@ -965,9 +970,9 @@
     ],
     "plot": "The lives of guards on Death Row are affected by one of their charges: a black man accused of child murder and rape, yet who has a mysterious gift.",
     "genres": [
-      "Crime",
-      "Drama",
-      "Fantasy"
+      "CRIME",
+      "DRAMA",
+      "FANTASY"
     ],
     "ratings": [
       {
@@ -1000,8 +1005,8 @@
       "Frank Darabont"
     ],
     "averageRating": 9.4,
+    "type": "MOVIE",
     "title": "The Green Mile",
-    "type": "Movie",
     "releaseYear": 1999
   },
   {
@@ -1013,9 +1018,9 @@
     ],
     "plot": "In Nazi-occupied France during World War II, a plan to assassinate Nazi leaders by a group of Jewish U.S. soldiers coincides with a theatre owner's vengeful plans for the same.",
     "genres": [
-      "Adventure",
-      "Drama",
-      "War"
+      "ADVENTURE",
+      "DRAMA",
+      "WAR"
     ],
     "ratings": [
       {
@@ -1043,8 +1048,8 @@
       "Quentin Tarantino"
     ],
     "averageRating": 8.5,
+    "type": "MOVIE",
     "title": "Inglourious Basterds",
-    "type": "Movie",
     "releaseYear": 2009
   },
   {
@@ -1056,9 +1061,9 @@
     ],
     "plot": "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.",
     "genres": [
-      "Comedy",
-      "Drama",
-      "Thriller"
+      "COMEDY",
+      "DRAMA",
+      "THRILLER"
     ],
     "ratings": [
       {
@@ -1091,8 +1096,8 @@
       "Bong Joon-ho"
     ],
     "averageRating": 9.0,
+    "type": "MOVIE",
     "title": "Parasite",
-    "type": "Movie",
     "releaseYear": 2019
   },
   {
@@ -1103,9 +1108,9 @@
     ],
     "plot": "In Gotham City, mentally troubled comedian Arthur Fleck is disregarded and mistreated by society. He then embarks on a downward spiral of revolution and bloody crime.",
     "genres": [
-      "Crime",
-      "Drama",
-      "Thriller"
+      "CRIME",
+      "DRAMA",
+      "THRILLER"
     ],
     "ratings": [
       {
@@ -1138,8 +1143,8 @@
       "Todd Phillips"
     ],
     "averageRating": 8.6,
+    "type": "MOVIE",
     "title": "Joker",
-    "type": "Movie",
     "releaseYear": 2019
   },
   {
@@ -1150,8 +1155,8 @@
     ],
     "plot": "Two young British soldiers during World War I are given an impossible mission: deliver a message deep in enemy territory that will stop 1,600 men, and one of the soldiers' brothers, from walking straight into a deadly trap.",
     "genres": [
-      "Drama",
-      "War"
+      "DRAMA",
+      "WAR"
     ],
     "ratings": [
       {
@@ -1184,8 +1189,8 @@
       "Sam Mendes"
     ],
     "averageRating": 8.4,
+    "type": "MOVIE",
     "title": "1917",
-    "type": "Movie",
     "releaseYear": 2019
   },
   {
@@ -1197,9 +1202,9 @@
     ],
     "plot": "An old man recalls his time painting houses for his friend, Jimmy Hoffa, through the 1950-70s.",
     "genres": [
-      "Biography",
-      "Crime",
-      "Drama"
+      "BIOGRAPHY",
+      "CRIME",
+      "DRAMA"
     ],
     "ratings": [
       {
@@ -1232,8 +1237,8 @@
       "Martin Scorsese"
     ],
     "averageRating": 8.4,
+    "type": "MOVIE",
     "title": "The Irishman",
-    "type": "Movie",
     "releaseYear": 2019
   },
   {
@@ -1313,9 +1318,9 @@
     },
     "plot": "The travels of a lone bounty hunter in the outer reaches of the galaxy, far from the authority of the New Republic.",
     "genres": [
-      "Action",
-      "Adventure",
-      "Fantasy"
+      "ACTION",
+      "ADVENTURE",
+      "FANTASY"
     ],
     "ratings": [
       {
@@ -1349,8 +1354,8 @@
     ],
     "averageRating": 7.6,
     "numSeasons": 2,
+    "type": "SERIES",
     "title": "The Mandalorian",
-    "type": "Series",
     "releaseYear": 2019
   },
   {
@@ -1392,7 +1397,7 @@
     },
     "plot": "Orphaned at the tender age of nine, prodigious introvert Beth Harmon discovers and masters the game of chess in 1960s USA. But child stardom comes at a price.",
     "genres": [
-      "Drama"
+      "DRAMA"
     ],
     "ratings": [
       {
@@ -1426,8 +1431,8 @@
     ],
     "averageRating": 8.4,
     "numSeasons": 1,
+    "type": "SERIES",
     "title": "The Queen's Gambit",
-    "type": "Series",
     "releaseYear": 2020
   },
   {
@@ -1477,9 +1482,9 @@
     },
     "plot": "Hundreds of cash-strapped players accept a strange invitation to compete in children's games. Inside, a tempting prize awaits with deadly high stakes.",
     "genres": [
-      "Drama",
-      "Mystery",
-      "Thriller"
+      "DRAMA",
+      "MYSTERY",
+      "THRILLER"
     ],
     "ratings": [
       {
@@ -1513,8 +1518,8 @@
     ],
     "averageRating": 8.4,
     "numSeasons": 1,
+    "type": "SERIES",
     "title": "Squid Game",
-    "type": "Series",
     "releaseYear": 2021
   },
   {
@@ -1525,7 +1530,7 @@
     ],
     "plot": "A promising young drummer enrolls at a cutthroat music conservatory where his dreams of greatness are mentored by an instructor who will stop at nothing to realize a student's potential.",
     "genres": [
-      "Drama"
+      "DRAMA"
     ],
     "ratings": [
       {
@@ -1558,8 +1563,8 @@
       "Damien Chazelle"
     ],
     "averageRating": 8.4,
+    "type": "MOVIE",
     "title": "Whiplash",
-    "type": "Movie",
     "releaseYear": 2014
   },
   {
@@ -1570,8 +1575,8 @@
     ],
     "plot": "As Harvard student Mark Zuckerberg creates the social networking site that would become known as Facebook, he is sued by the twins who claimed he stole their idea, and by the co-founder who was later squeezed out of the business.",
     "genres": [
-      "Biography",
-      "Drama"
+      "BIOGRAPHY",
+      "DRAMA"
     ],
     "ratings": [
       {
@@ -1604,8 +1609,8 @@
       "David Fincher"
     ],
     "averageRating": 8.2,
+    "type": "MOVIE",
     "title": "The Social Network",
-    "type": "Movie",
     "releaseYear": 2010
   },
   {
@@ -1616,8 +1621,8 @@
     ],
     "plot": "When their relationship turns sour, a couple undergoes a medical procedure to have each other erased from their memories.",
     "genres": [
-      "Drama",
-      "Romance",
+      "DRAMA",
+      "ROMANCE",
       "SF"
     ],
     "ratings": [
@@ -1651,8 +1656,8 @@
       "Michel Gondry"
     ],
     "averageRating": 8.4,
+    "type": "MOVIE",
     "title": "Eternal Sunshine of the Spotless Mind",
-    "type": "Movie",
     "releaseYear": 2004
   },
   {
@@ -1663,8 +1668,8 @@
     ],
     "plot": "While navigating their careers in Los Angeles, a pianist and an actress fall in love while attempting to reconcile their aspirations for the future.",
     "genres": [
-      "Comedy",
-      "Drama"
+      "COMEDY",
+      "DRAMA"
     ],
     "ratings": [
       {
@@ -1697,8 +1702,8 @@
       "Damien Chazelle"
     ],
     "averageRating": 7.8,
+    "type": "MOVIE",
     "title": "La La Land",
-    "type": "Movie",
     "releaseYear": 2016
   },
   {
@@ -1709,9 +1714,9 @@
     ],
     "plot": "A hotel concierge and a lobby boy become embroiled in the theft of a priceless painting and the battle for an enormous family fortune.",
     "genres": [
-      "Adventure",
-      "Comedy",
-      "Crime"
+      "ADVENTURE",
+      "COMEDY",
+      "CRIME"
     ],
     "ratings": [
       {
@@ -1744,8 +1749,8 @@
       "Wes Anderson"
     ],
     "averageRating": 7.8,
+    "type": "MOVIE",
     "title": "The Grand Budapest Hotel",
-    "type": "Movie",
     "releaseYear": 2014
   },
   {
@@ -1757,9 +1762,9 @@
     ],
     "plot": "At a top-secret research facility in the 1960s, a lonely janitor forms a unique relationship with an amphibious creature that is being held in captivity.",
     "genres": [
-      "Adventure",
-      "Drama",
-      "Fantasy"
+      "ADVENTURE",
+      "DRAMA",
+      "FANTASY"
     ],
     "ratings": [
       {
@@ -1792,8 +1797,8 @@
       "Guillermo del Toro"
     ],
     "averageRating": 7.6,
+    "type": "MOVIE",
     "title": "The Shape of Water",
-    "type": "Movie",
     "releaseYear": 2017
   },
   {
@@ -1804,8 +1809,8 @@
     ],
     "plot": "A committed dancer competes for the lead role in a production of Tchaikovsky's 'Swan Lake' only to be met with competition from a rival dancer who impresses as the seductive Black Swan.",
     "genres": [
-      "Drama",
-      "Thriller"
+      "DRAMA",
+      "THRILLER"
     ],
     "ratings": [
       {
@@ -1838,8 +1843,8 @@
       "Darren Aronofsky"
     ],
     "averageRating": 8.0,
+    "type": "MOVIE",
     "title": "Black Swan",
-    "type": "Movie",
     "releaseYear": 2010
   },
   {
@@ -1850,9 +1855,9 @@
     ],
     "plot": "A frontiersman on a fur trading expedition in the 1820s fights for survival after being mauled by a bear and left for dead by members of his own hunting team.",
     "genres": [
-      "Action",
-      "Adventure",
-      "Drama"
+      "ACTION",
+      "ADVENTURE",
+      "DRAMA"
     ],
     "ratings": [
       {
@@ -1885,8 +1890,8 @@
       "Alejandro González Iñárritu"
     ],
     "averageRating": 7.6,
+    "type": "MOVIE",
     "title": "The Revenant",
-    "type": "Movie",
     "releaseYear": 2015
   },
   {
@@ -1897,8 +1902,8 @@
     ],
     "plot": "In a post-apocalyptic wasteland, a woman rebels against a tyrannical ruler in search of her homeland with the help of a group of female prisoners, a psychotic worshiper, and a drifter named Max.",
     "genres": [
-      "Action",
-      "Adventure",
+      "ACTION",
+      "ADVENTURE",
       "SF"
     ],
     "ratings": [
@@ -1932,8 +1937,8 @@
       "George Miller"
     ],
     "averageRating": 7.6,
+    "type": "MOVIE",
     "title": "Mad Max: Fury Road",
-    "type": "Movie",
     "releaseYear": 2015
   },
   {
@@ -1945,8 +1950,8 @@
     ],
     "plot": "After John Nash, a brilliant but asocial mathematician, accepts secret work in cryptography, his life takes a turn for the nightmarish.",
     "genres": [
-      "Biography",
-      "Drama"
+      "BIOGRAPHY",
+      "DRAMA"
     ],
     "ratings": [
       {
@@ -1979,8 +1984,8 @@
       "Ron Howard"
     ],
     "averageRating": 7.8,
+    "type": "MOVIE",
     "title": "A Beautiful Mind",
-    "type": "Movie",
     "releaseYear": 2001
   },
   {
@@ -1992,9 +1997,9 @@
     ],
     "plot": "An undercover cop and a mole in the police force attempt to identify each other while infiltrating an Irish gang in South Boston.",
     "genres": [
-      "Crime",
-      "Drama",
-      "Thriller"
+      "CRIME",
+      "DRAMA",
+      "THRILLER"
     ],
     "ratings": [
       {
@@ -2027,8 +2032,8 @@
       "Martin Scorsese"
     ],
     "averageRating": 8.4,
+    "type": "MOVIE",
     "title": "The Departed",
-    "type": "Movie",
     "releaseYear": 2006
   },
   {
@@ -2038,10 +2043,10 @@
     ],
     "plot": "Cel mai bun pregaratar pregateste uorez cu lapte pentru mafia uorezului si toti nepotii lui.",
     "genres": [
-      "Drama",
-      "Comedy",
-      "Action",
-      "Cooking"
+      "DRAMA",
+      "COMEDY",
+      "ACTION",
+      "COOKING"
     ],
     "ratings": [
       {
@@ -2054,37 +2059,37 @@
       "Vasile Versaci"
     ],
     "averageRating": 10.0,
+    "type": "MOVIE",
     "title": "Vasile Versaci, cel mai bun pregratar gateste orez cu lapte!",
-    "type": "Movie",
     "releaseYear": 2017
   },
   {
-    "duration": "3 minute",
+    "duration": "3 minutes",
     "actors": [
       "Bahoi"
     ],
     "plot": "Bahoi sare de pe pod. Titlul e un bun rezumat al filmului.",
     "genres": [
-      "Drama",
-      "Action"
+      "DRAMA",
+      "ACTION"
     ],
     "ratings": [],
     "directors": [
       "Bahoi"
     ],
-    "averageRating": 10.0,
+    "averageRating": null,
+    "type": "MOVIE",
     "title": "Bahoi sare de pe pod",
-    "type": "Movie",
     "releaseYear": 2009
   },
   {
-    "duration": "1 minute",
+    "duration": "1 minutes",
     "actors": [
       "Test Actor"
     ],
     "plot": "Test Plot",
     "genres": [
-      "Action"
+      "ACTION"
     ],
     "ratings": [
       {
@@ -2097,8 +2102,9 @@
       "Test Director"
     ],
     "averageRating": 6.0,
+    "type": "MOVIE",
     "title": "Test Movie",
-    "type": "Movie"
+    "releaseYear": 0
   },
   {
     "actors": [
@@ -2114,7 +2120,7 @@
     },
     "plot": "Test Plot",
     "genres": [
-      "Action"
+      "ACTION"
     ],
     "ratings": [
       {
@@ -2128,8 +2134,8 @@
     ],
     "averageRating": 9.0,
     "numSeasons": 1,
+    "type": "SERIES",
     "title": "Test Series",
-    "type": "Series",
     "releaseYear": 2021
   }
 ]

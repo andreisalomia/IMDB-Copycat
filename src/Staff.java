@@ -96,6 +96,7 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
             imdb.productions.add(movie);
             this.contributions.add(movie);
             Parser.addMovie(movie);
+            this.updateExperience(new AddToSystemStrategy().calculateExperience());
             Parser.updateContributions(this);
 
         } else if (prodType.equalsIgnoreCase("series")) {
@@ -175,6 +176,7 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
             imdb.productions.add(series);
             this.contributions.add(series);
             Parser.addSeries(series);
+            this.updateExperience(new AddToSystemStrategy().calculateExperience());
             Parser.updateContributions(this);
         }
     }
@@ -207,6 +209,7 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
         imdb.actors.add(actor);
         this.contributions.add(actor);
         Parser.addActor(actor);
+        this.updateExperience(new AddToSystemStrategy().calculateExperience());
         Parser.updateContributions(this);
 
     }
@@ -377,10 +380,13 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
         int option = ((TerminalUI) imdb.userInterface).getNumber();
         if (option == 1) {
 //            TODO: notify the user that the request was deleted
+            r.notifyObservers("request_denied");
             if (this instanceof Contributor) {
                 ((Contributor) this).removeRequest(r);
+                r.removeObserver((Contributor) this);
             } else if (this instanceof Admin) {
                 ((Admin) this).removeRequest(r);
+                r.removeObserver((Admin) this);
             }
             imdb.requests.remove(r);
             Parser.writeRequests();
@@ -388,14 +394,24 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
         } else if (option == 2) {
             if (this instanceof Contributor) {
                 ((Contributor) this).removeRequest(r);
+                r.notifyObservers("request_solved");
+                r.removeObserver((Contributor) this);
             } else if (this instanceof Admin) {
                 ((Admin) this).removeRequest(r);
+                r.notifyObservers("request_solved");
+                r.removeObserver((Admin) this);
             }
             imdb.requests.remove(r);
             Parser.writeRequests();
+//            get the user that made the request
+            User user = null;
+            for (User u : imdb.users) {
+                if (u.username.equals(r.userFrom)) {
+                    user = u;
+                }
+            }
+            user.updateExperience(new IssueStrategy().calculateExperience());
             Parser.updateLists();
-//            TODO: notify user that the request was solved
-            this.solveRequest(r);
         } else {
             return;
         }

@@ -1,4 +1,4 @@
-
+//package org.example;
 public class Contributor<T extends Comparable<T>> extends Staff<T> implements RequestsManager {
     public Contributor(Information info, AccountType type, String username, int experience) {
         super(info, type, username, experience);
@@ -14,8 +14,10 @@ public class Contributor<T extends Comparable<T>> extends Staff<T> implements Re
                 if (user.username.equals(r.userTo)) {
                     if (user instanceof Admin) {
                         ((Admin) user).userRequests.add(r);
+                        r.registerObserver((Admin) user);
                     } else if (user instanceof Contributor) {
                         ((Contributor) user).userRequests.add(r);
+                        r.registerObserver((Contributor) user);
                     }
                     break;
                 }

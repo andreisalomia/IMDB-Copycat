@@ -18,7 +18,6 @@ public class Flow {
             case 4:
                 Choices.searchForActorMovieSeries(user);
                 break;
-
             case 5:
                 Choices.addDeleteFavourites(user);
                 break;

@@ -91,10 +91,12 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
                     break;
                 }
             }
-
+//            add observers and notify them
             Movie movie = new Movie(name, directors, actors, genres, new ArrayList<>(), description, duration, releaseYear);
             imdb.productions.add(movie);
             this.contributions.add(movie);
+            movie.registerObserver(this);
+            movie.notifyObservers("");
             Parser.addMovie(movie);
             this.updateExperience(new AddToSystemStrategy().calculateExperience());
             Parser.updateContributions(this);
@@ -173,6 +175,8 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
             }
 
             Series series = new Series(name, directors, actors, genres, new ArrayList<>(), "", releaseYear, numberOfSeasons, episodes);
+            series.registerObserver(this);
+            series.notifyObservers("");
             imdb.productions.add(series);
             this.contributions.add(series);
             Parser.addSeries(series);
@@ -383,10 +387,10 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
             r.notifyObservers("request_denied");
             if (this instanceof Contributor) {
                 ((Contributor) this).removeRequest(r);
-                r.removeObserver((Contributor) this);
+                r.removeObserver(this);
             } else if (this instanceof Admin) {
                 ((Admin) this).removeRequest(r);
-                r.removeObserver((Admin) this);
+                r.removeObserver(this);
             }
             imdb.requests.remove(r);
             Parser.writeRequests();

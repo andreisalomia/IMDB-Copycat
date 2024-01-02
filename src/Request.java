@@ -109,21 +109,21 @@ public class Request implements Subject{
         IMDB imdb = IMDB.getInstance();
 //        notify the contributor/admin that he has received a request
         if(type.equals("new_request")) {
-            for (User user : imdb.users) {
+            for (User user : observers) {
                 if (user.username.equals(userTo)) {
                     user.update("You received a new request from " + userFrom + " regarding " + problemName + ":\n" + description);
                 }
             }
         }
         if(type.equals("request_solved")) {
-            for (User user : imdb.users) {
+            for (User user : observers) {
                 if (user.username.equals(userFrom)) {
                     user.update("Your request regarding " + problemName + " has been solved.");
                 }
             }
         }
         if(type.equals("request_denied")) {
-            for (User user : imdb.users) {
+            for (User user : observers) {
                 if (user.username.equals(userFrom)) {
                     user.update("Your request regarding " + problemName + " has been denied.");
                 }

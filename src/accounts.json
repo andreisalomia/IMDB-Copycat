@@ -30,6 +30,10 @@
       "Brad Pitt",
       "Meryl Streep"
     ],
+    "notifications": [
+      "ProductionVasile Versaci, cel mai bun pregratar gateste orez cu lapte! that you rated has a new rating from susan_smith_123.\n",
+      "Production The Godfather that you added has a new rating from olivia_taylor_2425.\n"
+    ],
     "username": "emily_wilson_789",
     "actorsContribution": [
       "Viola Davis",
@@ -49,9 +53,10 @@
       "age": 35
     },
     "userType": "Regular",
-    "experience": 8,
+    "experience": 11,
     "notifications": [
-      "Your request regarding Inception has been solved."
+      "Your request regarding Inception has been solved.",
+      "Production The Godfather that you rated has a new rating from olivia_taylor_2425.\n"
     ],
     "username": "susan_smith_123"
   },
@@ -119,6 +124,9 @@
     },
     "userType": "Regular",
     "experience": "7",
+    "notifications": [
+      "Production The Godfather that you rated has a new rating from olivia_taylor_2425.\n"
+    ],
     "username": "jessica_miller_1213"
   },
   {
@@ -142,6 +150,9 @@
       "Leonardo DiCaprio",
       "Johnny Depp",
       "Cate"
+    ],
+    "notifications": [
+      "Production The Godfather that you rated has a new rating from olivia_taylor_2425.\n"
     ],
     "username": "peter_jones_1415"
   },
@@ -274,7 +285,7 @@
       "age": 29
     },
     "userType": "Regular",
-    "experience": 11,
+    "experience": 12,
     "username": "olivia_taylor_2425"
   },
   {
@@ -349,6 +360,9 @@
     },
     "userType": "Regular",
     "experience": "15",
+    "notifications": [
+      "Production The Godfather that you rated has a new rating from olivia_taylor_2425.\n"
+    ],
     "username": "benjamin_taylor_3435"
   },
   {
@@ -436,6 +450,9 @@
     },
     "userType": "Admin",
     "experience": null,
+    "notifications": [
+      "ProductionVasile Versaci, cel mai bun pregratar gateste orez cu lapte! that you added has a new rating from susan_smith_123.\n"
+    ],
     "username": "adminUser",
     "actorsContribution": [
       "Bahoi",

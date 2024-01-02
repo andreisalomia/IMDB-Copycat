@@ -407,7 +407,7 @@
       },
       {
         "rating": 10,
-        "comment": "regele minim",
+        "comment": "regele",
         "username": "olivia_taylor_2425"
       }
     ],
@@ -2053,6 +2053,11 @@
         "rating": 10,
         "comment": "Nu am vazut un film mai bun in viata mea.",
         "username": "emily_wilson_789"
+      },
+      {
+        "rating": 10,
+        "comment": "Cel mai prost film",
+        "username": "susan_smith_123"
       }
     ],
     "directors": [

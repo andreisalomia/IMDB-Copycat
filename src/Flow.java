@@ -29,13 +29,6 @@ public class Flow {
                 break;
             case 8:
                 user.logout();
-                int option = Options.startOptions();
-                if (option == 1) {
-                    imdb.restartApp();
-                } else {
-                    System.exit(0);
-                }
-
         }
         startRegularFlow(user);
     }
@@ -73,12 +66,6 @@ public class Flow {
                 break;
             case 10:
                 user.logout();
-                int option = Options.startOptions();
-                if (option == 1) {
-                    imdb.restartApp();
-                } else {
-                    System.exit(0);
-                }
         }
         startAdminFlow(user);
     }
@@ -116,12 +103,6 @@ public class Flow {
                 break;
             case 10:
                 user.logout();
-                int option = Options.startOptions();
-                if (option == 1) {
-                    imdb.restartApp();
-                } else {
-                    System.exit(0);
-                }
         }
         startContributorFlow(user);
     }

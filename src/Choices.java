@@ -281,6 +281,9 @@ public class Choices {
                             String message = imdb.userInterface.getInput();
                             Rating r = new Rating(user.username, rating, message);
                             user.addRating(r, prod);
+//                            notify the observers
+                            prod.registerObserver(user);
+                            prod.notifyObservers("");
                             return;
                         }
                     }
@@ -296,6 +299,7 @@ public class Choices {
                     for (Production prod : imdb.productions) {
                         if (prod.title.equals(input)) {
                             Production.removeRating(prod, user);
+                            prod.removeObserver(user);
                             return;
                         }
                     }

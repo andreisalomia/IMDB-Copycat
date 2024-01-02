@@ -54,6 +54,25 @@ public class IMDB {
                 }
             }
         }
+//        for every production load the reviewers as observers and the contributors
+        for(Production production : imdb.productions) {
+            for(User user : imdb.users) {
+                if(user instanceof Contributor && ((Contributor<?>) user).contributions.contains(production)) {
+                    production.registerObserver(user);
+                }
+                if(user instanceof Admin<?> && ((Admin<?>) user).contributions.contains(production)) {
+                    if(!user.username.equals("admin"))
+                        production.registerObserver(user);
+                }
+                if(user instanceof Regular || (user instanceof Contributor<?> && !((Contributor<?>) user).contributions.contains(production))) {
+                    for(Rating rating : production.ratings) {
+                        if(rating.username.equals(user.username)) {
+                            production.registerObserver(user);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void restartApp() {

@@ -177,6 +177,13 @@ public abstract class User<T extends Comparable<T>> implements Observer {
     }
 
     public void logout() {
+        IMDB imdb = IMDB.getInstance();
+        int option = Options.startOptions();
+        if (option == 1) {
+            imdb.restartApp();
+        } else {
+            System.exit(0);
+        }
     }
 
     @Override

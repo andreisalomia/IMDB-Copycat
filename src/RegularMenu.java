@@ -17,7 +17,7 @@ public class RegularMenu {
     private static int minimum_reviews = 0;
     private static DefaultTableModel model;
 
-    public static void initializeRegularMenu(Regular regular) {
+    public static void initializeMenu(Regular regular) {
         SwingUtilities.invokeLater(() -> {
             regularMenuFrame = new JFrame("Regular Menu");
             regularMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

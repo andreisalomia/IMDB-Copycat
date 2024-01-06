@@ -2,23 +2,24 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 
-public class ContributorMenu {
-    private static JFrame contributorMenuFrame;
+public class AdminMenu {
+    private static JFrame adminMenuFrame;
     private static JPanel leftPanel;
     private static JPanel rightPanel;
     private static List<Genre> selectedGenres;
     private static int minimum_reviews = 0;
     private static DefaultTableModel model;
 
-    public static void initializeMenu(Contributor user) {
+    public static void initializeMenu(Admin user) {
         SwingUtilities.invokeLater(() -> {
-            contributorMenuFrame = new JFrame("Contributor Menu");
-            contributorMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            contributorMenuFrame.setSize(1024, 768);
-            contributorMenuFrame.setLocationRelativeTo(null);
+            adminMenuFrame = new JFrame("Admin Menu");
+            adminMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            adminMenuFrame.setSize(1024, 768);
+            adminMenuFrame.setLocationRelativeTo(null);
 
             JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
             splitPane.setDividerSize(5);
@@ -31,9 +32,9 @@ public class ContributorMenu {
             // Button 1 - Navigate back to StartPage
             JButton backButton = new JButton("Go Back");
             backButton.addActionListener(e -> {
-                contributorMenuFrame.setVisible(false);
-                contributorMenuFrame.dispose();
-                StartPage.startContributorPage(user);
+                adminMenuFrame.setVisible(false);
+                adminMenuFrame.dispose();
+                StartPage.startAdminPage(user);
             });
 
             // Button 2 to Button 9 - Additional buttons
@@ -42,7 +43,7 @@ public class ContributorMenu {
             JButton notif_button = new JButton("Notifications");
             JButton search_button = new JButton("Search");
             JButton fav_button = new JButton("Favorites");
-            JButton req_button = new JButton("Requests");
+            JButton users_button = new JButton("Add/Delete Users");
             JButton add_delete_prod_button = new JButton("Add/Delete Productions/Actors");
             JButton solve_req_button = new JButton("Solve Requests");
             JButton logout_button = new JButton("Logout");
@@ -77,8 +78,9 @@ public class ContributorMenu {
                 displayFavorites(user);
             });
 
-            req_button.addActionListener(e -> {
-                displayUserForm(user, rightPanel);
+            users_button.addActionListener(e -> {
+                // Display add/delete users page
+                initializeAddDeleteUsersPage(user);
             });
 
             add_delete_prod_button.addActionListener(e -> {
@@ -97,7 +99,7 @@ public class ContributorMenu {
             buttonsPanel.add(notif_button);
             buttonsPanel.add(search_button);
             buttonsPanel.add(fav_button);
-            buttonsPanel.add(req_button);
+            buttonsPanel.add(users_button);
             buttonsPanel.add(add_delete_prod_button);
             buttonsPanel.add(solve_req_button);
             buttonsPanel.add(logout_button);
@@ -111,12 +113,167 @@ public class ContributorMenu {
             // split at 180 pixels
             splitPane.setDividerLocation(180);
 
-            contributorMenuFrame.add(splitPane);
-            contributorMenuFrame.setVisible(true);
+            adminMenuFrame.add(splitPane);
+            adminMenuFrame.setVisible(true);
         });
     }
 
-    private static void initializeAddDeleteProductionsPage(Contributor user) {
+    private static void initializeAddDeleteUsersPage(Admin user) {
+        SwingUtilities.invokeLater(() -> {
+            // Create columns and data for the tables
+            String[] userColumnNames = {"Users available for deletion"};
+            Object[][] userData = getUsersToDelete(user);
+
+            // Create the tables
+            JTable usersTable = new JTable(userData, userColumnNames);
+
+            usersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+            JScrollPane usersScrollPane = new JScrollPane(usersTable);
+
+            // Create buttons
+            JButton userAddButton = new JButton("Add User to System");
+            JButton userDeleteButton = new JButton("Remove from System");
+
+            userAddButton.addActionListener(e -> {
+                handleAddUserSystemButtonClicked(usersTable);
+                refreshUserTableSystem(usersTable);
+            });
+
+            userDeleteButton.addActionListener(e -> {
+                handleDeleteUserSystemButtonClicked(usersTable);
+                refreshUserTableSystem(usersTable);
+            });
+
+            // Create panels for buttons and tables
+            JPanel userButtonPanel = new JPanel();
+            userButtonPanel.add(userAddButton);
+            userButtonPanel.add(userDeleteButton);
+
+            // Create combined panels with buttons and tables
+            JPanel userCombinedPanel = new JPanel(new BorderLayout());
+            userCombinedPanel.add(userButtonPanel, BorderLayout.NORTH);
+            userCombinedPanel.add(usersScrollPane, BorderLayout.CENTER);
+
+            // Remove previous components from the right panel
+            rightPanel.removeAll();
+
+            // Add the combined panels to the right panel
+            rightPanel.setLayout(new GridLayout(1, 1)); // 1 row, 1 column
+            rightPanel.add(userCombinedPanel);
+
+            // Refresh the layout
+            rightPanel.revalidate();
+            rightPanel.repaint();
+        });
+    }
+
+    private static void handleDeleteUserSystemButtonClicked(JTable usersTable) {
+        int selectedRow = usersTable.getSelectedRow();
+        if (selectedRow != -1) {
+            String username = (String) usersTable.getValueAt(selectedRow, 0);
+
+            User userToRemove = null;
+            for (User user : IMDB.getInstance().users) {
+                if (user.username.equalsIgnoreCase(username)) {
+                    userToRemove = user;
+                    break;
+                }
+            }
+            Admin user = (Admin) IMDB.getInstance().currentUser;
+            Admin.removeUser(userToRemove);
+        }
+
+    }
+
+    private static void refreshUserTableSystem(JTable usersTable) {
+        Object[][] newData = getUsersToDelete((Admin) IMDB.getInstance().currentUser);
+        DefaultTableModel model = new DefaultTableModel(newData, new String[]{"Added Users"});
+        usersTable.setModel(model);
+    }
+
+    private static void handleAddUserSystemButtonClicked(JTable usersTable) {
+        JComboBox<String> accountTypeComboBox = new JComboBox<>(new String[]{"Regular", "Contributor", "Admin"});
+        JTextField nameTextField = new JTextField();
+        JTextField emailTextField = new JTextField();
+        JTextField countryTextField = new JTextField();
+        JTextField ageTextField = new JTextField();
+        JTextField genderTextField = new JTextField();
+        JTextField yearTextField = new JTextField();
+        JTextField monthTextField = new JTextField();
+        JTextField dayTextField = new JTextField();
+
+        // Create and configure the panel
+        JPanel panel = new JPanel(new GridLayout(11, 2));
+        panel.add(new JLabel("Account Type:"));
+        panel.add(accountTypeComboBox);
+        panel.add(new JLabel("Name:"));
+        panel.add(nameTextField);
+        panel.add(new JLabel("Email:"));
+        panel.add(emailTextField);
+        panel.add(new JLabel("Country:"));
+        panel.add(countryTextField);
+        panel.add(new JLabel("Age:"));
+        panel.add(ageTextField);
+        panel.add(new JLabel("Gender:"));
+        panel.add(genderTextField);
+        panel.add(new JLabel("Birth Year:"));
+        panel.add(yearTextField);
+        panel.add(new JLabel("Birth Month:"));
+        panel.add(monthTextField);
+        panel.add(new JLabel("Birth Day:"));
+        panel.add(dayTextField);
+
+        // Show the dialog
+        int result = JOptionPane.showConfirmDialog(null, panel, "Add User", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            // Process the user input
+            int accountTypeIndex = accountTypeComboBox.getSelectedIndex() + 1;
+            AccountType type = AccountType.values()[accountTypeIndex - 1];
+
+            String name = nameTextField.getText();
+            String email = emailTextField.getText();
+            String country = countryTextField.getText();
+            int age = Integer.parseInt(ageTextField.getText());
+            char gender = genderTextField.getText().charAt(0);
+            int year = Integer.parseInt(yearTextField.getText());
+            int month = Integer.parseInt(monthTextField.getText());
+            int day = Integer.parseInt(dayTextField.getText());
+
+            LocalDate birthDate = LocalDate.of(year, month, day);
+            String username = name.split(" ")[0] + "_" + name.split(" ")[1] + "_" + (int) (Math.random() * 1000);
+            String password = Admin.generateRandomPassword(8);
+            Credentials credentials = new Credentials(email, password);
+
+            User<?> user = UserFactory.createUser(type, username, credentials, name, country, age, gender, birthDate, 0);
+            IMDB imdb = IMDB.getInstance();
+            imdb.users.add(user);
+            Parser.addUserToJson(user);
+            Parser.updateLists();
+            refreshUserTableSystem(usersTable);
+        }
+    }
+
+    private static Object[][] getUsersToDelete(Admin user) {
+        List<User> del = new ArrayList<>();
+        IMDB imdb = IMDB.getInstance();
+        for (User u : imdb.users) {
+            if (u instanceof Regular<?> || u instanceof Contributor<?>) {
+                del.add(u);
+            }
+        }
+
+        int size = del.size();
+        Object[][] data = new Object[size][1];
+
+        for (int i = 0; i < size; i++) {
+            data[i][0] = del.get(i).username;
+        }
+
+        return data;
+    }
+
+    private static void initializeAddDeleteProductionsPage(Admin user) {
         SwingUtilities.invokeLater(() -> {
             // Create columns and data for the tables
             String[] actorColumnNames = {"Added Actors"};
@@ -153,7 +310,7 @@ public class ContributorMenu {
             });
 
             productionAddButton.addActionListener(e -> {
-                handleAddProductionSystemButtonClicked(productionsTable, (Contributor) user);
+                handleAddProductionSystemButtonClicked(productionsTable, (Admin) user);
                 refreshProductionTableSystem(productionsTable, user.contributions);
             });
 
@@ -195,13 +352,13 @@ public class ContributorMenu {
     }
 
     private static void refreshProductionTableSystem(JTable productionsTable, SortedSet<Comparable> contributions) {
-        Object[][] newData = getProductionContributionsData((Contributor) IMDB.getInstance().currentUser);
+        Object[][] newData = getProductionContributionsData((Admin) IMDB.getInstance().currentUser);
         DefaultTableModel model = new DefaultTableModel(newData, new String[]{"Added Productions"});
         productionsTable.setModel(model);
     }
 
     private static void refreshActorTableSystem(JTable actorsTable, SortedSet<Comparable> contributions) {
-        Object[][] newData = getActorContributionsData((Contributor) IMDB.getInstance().currentUser);
+        Object[][] newData = getActorContributionsData((Admin) IMDB.getInstance().currentUser);
         DefaultTableModel model = new DefaultTableModel(newData, new String[]{"Added Actors"});
         actorsTable.setModel(model);
     }
@@ -219,7 +376,7 @@ public class ContributorMenu {
                     break;
                 }
             }
-            Contributor user = (Contributor) IMDB.getInstance().currentUser;
+            Admin user = (Admin) IMDB.getInstance().currentUser;
 
             // Remove the production from favorites
             if (productionToRemove != null) {
@@ -228,7 +385,7 @@ public class ContributorMenu {
         }
     }
 
-    private static void handleAddProductionSystemButtonClicked(JTable productionsTable, Contributor user) {
+    private static void handleAddProductionSystemButtonClicked(JTable productionsTable, Admin user) {
         IMDB imdb = IMDB.getInstance();
 
         // Prompt the user for production type
@@ -344,7 +501,7 @@ public class ContributorMenu {
                     break;
                 }
             }
-            Contributor user = (Contributor) IMDB.getInstance().currentUser;
+            Admin user = (Admin) IMDB.getInstance().currentUser;
             // Remove the actor from favorites
             if (actorToRemove != null) {
                 user.removeActorSystem(actorToRemove);
@@ -388,22 +545,23 @@ public class ContributorMenu {
         Actor actor = new Actor(name, filmography, biography);
 
         // Add the new actor to the table's data model
-        refreshActorTableSystem(actorsTable, ((Contributor) IMDB.getInstance().currentUser).contributions);
+        refreshActorTableSystem(actorsTable, ((Admin) IMDB.getInstance().currentUser).contributions);
 
         IMDB.getInstance().actors.add(actor);
-        ((Contributor) IMDB.getInstance().currentUser).contributions.add(actor);
+        ((Admin) IMDB.getInstance().currentUser).contributions.add(actor);
         Parser.addActor(actor);
-        ((Contributor) IMDB.getInstance().currentUser).updateExperience(new AddToSystemStrategy().calculateExperience());
-        Parser.updateContributions((Contributor) IMDB.getInstance().currentUser);
+        ((Admin) IMDB.getInstance().currentUser).updateExperience(new AddToSystemStrategy().calculateExperience());
+        Parser.updateContributions((Admin) IMDB.getInstance().currentUser);
     }
 
 
-
-
     private static void initializeSolveRequestsPage() {
-        Contributor user = (Contributor) IMDB.getInstance().currentUser;
+        Admin user = (Admin) IMDB.getInstance().currentUser;
         List<Request> requests = new ArrayList<>();
         requests.addAll(user.userRequests);
+        IMDB imdb = IMDB.getInstance();
+        List<Request> all_requests = IMDB.RequestsHolder.getRequests();
+        requests.addAll(all_requests);
 
         // Create a table model for the requests
         model = new DefaultTableModel();
@@ -427,9 +585,7 @@ public class ContributorMenu {
             if (selectedRow != -1) {
                 // Get the selected request from the table
                 Request selectedRequest = requests.get(selectedRow);
-                // Implement the logic to solve the request
                 solveRequest(selectedRequest);
-                // Remove the row from the table
                 model.removeRow(selectedRow);
             } else {
                 JOptionPane.showMessageDialog(null, "Please select a request to solve.", "No Selection", JOptionPane.WARNING_MESSAGE);
@@ -476,9 +632,10 @@ public class ContributorMenu {
         rightPanel.revalidate();
         rightPanel.repaint();
     }
+
     private static void solveRequest(Request r) {
         IMDB imdb = IMDB.getInstance();
-        Contributor user = (Contributor) imdb.currentUser;
+        Admin user = (Admin) imdb.currentUser;
         r.notifyObservers("request_solved");
         user.removeRequest(r);
         r.removeObserver(user);
@@ -490,7 +647,8 @@ public class ContributorMenu {
                 user1 = u;
             }
         }
-        user1.updateExperience(new IssueStrategy().calculateExperience());
+        if(r.type == RequestTypes.ACTOR_ISSUE || r.type == RequestTypes.MOVIE_ISSUE)
+            user1.updateExperience(new IssueStrategy().calculateExperience());
         Parser.updateLists();
         Parser.updateLists();
     }
@@ -498,7 +656,7 @@ public class ContributorMenu {
     // Dummy method, replace with your actual implementation
     private static void deleteRequest(Request r) {
         IMDB imdb = IMDB.getInstance();
-        Contributor user = (Contributor) imdb.currentUser;
+        Admin user = (Admin) imdb.currentUser;
         r.notifyObservers("request_denied");
         user.removeRequest(r);
         r.removeObserver(user);
@@ -507,189 +665,7 @@ public class ContributorMenu {
         Parser.updateLists();
     }
 
-
-    private static void displayUserForm(Contributor user, JPanel rightPanel) {
-        // Create a panel for the form
-        rightPanel.removeAll();
-        JPanel formPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-
-        // Add a combo box for RequestTypes
-        JComboBox<RequestTypes> requestTypesComboBox = new JComboBox<>(RequestTypes.values());
-        formPanel.add(new JLabel("Request Type:"), gbc);
-        gbc.gridx = 1;
-        formPanel.add(requestTypesComboBox, gbc);
-
-        // Add a text area for the user to explain the problem
-        JTextArea explanationTextArea = new JTextArea(5, 20);
-        JScrollPane scrollPane = new JScrollPane(explanationTextArea);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        formPanel.add(new JLabel("Explanation (if you have chosen ACTOR_ISSUE/MOVIE_ISSUE make sure to mention the name of the actor/movie):"), gbc);
-        gbc.gridy = 2;
-        formPanel.add(scrollPane, gbc);
-
-        // Create a button to submit the form
-        JButton submitButton = new JButton("Submit Request");
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        gbc.gridwidth = 2;
-        formPanel.add(submitButton, gbc);
-
-        // Add an action listener to the submit button
-        submitButton.addActionListener(e -> {
-            handleRequestSubmission(user, (RequestTypes) requestTypesComboBox.getSelectedItem(), explanationTextArea.getText());
-
-            // Show confirmation dialog
-            String confirmationMessage = String.format("Request Type: %s\nExplanation: %s",
-                    requestTypesComboBox.getSelectedItem(), explanationTextArea.getText());
-            JOptionPane.showMessageDialog(null, confirmationMessage, "Request Submitted", JOptionPane.INFORMATION_MESSAGE);
-
-            // Optionally, you can clear the form fields or close the form after submission
-            requestTypesComboBox.setSelectedIndex(0);
-            explanationTextArea.setText("");
-        });
-
-        // Create a button to display user requests
-        JButton displayRequestsButton = new JButton("Display Requests");
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        formPanel.add(displayRequestsButton, gbc);
-
-        // Add an action listener to the display requests button
-        displayRequestsButton.addActionListener(e -> {
-            displayUserRequests(user);
-        });
-
-        // Add the form components to the right panel (assuming your rightPanel is a class variable)
-        rightPanel.add(formPanel);
-        rightPanel.revalidate();
-        rightPanel.repaint();
-
-    }
-
-    private static void handleRequestSubmission(Contributor user, RequestTypes requestType, String explanation) {
-        // Create a new request and add it to the list
-//        convert requestType to its enum value
-        int requestNumber = requestType.ordinal() + 1;
-        Request newRequest = Request.RequestBuilder(user, explanation, requestNumber);
-        IMDB imdb = IMDB.getInstance();
-//        check if the user wants to add a request regarding a production/actor that was added by himself
-        String problemName = newRequest.problemName;
-        if (user instanceof Contributor) {
-            for (Actor actor : imdb.actors) {
-                if (actor.name.equals(problemName)) {
-                    if (user.contributions.contains(actor)) {
-                        imdb.userInterface.displayOutput("You cannot add a request regarding an actor that you added");
-                        return;
-                    }
-                }
-            }
-            for (Production production : imdb.productions) {
-                if (production.title.equals(problemName)) {
-                    if (user.contributions.contains(production)) {
-                        imdb.userInterface.displayOutput("You cannot add a request regarding a production that you added");
-                        return;
-                    }
-                }
-            }
-        }
-        user.createRequest(newRequest);
-    }
-
-    private static void displayUserRequests(Contributor user) {
-        List<Request> userRequests = new ArrayList<>();
-
-        // Get user's requests
-        for (Request request : IMDB.getInstance().requests) {
-            if (request.userFrom.equals(user.username)) {
-                userRequests.add(request);
-            }
-        }
-
-        // Create table data
-        Object[][] data = new Object[userRequests.size()][2];
-        for (int i = 0; i < userRequests.size(); i++) {
-            data[i][0] = i + 1;
-            data[i][1] = userRequests.get(i).description;
-        }
-
-        // Create table column names
-        String[] columnNames = {"#", "Description"};
-
-        // Initialize or update the table model
-        if (model == null) {
-            model = new DefaultTableModel(data, columnNames) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return false; // Make the table cells non-editable
-                }
-            };
-        } else {
-            model.setDataVector(data, columnNames);
-        }
-
-        JTable requestsTable = new JTable(model);
-
-        // Create the scroll pane
-        JScrollPane scrollPane = new JScrollPane(requestsTable);
-
-        // Create a button to delete the selected request
-        JButton deleteButton = new JButton("Delete Selected Request");
-        deleteButton.addActionListener(e -> {
-            int selectedRow = requestsTable.getSelectedRow();
-            if (selectedRow != -1) {
-                handleDeleteRequestClicked(userRequests, selectedRow);
-                refreshTable(requestsTable, userRequests);
-            }
-        });
-
-        // Create a panel for the button
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(deleteButton);
-
-        // Create a panel for the whole content
-        JPanel contentPanel = new JPanel(new BorderLayout());
-        contentPanel.add(scrollPane, BorderLayout.CENTER);
-        contentPanel.add(buttonPanel, BorderLayout.SOUTH);
-
-        // Display requests in a popup
-        JOptionPane.showMessageDialog(null, contentPanel, "User Requests", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    private static void handleDeleteRequestClicked(List<Request> userRequests, int selectedRow) {
-        // Delete the request from the list
-        Request requestToDelete = userRequests.get(selectedRow);
-        Contributor user = (Contributor) IMDB.getInstance().currentUser;
-        user.removeRequest(requestToDelete);
-
-        // Update the userRequests list
-        userRequests.remove(requestToDelete);
-    }
-
-    private static void refreshTable(JTable table, Object[][] newData, String[] columnNames) {
-        DefaultTableModel model = new DefaultTableModel(newData, columnNames);
-        table.setModel(model);
-    }
-
-    private static void refreshTable(JTable requestsTable, List<Request> userRequests) {
-        // Create updated data for the table
-        Object[][] newData = new Object[userRequests.size()][2];
-        for (int i = 0; i < userRequests.size(); i++) {
-            newData[i][0] = i + 1;
-            newData[i][1] = userRequests.get(i).description;
-        }
-
-        // Create table column names
-        String[] columnNames = {"#", "Description"};
-
-        // Call the refreshTable method
-        refreshTable(requestsTable, newData, columnNames);
-    }
-
-    private static void displayFavorites(Contributor user) {
+    private static void displayFavorites(Admin user) {
         SwingUtilities.invokeLater(() -> {
             // Create columns and data for the tables
             String[] actorColumnNames = {"Favorite Actors"};
@@ -781,7 +757,7 @@ public class ContributorMenu {
         return data;
     }
 
-    private static Object[][] getActorContributionsData(Contributor user) {
+    private static Object[][] getActorContributionsData(Admin user) {
         List<Actor> contributions = new ArrayList<>();
         for (Object comparable : user.contributions) {
             if (comparable instanceof Actor) {
@@ -799,7 +775,7 @@ public class ContributorMenu {
         return data;
     }
 
-    private static Object[][] getProductionContributionsData(Contributor user) {
+    private static Object[][] getProductionContributionsData(Admin user) {
         List<Production> contributions = new ArrayList<>();
         for (Object comparable : user.contributions) {
             if (comparable instanceof Production) {
@@ -978,7 +954,7 @@ public class ContributorMenu {
     }
 
     private static void handleGenreButtonClicked() {
-        GenreFilterDialog genreFilterDialog = new GenreFilterDialog(contributorMenuFrame);
+        GenreFilterDialog genreFilterDialog = new GenreFilterDialog(adminMenuFrame);
         selectedGenres = genreFilterDialog.getSelectedGenres();
         displayAllProductions();
     }
@@ -1080,7 +1056,7 @@ public class ContributorMenu {
         return null;
     }
 
-    private static void displayNotifications(Contributor user) {
+    private static void displayNotifications(Admin user) {
         // Create a panel with notifications
         JPanel notificationsPanel = createNotificationsPanel(user);
 
@@ -1102,13 +1078,13 @@ public class ContributorMenu {
         updateRightPanel(scrollPane);
     }
 
-    private static void clearNotificationsButtonActionPerformed(ActionEvent evt, Contributor user) {
+    private static void clearNotificationsButtonActionPerformed(ActionEvent evt, Admin user) {
         user.notifications.clear();
         Parser.updateNotifications(user);
         displayNotifications(user);
     }
 
-    private static JPanel createNotificationsPanel(Contributor user) {
+    private static JPanel createNotificationsPanel(Admin user) {
         JPanel notificationsPanel = new JPanel();
         notificationsPanel.setLayout(new BoxLayout(notificationsPanel, BoxLayout.Y_AXIS));
 
@@ -1177,8 +1153,8 @@ public class ContributorMenu {
 
         loginButton.addActionListener(e -> {
             // Close the current app and open a new instance
-            contributorMenuFrame.setVisible(false);
-            contributorMenuFrame.dispose();
+            adminMenuFrame.setVisible(false);
+            adminMenuFrame.dispose();
             IMDB.getInstance().login_GUI();
         });
 

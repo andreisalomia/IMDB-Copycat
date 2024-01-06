@@ -75,12 +75,15 @@ public class StartPage {
                 if (user instanceof Regular) {
                     frame.setVisible(false);
                     frame.dispose(); // Close the current frame
-                    RegularMenu.initializeRegularMenu((Regular) user);
+                    RegularMenu.initializeMenu((Regular) user);
                 } else if (user instanceof Contributor) {
                     frame.setVisible(false);
                     frame.dispose(); // Close the current frame
-                    ContributorMenu.initializeContributorMenu((Contributor) user);
+                    ContributorMenu.initializeMenu((Contributor) user);
                 } else if (user instanceof Admin) {
+                    frame.setVisible(false);
+                    frame.dispose(); // Close the current frame
+                    AdminMenu.initializeMenu((Admin) user);
                 }
             });
 

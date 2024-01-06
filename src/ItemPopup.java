@@ -43,7 +43,6 @@ public class ItemPopup {
     private static JPanel createButtonPanel(User user, Object item) {
         JPanel buttonPanel = new JPanel(new FlowLayout());
 
-        // Add "Add to Favorites" button
         JButton addToFavoritesButton = new JButton("Add to Favorites");
         addToFavoritesButton.addActionListener(e -> {
             if (item instanceof Actor) {
@@ -64,11 +63,163 @@ public class ItemPopup {
             buttonPanel.add(reviewButton);
         }
 
+//        get the contributions of user "admin"
+        Admin admin = null;
+        IMDB imdb = IMDB.getInstance();
+        for(User user1 : imdb.users) {
+            if(user1.username.equals("admin")) {
+                admin = (Admin) user1;
+                break;
+            }
+        }
+
+        if (user instanceof Admin  || (user instanceof Contributor && ((Contributor<?>) user).contributions.contains(item))) {
+            JButton updateButton = new JButton("Update");
+            updateButton.addActionListener(e -> {
+                if (item instanceof Actor) {
+                    chooseUpdateActor((Actor) item);
+                } else if (item instanceof Production) {
+                    if(item instanceof Movie) {
+                        chooseUpdateMovie((Movie) item);
+                    } else if(item instanceof Series) {
+                        chooseUpdateSeries((Series) item);
+                    }
+                }
+            });
+            buttonPanel.add(updateButton);
+        }
+
         return buttonPanel;
     }
 
+    private static void chooseUpdateSeries(Series item) {
+        Object[] options = {"Update Title", "Update Description", "Update Release Year", "Update Genres",
+                "Update Actors", "Update Directors", "Update Number of Seasons", "Update Episodes"};
+
+        int choice = JOptionPane.showOptionDialog(
+                null,
+                "Choose an update option:",
+                "Update Series",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        if (choice != -1) {
+            switch (choice) {
+                case 0:
+                    Update.updateSeriesTitleGUI(item);
+                    break;
+                case 1:
+                    Update.updateSeriesDescriptionGUI(item);
+                    break;
+                case 2:
+                    Update.updateSeriesReleaseYearGUI(item);
+                    break;
+                case 3:
+                    Update.updateSeriesGenreGUI(item);
+                    break;
+                case 4:
+                    Update.updateSeriesActorsGUI(item);
+                    break;
+                case 5:
+                    Update.updateSeriesDirectorsGUI(item);
+                    break;
+                case 6:
+                    Update.updateSeriesNrSeasonsGUI(item);
+                    break;
+                case 7:
+                    Update.updateSeriesSeasonsGUI(item);
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Invalid option selected");
+            }
+        }
+    }
+
+
+    private static void chooseUpdateActor(Actor item) {
+        String[] options = {"Name", "Biography", "Filmography"};
+        int choice = JOptionPane.showOptionDialog(null, "What do you want to update?", "Update Actor", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+
+        switch (choice) {
+            case 0:
+                Update.updateActorNameGUI(item);
+                break;
+            case 1:
+                Update.updateActorBioGUI(item);
+                break;
+            case 2:
+                Update.updateActorPerformanceGUI(item);
+                break;
+        }
+    }
+
+    private static void chooseUpdateMovie(Movie item) {
+        String[] options = {
+                "Update Title",
+                "Update Description",
+                "Update Duration",
+                "Update Release Date",
+                "Update Genre",
+                "Update Actors",
+                "Update Directors"
+        };
+
+        int choice = JOptionPane.showOptionDialog(
+                null,
+                "Choose an update option:",
+                "Update Movie",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        if (choice != -1) {
+            switch (choice) {
+                case 0:
+                    Update.updateMovieTitleGUI(item);
+                    break;
+                case 1:
+                    Update.updateMovieDescriptionGUI(item);
+                    break;
+                case 2:
+                    Update.updateMovieDurationGUI(item);
+                    break;
+                case 3:
+                    Update.updateMovieReleaseDateGUI(item);
+                    break;
+                case 4:
+                    Update.updateMovieGenreGUI(item);
+                    break;
+                case 5:
+                    Update.updateMovieActorsGUI(item);
+                    break;
+                case 6:
+                    Update.updateMovieDirectorsGUI(item);
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Invalid option selected");
+            }
+        }
+    }
+
+
     private static void addReview(User user, Object item) {
         String productionTitle = null;
+
+//        if the user is a contributor and the item is a production that he contributed to then he can't review it
+        if(user instanceof Contributor && item instanceof Production) {
+            Production production = (Production) item;
+            if(((Contributor<?>) user).contributions.contains(production)) {
+                JOptionPane.showMessageDialog(null, "You can't review a production that you contributed to!");
+                return;
+            }
+        }
 
         // Assuming the item is a Production, you can modify this logic if needed
         if (item instanceof Production) {

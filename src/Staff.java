@@ -383,7 +383,6 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
         imdb.userInterface.displayOutput("\t3) Exit\n");
         int option = ((TerminalUI) imdb.userInterface).getNumber();
         if (option == 1) {
-//            TODO: notify the user that the request was deleted
             r.notifyObservers("request_denied");
             if (this instanceof Contributor) {
                 ((Contributor) this).removeRequest(r);

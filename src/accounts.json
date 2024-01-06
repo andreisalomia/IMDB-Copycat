@@ -1,9 +1,9 @@
 [
   {
     "productionsContribution": [
-      "The Shawshank Redemption",
+      "Schindler's List",
       "The Godfather",
-      "Schindler's List"
+      "The Shawshank Redemption"
     ],
     "information": {
       "country": "UK",
@@ -17,7 +17,7 @@
       "age": 32
     },
     "userType": "Contributor",
-    "experience": "8",
+    "experience": 58,
     "favoriteProductions": [
       "The Shawshank Redemption",
       "Schindler's List",
@@ -38,8 +38,7 @@
     ],
     "username": "emily_wilson_789",
     "actorsContribution": [
-      "Viola Davis",
-      "Brad Pitt"
+      "Viola Davis"
     ]
   },
   {
@@ -487,7 +486,7 @@
       "age": 22
     },
     "userType": "Regular",
-    "experience": 102,
+    "experience": 107,
     "favoriteProductions": [
       "Black Swan",
       "Inception",

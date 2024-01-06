@@ -94,6 +94,23 @@ public class Admin<T extends Comparable<T>> extends Staff<T>{
         removeAssosiatedData(u);
     }
 
+    public static void removeUser(User u) {
+        IMDB imdb = IMDB.getInstance();
+        if (u.accountType == AccountType.Contributor) {
+//                    Get user with "admin" username
+            for (User user1 : imdb.users) {
+                if (user1.username.equals("admin")) {
+                    ((Staff<?>) user1).contributions.addAll(((Staff<?>) u).contributions);
+                    Parser.updateContributions((Staff<?>) user1);
+                }
+            }
+        }
+        imdb.users.remove(u);
+        Parser.removeUser(u);
+        removeAssosiatedData(u);
+        Parser.updateLists();
+    }
+
     private static void removeAssosiatedData(User<?> user) {
         // remove all data associated with user
 //        first remove the ratings

@@ -6,7 +6,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class User<T extends Comparable<T>> implements Observer {
-
     public static class Information {
         private Credentials credentials;
         String name;
@@ -185,6 +184,27 @@ public abstract class User<T extends Comparable<T>> implements Observer {
             System.exit(0);
         }
     }
+
+    public List<String> getFavoriteActors() {
+        List<String> favoriteActors = new ArrayList<>();
+        for (Comparable item : favorites) {
+            if (item instanceof Actor) {
+                favoriteActors.add(((Actor) item).name);
+            }
+        }
+        return favoriteActors;
+    }
+
+    public List<String> getFavoriteProductions() {
+        List<String> favoriteProductions = new ArrayList<>();
+        for (Comparable item : favorites) {
+            if (item instanceof Production) {
+                favoriteProductions.add(((Production) item).title);
+            }
+        }
+        return favoriteProductions;
+    }
+
 
     @Override
     public void update(String message) {

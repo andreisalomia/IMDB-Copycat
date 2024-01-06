@@ -1,4 +1,5 @@
 //package org.example;
+import javax.swing.*;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -29,11 +30,26 @@ public class IMDB {
     public void run() {
         loadDataJSON();
         universalAdmin();
-        loadObservers();
         chooseInterface();
-        userInterface.displayOutput("Welcome back to IMDB! Please enter your email and password to login.\n");
-        login();
-        startFlow(currentUser);
+        loadObservers();
+        if (userInterface instanceof GUI) {
+            login_GUI();
+        }
+        else {
+            login();
+            System.out.println("Logged in as " + currentUser.userInformation.name);
+            startFlow(currentUser);
+        }
+    }
+
+    public void login_GUI() {
+        LoginGUI loginGUI = new LoginGUI(users);
+
+        // Set the operation to be performed on closing the window
+        loginGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Set the window to be visible
+        loginGUI.setVisible(true);
     }
 
     private static void loadObservers() {
@@ -126,10 +142,6 @@ public class IMDB {
     }
 
     public void startFlow(User user) {
-        if (user == null) {
-            userInterface.displayOutput("Invalid user. Please try again.\n");
-            return;
-        }
         switch (user.accountType) {
             case Regular:
                 Flow.startRegularFlow((Regular) user);
@@ -184,6 +196,16 @@ public class IMDB {
         users.add(admin);
         Parser.addUserToJson(admin);
         Parser.parseUsers("src/accounts.json");
+    }
+
+    public void startPage(User user) {
+        if (user.accountType == AccountType.Admin) {
+            StartPage.startAdminPage((Admin) user);
+        } else if (user.accountType == AccountType.Contributor) {
+            StartPage.startContributorPage((Contributor) user);
+        } else {
+            StartPage.startRegularPage((Regular) user);
+        }
     }
 
     public class RequestsHolder {

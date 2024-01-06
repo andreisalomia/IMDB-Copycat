@@ -9,8 +9,8 @@
       "country": "UK",
       "gender": "Female",
       "credentials": {
-        "password": "P@ssw0rd!23",
-        "email": "emily.wilson@example.com"
+        "password": "4",
+        "email": "3"
       },
       "name": "Emily Wilson",
       "birthDate": "1991-03-17",
@@ -32,7 +32,9 @@
     ],
     "notifications": [
       "ProductionVasile Versaci, cel mai bun pregratar gateste orez cu lapte! that you rated has a new rating from susan_smith_123.\n",
-      "Production The Godfather that you added has a new rating from olivia_taylor_2425.\n"
+      "Production The Godfather that you added has a new rating from olivia_taylor_2425.\n",
+      "You received a new request from testRegular regarding Brad Pitt:\nBrad Pitt is fat",
+      "Production Parasite that you rated has a new rating from olivia_taylor_2425.\n"
     ],
     "username": "emily_wilson_789",
     "actorsContribution": [
@@ -103,6 +105,9 @@
       "Robert Downey Jr.",
       "Charlize Theron",
       "Daniel Radcliffe"
+    ],
+    "notifications": [
+      "Production Parasite that you rated has a new rating from olivia_taylor_2425.\n"
     ],
     "username": "david_brown_1011",
     "actorsContribution": [
@@ -175,6 +180,9 @@
     },
     "userType": "Contributor",
     "experience": "4",
+    "notifications": [
+      "Production Parasite that you rated has a new rating from olivia_taylor_2425.\n"
+    ],
     "username": "laura_williams_1617",
     "actorsContribution": [
       "Meryl Streep",
@@ -243,7 +251,8 @@
     ],
     "notifications": [
       "You received a new request from benjamin_taylor_3435 regarding Inception:\nThere's an error in the Inception movie details.The duration of the movie is 148 minutes.",
-      "You received a new request from susan_smith_123 regarding Inception:\nInception has missing info."
+      "You received a new request from susan_smith_123 regarding Inception:\nInception has missing info.",
+      "Production Parasite that you rated has a new rating from olivia_taylor_2425.\n"
     ],
     "username": "natalie_brown_2021",
     "actorsContribution": [
@@ -285,7 +294,7 @@
       "age": 29
     },
     "userType": "Regular",
-    "experience": 12,
+    "experience": 13,
     "username": "olivia_taylor_2425"
   },
   {
@@ -323,6 +332,9 @@
     },
     "userType": "Contributor",
     "experience": "12",
+    "notifications": [
+      "Production Parasite that you added has a new rating from olivia_taylor_2425.\n"
+    ],
     "username": "sophia_johnson_2829"
   },
   {
@@ -384,6 +396,9 @@
     },
     "userType": "Contributor",
     "experience": "16",
+    "notifications": [
+      "You received a new request from testRegular regarding Whiplash:\nWhiplash has a big problem"
+    ],
     "username": "mia_jones_3637"
   },
   {
@@ -444,7 +459,7 @@
         "password": "test",
         "email": "bossuAlMare@ymail.com"
       },
-      "nume": "Nicusor de la Braila",
+      "name": "Nicusor de la Braila",
       "birthDate": "1981-06-22",
       "age": 42
     },
@@ -464,25 +479,29 @@
       "country": "RO",
       "gender": "Male",
       "credentials": {
-        "password": "test",
-        "email": "reg@ular.ro"
+        "password": "2",
+        "email": "1"
       },
-      "nume": "Regular",
+      "name": "Regular",
       "birthDate": "1999-06-22",
       "age": 22
     },
     "userType": "Regular",
-    "experience": 100,
+    "experience": 102,
     "favoriteProductions": [
-      "Bahoi sare de pe pod",
+      "Black Swan",
+      "Inception",
+      "The Godfather",
       "Vasile Versaci, cel mai bun pregratar gateste orez cu lapte!"
     ],
     "favoriteActors": [
       "Bahoi",
-      "Vasile Versaci"
+      "Vasile Versaci",
+      "Viola Davis"
     ],
     "notifications": [
-      "Filmul \"Vasile Versaci, cel mai bun pregratar gateste orez cu lapte!\" pe care il ai in lista de favorite a primit un review de la utilizatorul \"emily_wilson_789\" -> 10"
+      "Filmul \"Vasile Versaci, cel mai bun pregratar gateste orez cu lapte!\" pe care il ai in lista de favorite a primit un review de la utilizatorul \"emily_wilson_789\" -> 10",
+      "Production Parasite that you rated has a new rating from olivia_taylor_2425.\n"
     ],
     "username": "testRegular"
   },
@@ -498,7 +517,7 @@
         "password": "6",
         "email": "5"
       },
-      "nume": "Contributor",
+      "name": "Contributor",
       "birthDate": "1997-06-22",
       "age": 24
     },

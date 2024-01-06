@@ -1,21 +1,13 @@
-//package org.example;
-import java.util.Scanner;
+import javax.swing.*;
 
 public class GUI implements UserInterface {
-    private Scanner scanner;
-
-    public GUI() {
-        scanner = new Scanner(System.in);
-    }
-
     @Override
     public String getInput() {
-        return scanner.nextLine();
+        return JOptionPane.showInputDialog(null, "Enter input:");
     }
 
     @Override
     public void displayOutput(String output) {
-        UserInterface userInterface = IMDB.getInstance().userInterface;
-        userInterface.displayOutput(output);
+        JOptionPane.showMessageDialog(null, output);
     }
 }

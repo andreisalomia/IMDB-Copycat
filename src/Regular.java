@@ -75,6 +75,7 @@ public class Regular<T extends Comparable<T>> extends User<T> implements Request
                 prod.ratings.add(r);
                 prod.averageRating = Production.calculateAverageRating(prod.ratings);
                 Parser.writeRatings();
+                Parser.updateLists();
                 if(!alreadyRated)
                     this.updateExperience(new ReviewStrategy().calculateExperience());
                 break;

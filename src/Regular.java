@@ -1,8 +1,3 @@
-//package org.example;
-
-import java.util.Comparator;
-import java.util.TreeSet;
-
 public class Regular<T extends Comparable<T>> extends User<T> implements RequestsManager {
     public Regular(Information info, AccountType type, String username, int experience) {
         super(info, type, username, experience);
@@ -64,7 +59,6 @@ public class Regular<T extends Comparable<T>> extends User<T> implements Request
         boolean alreadyRated = false;
         for(Production prod : imdb.productions) {
             if(prod.equals(p)) {
-//                If user has already rated this production, remove the old rating
                 for(Rating rating : prod.ratings) {
                     if(rating.username.equals(this.username)) {
                         prod.ratings.remove(rating);

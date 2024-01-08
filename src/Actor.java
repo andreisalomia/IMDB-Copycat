@@ -33,7 +33,7 @@ public class Actor implements Comparable<Object> {
             }
         }
 
-        builder.append("----------------------------\n"); // Separator for better readability
+        builder.append("----------------------------\n");
         UserInterface userInterface = IMDB.getInstance().userInterface;
         userInterface.displayOutput(builder.toString());
     }

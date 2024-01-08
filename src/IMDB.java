@@ -12,7 +12,6 @@ public class IMDB {
     public List<Request> requests;
     public List<Production> productions;
 
-    // Constructor
     private IMDB() {
         this.users = new ArrayList<>();
         this.actors = new ArrayList<>();
@@ -45,10 +44,8 @@ public class IMDB {
     public void login_GUI() {
         LoginGUI loginGUI = new LoginGUI(users);
 
-        // Set the operation to be performed on closing the window
         loginGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Set the window to be visible
         loginGUI.setVisible(true);
     }
 
@@ -70,7 +67,6 @@ public class IMDB {
                 }
             }
         }
-//        for every production load the reviewers as observers and the contributors
         for(Production production : imdb.productions) {
             for(User user : imdb.users) {
                 if(user instanceof Contributor && ((Contributor<?>) user).contributions.contains(production)) {
@@ -102,7 +98,6 @@ public class IMDB {
         productions = Parser.parseProductions("src/production.json");
         requests = Parser.parseRequests("src/requests.json");
         users = Parser.parseUsers("src/accounts.json");
-//        for each movie/actor issue request type add it to the userRequests list of the userTo
         for (Request request : requests) {
             if (request.type == RequestTypes.ACTOR_ISSUE || request.type == RequestTypes.MOVIE_ISSUE) {
                 for (User user : users) {
@@ -183,13 +178,11 @@ public class IMDB {
     }
 
     private void universalAdmin() {
-//        check if in the users lists there is an admin with the username "admin"
         for (User user : IMDB.getInstance().users) {
             if (user.username.equals("admin")) {
                 return;
             }
         }
-//        if not create one
         Credentials credentials = new Credentials("admin", "admin");
         LocalDate birthDate = LocalDate.now();
         User<?> admin = UserFactory.createUser(AccountType.Admin, "admin", credentials, "admin", null, 0, 'M', birthDate, null);

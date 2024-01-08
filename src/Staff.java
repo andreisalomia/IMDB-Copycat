@@ -32,7 +32,6 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
 
     @Override
     public void addProductionSystem(String name) {
-        // add a production to the system
         IMDB imdb = IMDB.getInstance();
         Scanner scanner = new Scanner(System.in);
 
@@ -68,7 +67,6 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
             }
             ArrayList<String> actors = new ArrayList<>();
             while(true) {
-                //gather information about the actors
                 imdb.userInterface.displayOutput("Enter the names of the actors of the movie: ");
                 String actorName = scanner.nextLine();
                 actors.add(actorName);
@@ -80,7 +78,6 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
             }
             ArrayList<Genre> genres = new ArrayList<>();
             while(true) {
-                //gather information about the genres
                 imdb.userInterface.displayOutput("Enter the genre of the movie: ");
                 String genreName = scanner.nextLine();
                 Genre genre = Genre.valueOf(genreName.toUpperCase());
@@ -91,7 +88,6 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
                     break;
                 }
             }
-//            add observers and notify them
             Movie movie = new Movie(name, directors, actors, genres, new ArrayList<>(), description, duration, releaseYear);
             imdb.productions.add(movie);
             this.contributions.add(movie);
@@ -102,7 +98,6 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
             Parser.updateContributions(this);
 
         } else if (prodType.equalsIgnoreCase("series")) {
-//            Same thing for series but respects Series attributes
             imdb.userInterface.displayOutput("Enter the release year of the series: ");
             int releaseYear = scanner.nextInt();
             scanner.nextLine();
@@ -118,14 +113,14 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
                 List<Episode> seasonEpisodes = new ArrayList<>();
                 imdb.userInterface.displayOutput("Enter the number of episodes for Season " + seasonNumber + ": ");
                 int numEpisodes = scanner.nextInt();
-                scanner.nextLine(); // Consume the newline character
+                scanner.nextLine();
 
                 for (int episodeNumber = 1; episodeNumber <= numEpisodes; episodeNumber++) {
                     imdb.userInterface.displayOutput("Enter the title of Episode " + episodeNumber + " for Season " + seasonNumber + ": ");
                     String episodeTitle = scanner.nextLine();
                     imdb.userInterface.displayOutput("Enter the duration of Episode " + episodeNumber + " for Season " + seasonNumber + " (in minutes): ");
                     int episodeDuration = scanner.nextInt();
-                    scanner.nextLine(); // Consume the newline character
+                    scanner.nextLine();
 
                     Episode episode = new Episode(episodeTitle, episodeDuration);
                     seasonEpisodes.add(episode);
@@ -136,7 +131,6 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
 
             ArrayList<String> directors = new ArrayList<>();
             while(true) {
-                //gather information about the directors
                 imdb.userInterface.displayOutput("Enter the names of the directors of the series: ");
                 String directorName = scanner.nextLine();
                 directors.add(directorName);
@@ -149,7 +143,6 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
 
             ArrayList<String> actors = new ArrayList<>();
             while(true) {
-                //gather information about the actors
                 imdb.userInterface.displayOutput("Enter the names of the actors of the series: ");
                 String actorName = scanner.nextLine();
                 actors.add(actorName);
@@ -162,7 +155,6 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
 
             ArrayList<Genre> genres = new ArrayList<>();
             while(true) {
-                //gather information about the genres
                 imdb.userInterface.displayOutput("Enter the genre of the series: ");
                 String genreName = scanner.nextLine();
                 Genre genre = Genre.valueOf(genreName.toUpperCase());
@@ -220,7 +212,6 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
 
     @Override
     public void removeProductionSystem(Production p) {
-//         remove a production from the system
         IMDB imdb = IMDB.getInstance();
         imdb.productions.remove(p);
         this.contributions.remove(p);
@@ -230,7 +221,6 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
 
     @Override
     public void removeActorSystem(Actor a) {
-        // remove an actor from the system
         IMDB imdb = IMDB.getInstance();
         imdb.actors.remove(a);
         this.contributions.remove(a);
@@ -362,7 +352,6 @@ public abstract class Staff<T extends Comparable<T>> extends User<T> implements 
                 Update.updateActorBio(a);
                 break;
             case 3:
-//               display all actor performances and remember the number the user chooses
                 Update.updateActorPerformance(a);
                 break;
             case 4:

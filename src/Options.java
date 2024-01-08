@@ -58,16 +58,15 @@ public class Options {
             int choice = ((TerminalUI) imdb.userInterface).getNumber();
             validateUserInput(choice, margin);
             return choice;
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalCommandException e) {
             imdb.userInterface.displayOutput("Error: " + e.getMessage() + "\n");
-            return -1; // Or any other default value
+            return -1;
         }
     }
 
-    private static void validateUserInput(int userInput, int margin) {
-        // Check if the input is a valid option
+    private static void validateUserInput(int userInput, int margin) throws IllegalCommandException {
         if (userInput < 1 || userInput > margin) {
-            throw new IllegalArgumentException("Invalid input. Please enter a number in the given range.");
+            throw new IllegalCommandException("Invalid input. Please enter a number in the given range.");
         }
     }
 
@@ -142,7 +141,6 @@ public class Options {
     public static int viewSolveRequestsChoices(Staff user) {
         IMDB imdb = IMDB.getInstance();
         imdb.userInterface.displayOutput("Choose request or exit: \n");
-//        display each request the contributor/admin has
         List<Request> requests = user.userRequests;
         for (int i = 0; i < requests.size(); i++) {
             imdb.userInterface.displayOutput("\t" + (i + 1) + ") " + requests.get(i).description + "\n");

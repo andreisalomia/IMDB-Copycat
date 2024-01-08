@@ -1,6 +1,3 @@
-//package org.example;
-import java.awt.*;
-
 public class Flow {
     public static void startRegularFlow(Regular user) {
         IMDB imdb = IMDB.getInstance();

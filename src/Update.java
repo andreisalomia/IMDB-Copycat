@@ -25,7 +25,6 @@ public class Update {
         Parser.updateLists();
     }
 
-    //    duration
     public static void updateMovieDuration(Movie p) {
         IMDB imdb = IMDB.getInstance();
         int input;
@@ -45,7 +44,6 @@ public class Update {
         String input;
         imdb.userInterface.displayOutput("Enter new production release date: ");
         input = imdb.userInterface.getInput();
-//                        convert input to number
         p.releaseYear = Integer.parseInt(input);
         Parser.writeProductions(imdb.productions);
         Parser.updateLists();
@@ -56,8 +54,6 @@ public class Update {
         String input;
         imdb.userInterface.displayOutput("Enter new production genres: ");
         List<Genre> genres = new ArrayList<>();
-//                        Ask the user to insert a genre after another after each genre inserted the user must type y/n
-//                        Also tell the user what to do
         boolean check = true;
         while (check) {
             imdb.userInterface.displayOutput("Enter genre: ");
@@ -79,8 +75,6 @@ public class Update {
         String input;
         imdb.userInterface.displayOutput("Enter new production actors: ");
         List<String> actors = new ArrayList<>();
-//                        Ask the user to insert an actor after another after each actor inserted the user must type y/n
-//                        Also tell the user what to do
         boolean check = true;
         while (check) {
             imdb.userInterface.displayOutput("Enter actor: ");
@@ -99,13 +93,10 @@ public class Update {
 
 
     public static void updateMovieDirectors(Movie p) {
-        //                        update movie directors
         IMDB imdb = IMDB.getInstance();
         String input;
         imdb.userInterface.displayOutput("Enter new production directors: ");
         List<String> directors = new ArrayList<>();
-//                        Ask the user to insert a director after another after each director inserted the user must type y/n
-//                        Also tell the user what to do
         boolean check = true;
         while (check) {
             imdb.userInterface.displayOutput("Enter director: ");
@@ -153,13 +144,10 @@ public class Update {
     }
 
     public static void updateSeriesGenre(Series p) {
-        //                        genres
         IMDB imdb = IMDB.getInstance();
         String input;
         imdb.userInterface.displayOutput("Enter new production genres: ");
         List<Genre> genres = new ArrayList<>();
-//                        Ask the user to insert a genre after another after each genre inserted the user must type y/n
-//                        Also tell the user what to do
         boolean check = true;
         while (check) {
             imdb.userInterface.displayOutput("Enter genre: ");
@@ -181,8 +169,6 @@ public class Update {
         String input;
         imdb.userInterface.displayOutput("Enter new production actors: ");
         List<String> actors = new ArrayList<>();
-//                        Ask the user to insert an actor after another after each actor inserted the user must type y/n
-//                        Also tell the user what to do
         boolean check = true;
         while (check) {
             imdb.userInterface.displayOutput("Enter actor: ");
@@ -200,13 +186,10 @@ public class Update {
     }
 
     public static void updateSeriesDirectors(Series p) {
-        //                        directors
         IMDB imdb = IMDB.getInstance();
         String input;
         imdb.userInterface.displayOutput("Enter new production directors: ");
         List<String> directors = new ArrayList<>();
-//                        Ask the user to insert a director after another after each director inserted the user must type y/n
-//                        Also tell the user what to do
         boolean check = true;
         while (check) {
             imdb.userInterface.displayOutput("Enter director: ");
@@ -224,7 +207,6 @@ public class Update {
     }
 
     public static void updateSeriesNrSeasons(Series p) {
-        //                        update the number of seasons
         IMDB imdb = IMDB.getInstance();
         int input;
         imdb.userInterface.displayOutput("Enter new number of seasons: ");
@@ -252,7 +234,6 @@ public class Update {
             return;
         }
 
-        // Choose episode
         imdb.userInterface.displayOutput("Choose episode: \n");
         List<Episode> episodesInSeason = ((Series) p).episodes.get("Season " + seasonNumber);
         for (int i = 0; i < episodesInSeason.size(); i++) {
@@ -264,7 +245,6 @@ public class Update {
             return;
         }
 
-        // Choose what to update: episode title or episode duration
         imdb.userInterface.displayOutput("Choose what you want to update: \n");
         imdb.userInterface.displayOutput("\t1) Episode title\n");
         imdb.userInterface.displayOutput("\t2) Episode duration\n");
@@ -501,7 +481,6 @@ public class Update {
         }
     }
 
-    // Adapted functions for GUI input/output
     public static void updateActorNameGUI(Actor item) {
         String newName = JOptionPane.showInputDialog("Enter new actor name:");
         if (newName != null) {
@@ -525,13 +504,13 @@ public class Update {
             int modify = JOptionPane.showOptionDialog(null, "Choose what you want to modify:", "Modify Option",
                     JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
-            if (modify == 0) { // Title
+            if (modify == 0) {
                 String newTitle = JOptionPane.showInputDialog("Enter new title:");
                 if (newTitle != null) {
                     item.filmography.get(performanceNumber).name = newTitle;
                     updateActorData(item);
                 }
-            } else if (modify == 1) { // Type
+            } else if (modify == 1) {
                 String newType = (String) JOptionPane.showInputDialog(null, "Choose new type:", "Type Selection",
                         JOptionPane.QUESTION_MESSAGE, null, Actor.Type.values(), Actor.Type.values()[0]);
                 if (newType != null) {

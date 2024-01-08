@@ -29,7 +29,6 @@ public class AdminMenu {
 
             JPanel buttonsPanel = new JPanel(new GridLayout(10, 1));
 
-            // Button 1 - Navigate back to StartPage
             JButton backButton = new JButton("Go Back");
             backButton.addActionListener(e -> {
                 adminMenuFrame.setVisible(false);
@@ -37,7 +36,6 @@ public class AdminMenu {
                 StartPage.startAdminPage(user);
             });
 
-            // Button 2 to Button 9 - Additional buttons
             JButton prod_button = new JButton("Productions");
             JButton actors_button = new JButton("Actors");
             JButton notif_button = new JButton("Notifications");
@@ -50,22 +48,18 @@ public class AdminMenu {
 
             // lambda expressions for buttons
             prod_button.addActionListener(e -> {
-                // Display all productions on the right panel
                 displayAllProductions();
             });
 
             actors_button.addActionListener(e -> {
-                // Display all actors on the right panel
                 displayAllActors();
             });
 
             search_button.addActionListener(e -> {
-                // Display search page
                 initializeSearchPage();
             });
 
             logout_button.addActionListener(e -> {
-                // Logout
                 logout_page();
             });
 
@@ -74,22 +68,18 @@ public class AdminMenu {
             });
 
             fav_button.addActionListener(e -> {
-                // Display favorites
                 displayFavorites(user);
             });
 
             users_button.addActionListener(e -> {
-                // Display add/delete users page
                 initializeAddDeleteUsersPage(user);
             });
 
             add_delete_prod_button.addActionListener(e -> {
-                // Display add/delete productions page
                 initializeAddDeleteProductionsPage(user);
             });
 
             solve_req_button.addActionListener(e -> {
-                // Display solve requests page
                 initializeSolveRequestsPage();
             });
 
@@ -104,13 +94,10 @@ public class AdminMenu {
             buttonsPanel.add(solve_req_button);
             buttonsPanel.add(logout_button);
 
-            // Combine left panel components
             leftPanel.add(buttonsPanel);
 
-            // Add components to the split pane
             splitPane.setLeftComponent(leftPanel);
             splitPane.setRightComponent(rightPanel);
-            // split at 180 pixels
             splitPane.setDividerLocation(180);
 
             adminMenuFrame.add(splitPane);
@@ -120,18 +107,15 @@ public class AdminMenu {
 
     private static void initializeAddDeleteUsersPage(Admin user) {
         SwingUtilities.invokeLater(() -> {
-            // Create columns and data for the tables
             String[] userColumnNames = {"Users available for deletion"};
             Object[][] userData = getUsersToDelete(user);
 
-            // Create the tables
             JTable usersTable = new JTable(userData, userColumnNames);
 
             usersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
             JScrollPane usersScrollPane = new JScrollPane(usersTable);
 
-            // Create buttons
             JButton userAddButton = new JButton("Add User to System");
             JButton userDeleteButton = new JButton("Remove from System");
 
@@ -145,24 +129,19 @@ public class AdminMenu {
                 refreshUserTableSystem(usersTable);
             });
 
-            // Create panels for buttons and tables
             JPanel userButtonPanel = new JPanel();
             userButtonPanel.add(userAddButton);
             userButtonPanel.add(userDeleteButton);
 
-            // Create combined panels with buttons and tables
             JPanel userCombinedPanel = new JPanel(new BorderLayout());
             userCombinedPanel.add(userButtonPanel, BorderLayout.NORTH);
             userCombinedPanel.add(usersScrollPane, BorderLayout.CENTER);
 
-            // Remove previous components from the right panel
             rightPanel.removeAll();
 
-            // Add the combined panels to the right panel
             rightPanel.setLayout(new GridLayout(1, 1)); // 1 row, 1 column
             rightPanel.add(userCombinedPanel);
 
-            // Refresh the layout
             rightPanel.revalidate();
             rightPanel.repaint();
         });
@@ -224,10 +203,8 @@ public class AdminMenu {
         panel.add(new JLabel("Birth Day:"));
         panel.add(dayTextField);
 
-        // Show the dialog
         int result = JOptionPane.showConfirmDialog(null, panel, "Add User", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
-            // Process the user input
             int accountTypeIndex = accountTypeComboBox.getSelectedIndex() + 1;
             AccountType type = AccountType.values()[accountTypeIndex - 1];
 
@@ -275,14 +252,12 @@ public class AdminMenu {
 
     private static void initializeAddDeleteProductionsPage(Admin user) {
         SwingUtilities.invokeLater(() -> {
-            // Create columns and data for the tables
             String[] actorColumnNames = {"Added Actors"};
             Object[][] actorData = getActorContributionsData(user);
 
             String[] productionColumnNames = {"Added Productions"};
             Object[][] productionData = getProductionContributionsData(user);
 
-            // Create the tables
             JTable actorsTable = new JTable(actorData, actorColumnNames);
             JTable productionsTable = new JTable(productionData, productionColumnNames);
 
@@ -292,7 +267,6 @@ public class AdminMenu {
             JScrollPane actorsScrollPane = new JScrollPane(actorsTable);
             JScrollPane productionsScrollPane = new JScrollPane(productionsTable);
 
-            // Create buttons
             JButton actorAddButton = new JButton("Add Actor to System");
             JButton actorDeleteButton = new JButton("Remove from System");
 
@@ -319,7 +293,6 @@ public class AdminMenu {
                 refreshProductionTableSystem(productionsTable, user.contributions);
             });
 
-            // Create panels for buttons and tables
             JPanel actorButtonPanel = new JPanel();
             actorButtonPanel.add(actorAddButton);
             actorButtonPanel.add(actorDeleteButton);
@@ -328,7 +301,6 @@ public class AdminMenu {
             productionButtonPanel.add(productionAddButton);
             productionButtonPanel.add(productionDeleteButton);
 
-            // Create combined panels with buttons and tables
             JPanel actorCombinedPanel = new JPanel(new BorderLayout());
             actorCombinedPanel.add(actorButtonPanel, BorderLayout.NORTH);
             actorCombinedPanel.add(actorsScrollPane, BorderLayout.CENTER);
@@ -337,15 +309,12 @@ public class AdminMenu {
             productionCombinedPanel.add(productionButtonPanel, BorderLayout.NORTH);
             productionCombinedPanel.add(productionsScrollPane, BorderLayout.CENTER);
 
-            // Remove previous components from the right panel
             rightPanel.removeAll();
 
-            // Add the combined panels to the right panel
             rightPanel.setLayout(new GridLayout(1, 2)); // 1 row, 2 columns
             rightPanel.add(actorCombinedPanel);
             rightPanel.add(productionCombinedPanel);
 
-            // Refresh the layout
             rightPanel.revalidate();
             rightPanel.repaint();
         });
@@ -368,7 +337,6 @@ public class AdminMenu {
         if (selectedRow != -1) {
             String productionTitle = (String) productionsTable.getValueAt(selectedRow, 0);
 
-            // Find the production in the database
             Production productionToRemove = null;
             for (Production production : IMDB.getInstance().productions) {
                 if (production.title.equalsIgnoreCase(productionTitle)) {
@@ -378,7 +346,6 @@ public class AdminMenu {
             }
             Admin user = (Admin) IMDB.getInstance().currentUser;
 
-            // Remove the production from favorites
             if (productionToRemove != null) {
                 user.removeProductionSystem(productionToRemove);
             }
@@ -388,26 +355,20 @@ public class AdminMenu {
     private static void handleAddProductionSystemButtonClicked(JTable productionsTable, Admin user) {
         IMDB imdb = IMDB.getInstance();
 
-        // Prompt the user for production type
         String[] options = {"Movie", "Series"};
         String prodType = (String) JOptionPane.showInputDialog(null, "Choose production type:", "Production Type", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
         if (prodType == null) {
-            // User canceled or closed the dialog
             return;
         }
 
-        // Common attributes for both Movie and Series
         int releaseYear = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the release year:"));
 
-        // Additional attributes for Movie
         if (prodType.equalsIgnoreCase("Movie")) {
-            // gather information about the movie
             String name = JOptionPane.showInputDialog(null, "Enter the name of the movie:");
             int duration = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the duration of the movie:"));
             String description = JOptionPane.showInputDialog(null, "Enter the description of the movie:");
 
-            // Create a list to store directors, actors, genres
             List<String> directors = gatherInformation("directors");
             List<String> actors = gatherInformation("actors");
             List<Genre> genres = gatherGenres();
@@ -420,12 +381,10 @@ public class AdminMenu {
             user.updateExperience(new AddToSystemStrategy().calculateExperience());
             Parser.updateContributions(user);
         } else if (prodType.equalsIgnoreCase("Series")) {
-            // gather information about the series
             String name = JOptionPane.showInputDialog(null, "Enter the name of the series:");
             int numberOfSeasons = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the number of seasons:"));
             String description = JOptionPane.showInputDialog(null, "Enter the description of the series:");
 
-            // Create a list to store directors, actors, genres
             List<String> directors = gatherInformation("directors");
             List<String> actors = gatherInformation("actors");
             List<Genre> genres = gatherGenres();
@@ -441,7 +400,6 @@ public class AdminMenu {
             Parser.updateContributions(user);
         }
 
-        // Refresh the table
         refreshProductionTableSystem(productionsTable, user.contributions);
     }
 
@@ -493,7 +451,6 @@ public class AdminMenu {
         if (selectedRow != -1) {
             String actorName = (String) actorsTable.getValueAt(selectedRow, 0);
 
-            // Find the actor in the database
             Actor actorToRemove = null;
             for (Actor actor : IMDB.getInstance().actors) {
                 if (actor.name.equalsIgnoreCase(actorName)) {
@@ -502,7 +459,6 @@ public class AdminMenu {
                 }
             }
             Admin user = (Admin) IMDB.getInstance().currentUser;
-            // Remove the actor from favorites
             if (actorToRemove != null) {
                 user.removeActorSystem(actorToRemove);
             }
@@ -510,41 +466,30 @@ public class AdminMenu {
     }
 
     private static void handleAddActorSystemButtonClicked(JTable actorsTable) {
-        // Prompt the user for actor information
         String name = JOptionPane.showInputDialog(null, "Enter actor's name:");
         String biography = JOptionPane.showInputDialog(null, "Enter actor's biography:");
 
-        // Create a list to store filmography entries
         List<Actor.Pair<String, Actor.Type>> filmography = new ArrayList<>();
 
-        // Prompt the user for filmography entries until they choose to stop
         while (true) {
-            // Prompt for production name
             String productionName = JOptionPane.showInputDialog(null, "Enter production name:");
             if (productionName == null) {
-                // User canceled or closed the dialog
                 break;
             }
 
-            // Prompt for production type
             String[] options = {Actor.Type.MOVIE.name(), Actor.Type.SERIES.name()};
             String productionType = (String) JOptionPane.showInputDialog(null, "Choose production type:", "Production Type", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (productionType == null) {
-                // User canceled or closed the dialog
                 break;
             }
 
-            // Convert production type string to enum
             Actor.Type type = Actor.Type.valueOf(productionType);
 
-            // Add the filmography entry to the list
             filmography.add(new Actor.Pair<>(productionName, type));
         }
 
-        // Create a new Actor object
         Actor actor = new Actor(name, filmography, biography);
 
-        // Add the new actor to the table's data model
         refreshActorTableSystem(actorsTable, ((Admin) IMDB.getInstance().currentUser).contributions);
 
         IMDB.getInstance().actors.add(actor);
@@ -563,7 +508,6 @@ public class AdminMenu {
         List<Request> all_requests = IMDB.RequestsHolder.getRequests();
         requests.addAll(all_requests);
 
-        // Create a table model for the requests
         model = new DefaultTableModel();
         model.addColumn("Type");
         model.addColumn("Description");
@@ -572,18 +516,14 @@ public class AdminMenu {
             model.addRow(new Object[]{request.type, request.description});
         }
 
-        // Create the table
         JTable requestsTable = new JTable(model);
 
-        // Set single selection mode
         requestsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        // Create "Solve" button
         JButton solveButton = new JButton("Solve");
         solveButton.addActionListener(e -> {
             int selectedRow = requestsTable.getSelectedRow();
             if (selectedRow != -1) {
-                // Get the selected request from the table
                 Request selectedRequest = requests.get(selectedRow);
                 solveRequest(selectedRequest);
                 model.removeRow(selectedRow);
@@ -592,43 +532,33 @@ public class AdminMenu {
             }
         });
 
-        // Create "Delete" button
         JButton deleteButton = new JButton("Delete");
         deleteButton.addActionListener(e -> {
             int selectedRow = requestsTable.getSelectedRow();
             if (selectedRow != -1) {
-                // Get the selected request from the table
                 Request selectedRequest = requests.get(selectedRow);
-                // Implement the logic to delete the request
                 deleteRequest(selectedRequest);
-                // Remove the row from the table
                 model.removeRow(selectedRow);
             } else {
                 JOptionPane.showMessageDialog(null, "Please select a request to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
             }
         });
 
-        // Create a panel for buttons
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.add(solveButton);
         buttonsPanel.add(deleteButton);
 
-        // Create a panel for the table
         JPanel tablePanel = new JPanel(new BorderLayout());
         tablePanel.add(new JScrollPane(requestsTable), BorderLayout.CENTER);
 
-        // Create a panel to hold the table and buttons
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(tablePanel, BorderLayout.CENTER);
         mainPanel.add(buttonsPanel, BorderLayout.SOUTH);
 
-        // Remove previous components from the right panel
         rightPanel.removeAll();
 
-        // Add the main panel to the right panel
         rightPanel.add(mainPanel);
 
-        // Refresh the layout
         rightPanel.revalidate();
         rightPanel.repaint();
     }
@@ -653,7 +583,6 @@ public class AdminMenu {
         Parser.updateLists();
     }
 
-    // Dummy method, replace with your actual implementation
     private static void deleteRequest(Request r) {
         IMDB imdb = IMDB.getInstance();
         Admin user = (Admin) imdb.currentUser;
@@ -667,14 +596,12 @@ public class AdminMenu {
 
     private static void displayFavorites(Admin user) {
         SwingUtilities.invokeLater(() -> {
-            // Create columns and data for the tables
             String[] actorColumnNames = {"Favorite Actors"};
             Object[][] actorData = getActorData();
 
             String[] productionColumnNames = {"Favorite Productions"};
             Object[][] productionData = getProductionData();
 
-            // Create the tables
             JTable actorsTable = new JTable(actorData, actorColumnNames);
             JTable productionsTable = new JTable(productionData, productionColumnNames);
 
@@ -684,7 +611,6 @@ public class AdminMenu {
             JScrollPane actorsScrollPane = new JScrollPane(actorsTable);
             JScrollPane productionsScrollPane = new JScrollPane(productionsTable);
 
-            // Create buttons
             JButton actorAddButton = new JButton("Add Actor to Favorites");
             JButton actorDeleteButton = new JButton("Remove from Favorites");
 
@@ -711,7 +637,6 @@ public class AdminMenu {
                 refreshProductionTable(productionsTable);
             });
 
-            // Create panels for buttons and tables
             JPanel actorButtonPanel = new JPanel();
             actorButtonPanel.add(actorAddButton);
             actorButtonPanel.add(actorDeleteButton);
@@ -720,7 +645,6 @@ public class AdminMenu {
             productionButtonPanel.add(productionAddButton);
             productionButtonPanel.add(productionDeleteButton);
 
-            // Create combined panels with buttons and tables
             JPanel actorCombinedPanel = new JPanel(new BorderLayout());
             actorCombinedPanel.add(actorButtonPanel, BorderLayout.NORTH);
             actorCombinedPanel.add(actorsScrollPane, BorderLayout.CENTER);
@@ -729,22 +653,18 @@ public class AdminMenu {
             productionCombinedPanel.add(productionButtonPanel, BorderLayout.NORTH);
             productionCombinedPanel.add(productionsScrollPane, BorderLayout.CENTER);
 
-            // Remove previous components from the right panel
             rightPanel.removeAll();
 
-            // Add the combined panels to the right panel
             rightPanel.setLayout(new GridLayout(1, 2)); // 1 row, 2 columns
             rightPanel.add(actorCombinedPanel);
             rightPanel.add(productionCombinedPanel);
 
-            // Refresh the layout
             rightPanel.revalidate();
             rightPanel.repaint();
         });
     }
 
     private static Object[][] getActorData() {
-        // Populate data from the user's favorite actors
         List<String> favoriteActors = IMDB.getInstance().currentUser.getFavoriteActors();
 
         int size = favoriteActors.size();
@@ -794,7 +714,6 @@ public class AdminMenu {
     }
 
     private static Object[][] getProductionData() {
-        // Populate data from the user's favorite productions
         List<String> favoriteProductions = IMDB.getInstance().currentUser.getFavoriteProductions();
 
         int size = favoriteProductions.size();
@@ -812,7 +731,6 @@ public class AdminMenu {
 
         Actor a = null;
         if (actor != null && !actor.isEmpty()) {
-            // Get the actor from the database
             for (Actor actor1 : IMDB.getInstance().actors) {
                 if (actor1.name.equalsIgnoreCase(actor)) {
                     a = actor1;
@@ -822,7 +740,6 @@ public class AdminMenu {
             if (a != null)
                 IMDB.getInstance().currentUser.addActorToFavorites(a);
         }
-//        display actor not found
         IMDB.getInstance().userInterface.displayOutput("Actor not found");
     }
 
@@ -831,7 +748,6 @@ public class AdminMenu {
         if (selectedRow != -1) {
             String actorName = (String) actorsTable.getValueAt(selectedRow, 0);
 
-            // Find the actor in the database
             Actor actorToRemove = null;
             for (Actor actor : IMDB.getInstance().actors) {
                 if (actor.name.equalsIgnoreCase(actorName)) {
@@ -840,7 +756,6 @@ public class AdminMenu {
                 }
             }
 
-            // Remove the actor from favorites
             if (actorToRemove != null) {
                 IMDB.getInstance().currentUser.removeActorFromFavourites(actorToRemove);
             }
@@ -848,7 +763,6 @@ public class AdminMenu {
     }
 
     private static void refreshActorTable(JTable actorsTable) {
-        // Refresh the actor table after adding or removing items
         Object[][] newData = getActorData();
         DefaultTableModel model = new DefaultTableModel(newData, new String[]{"Favorite Actors"});
         actorsTable.setModel(model);
@@ -858,7 +772,6 @@ public class AdminMenu {
         String production = JOptionPane.showInputDialog("", "Enter favorite production:");
 
         if (production != null && !production.isEmpty()) {
-            // Get the production from the database
             Production p = null;
             for (Production production1 : IMDB.getInstance().productions) {
                 if (production1.title.equalsIgnoreCase(production)) {
@@ -869,7 +782,6 @@ public class AdminMenu {
             if (p != null)
                 IMDB.getInstance().currentUser.addProductionToFavorites(p);
         }
-//        display production not found
         IMDB.getInstance().userInterface.displayOutput("Production not found");
     }
 
@@ -878,7 +790,6 @@ public class AdminMenu {
         if (selectedRow != -1) {
             String productionTitle = (String) productionsTable.getValueAt(selectedRow, 0);
 
-            // Find the production in the database
             Production productionToRemove = null;
             for (Production production : IMDB.getInstance().productions) {
                 if (production.title.equalsIgnoreCase(productionTitle)) {
@@ -887,7 +798,6 @@ public class AdminMenu {
                 }
             }
 
-            // Remove the production from favorites
             if (productionToRemove != null) {
                 IMDB.getInstance().currentUser.removeProductionFromFavourites(productionToRemove);
             }
@@ -895,30 +805,25 @@ public class AdminMenu {
     }
 
     private static void refreshProductionTable(JTable productionsTable) {
-        // Refresh the production table after adding or removing items
         Object[][] newData = getProductionData();
         DefaultTableModel model = new DefaultTableModel(newData, new String[]{"Favorite Productions"});
         productionsTable.setModel(model);
     }
 
     private static void displayAllProductions() {
-        // Create three buttons
         JButton genreButton = new JButton("Genre");
         JButton numberOfReviewsButton = new JButton("Number of Reviews");
         JButton clearFiltersButton = new JButton("Clear Filters");
 
-        // Add action listeners to the buttons
         genreButton.addActionListener(e -> handleGenreButtonClicked());
         numberOfReviewsButton.addActionListener(e -> handleNumberOfReviewsButtonClicked());
         clearFiltersButton.addActionListener(e -> handleClearFiltersButtonClicked());
 
-        // Create a panel for the buttons
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10)); // Adjust layout as needed
         buttonsPanel.add(genreButton);
         buttonsPanel.add(numberOfReviewsButton);
         buttonsPanel.add(clearFiltersButton);
-//        make a new list of all the productions that have the selected genres
         List<Production> finalProd = new ArrayList<>();
         for (Production production : IMDB.getInstance().productions) {
             if (selectedGenres == null || selectedGenres.isEmpty()) {
@@ -939,9 +844,7 @@ public class AdminMenu {
             }
         }
 
-        // Create a panel with productions
         JPanel productionsPanel = createProductionsPanel(finalProd);
-        // Create a combined panel with buttons and productions
         JPanel combinedPanel = new JPanel();
         combinedPanel.setLayout(new BorderLayout());
         combinedPanel.add(buttonsPanel, BorderLayout.NORTH);
@@ -949,7 +852,6 @@ public class AdminMenu {
 
         JScrollPane scrollPane = new JScrollPane(combinedPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        // Update the right panel with the scrollPane
         updateRightPanel(scrollPane);
     }
 
@@ -960,27 +862,22 @@ public class AdminMenu {
     }
 
     private static void handleNumberOfReviewsButtonClicked() {
-        // Create a slider with a range from 0 to a maximum value (e.g., 20)
         JSlider reviewsSlider = new JSlider(JSlider.HORIZONTAL, 0, 20, 0);
         reviewsSlider.setMajorTickSpacing(1);
         reviewsSlider.setMinorTickSpacing(1);
         reviewsSlider.setPaintTicks(true);
         reviewsSlider.setPaintLabels(true);
 
-        // Customize appearance of the slider
-        reviewsSlider.setLabelTable(reviewsSlider.createStandardLabels(1)); // Display labels at major ticks
-        reviewsSlider.setFont(new Font("Arial", Font.PLAIN, 12)); // Adjust font size
+        reviewsSlider.setLabelTable(reviewsSlider.createStandardLabels(1));
+        reviewsSlider.setFont(new Font("Arial", Font.PLAIN, 12));
 
-        // Create the panel to hold the slider
         JPanel sliderPanel = new JPanel(new BorderLayout());
         sliderPanel.add(new JLabel("Select Minimum Number of Reviews:"), BorderLayout.NORTH);
         sliderPanel.add(reviewsSlider, BorderLayout.CENTER);
 
-        // Set preferred size of the JOptionPane
-        Dimension preferredSize = new Dimension(400, 150); // Adjust the values as needed
+        Dimension preferredSize = new Dimension(400, 150);
         sliderPanel.setPreferredSize(preferredSize);
 
-        // Show the option pane with the slider
         int result = JOptionPane.showOptionDialog(
                 null,
                 sliderPanel,
@@ -992,7 +889,6 @@ public class AdminMenu {
                 null
         );
 
-        // If the user clicks OK, update the minimum_reviews variable
         if (result == JOptionPane.OK_OPTION) {
 
             minimum_reviews = reviewsSlider.getValue();
@@ -1008,7 +904,7 @@ public class AdminMenu {
     }
 
     private static JPanel createProductionsPanel(List<Production> productions) {
-        JPanel productionsPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns, with gaps
+        JPanel productionsPanel = new JPanel(new GridLayout(0, 3, 10, 10));
         productionsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         for (Production production : productions) {
@@ -1021,9 +917,7 @@ public class AdminMenu {
             productionButton.setPreferredSize(new Dimension(150, 200));
 
             productionButton.addActionListener(e -> {
-                // Handle the button click, e.g., display information about the production
                 ImageIcon productionImageIcon = getProductionImage(production);
-                // Resize image
                 Image productionImage = productionImageIcon.getImage();
                 Image newProductionImage = productionImage.getScaledInstance(150, 200, Image.SCALE_SMOOTH);
                 productionImageIcon = new ImageIcon(newProductionImage);
@@ -1057,24 +951,19 @@ public class AdminMenu {
     }
 
     private static void displayNotifications(Admin user) {
-        // Create a panel with notifications
         JPanel notificationsPanel = createNotificationsPanel(user);
 
-        // Create a clear button
         JButton clearNotificationsButton = new JButton("Clear Notifications");
         clearNotificationsButton.addActionListener(e -> clearNotificationsButtonActionPerformed(e, user));
 
-        // Create a panel for notifications and the clear button
         JPanel combinedPanel = new JPanel();
         combinedPanel.setLayout(new BoxLayout(combinedPanel, BoxLayout.Y_AXIS));
         combinedPanel.add(notificationsPanel);
         combinedPanel.add(Box.createVerticalStrut(10)); // Add some vertical spacing
         combinedPanel.add(clearNotificationsButton);
 
-        // Create a scroll pane for the combined panel
         JScrollPane scrollPane = new JScrollPane(combinedPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        // Update the right panel with the scrollPane
         updateRightPanel(scrollPane);
     }
 
@@ -1117,25 +1006,19 @@ public class AdminMenu {
     }
 
     private static void logout_page() {
-        // Create buttons for logout options
         JButton closeAppButton = new JButton("Close App");
         JButton loginButton = new JButton("Login");
 
-        // Set preferred size for buttons
         Dimension buttonSize = new Dimension(200, 40);
         closeAppButton.setPreferredSize(buttonSize);
         loginButton.setPreferredSize(buttonSize);
 
-        // Set layout for the panel
         JPanel logoutButtonsPanel = new JPanel(new GridBagLayout());
         logoutButtonsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // Add some padding
 
-        // Create label for the instruction
         JLabel instructionLabel = new JLabel("Close the app or login as a different user.");
-        // Center the text
         instructionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Add labels and buttons to the panel using GridBagLayout
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -1148,26 +1031,20 @@ public class AdminMenu {
         gbc.gridy++;
         logoutButtonsPanel.add(loginButton, gbc);
 
-        // Add action listeners to handle button clicks
         closeAppButton.addActionListener(e -> System.exit(0));
 
         loginButton.addActionListener(e -> {
-            // Close the current app and open a new instance
             adminMenuFrame.setVisible(false);
             adminMenuFrame.dispose();
             IMDB.getInstance().login_GUI();
         });
 
-        // Remove existing components from the right panel
         rightPanel.removeAll();
 
-        // Add the buttons panel to the center of the right panel
         rightPanel.add(logoutButtonsPanel, BorderLayout.CENTER);
 
-        // Add an empty panel to occupy the remaining space
         rightPanel.add(new JPanel(), BorderLayout.SOUTH);
 
-        // Repaint the panel to reflect changes
         rightPanel.revalidate();
         rightPanel.repaint();
     }
@@ -1176,7 +1053,6 @@ public class AdminMenu {
         JTextField searchBar = new JTextField();
         searchBar.setPreferredSize(new Dimension(300, 40));
 
-        // Label for search bar
         JLabel searchBarLabel = new JLabel("Search:");
         searchBarLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 
@@ -1194,7 +1070,6 @@ public class AdminMenu {
         emptyPanel.setPreferredSize(new Dimension(200, 50));
         rightPanel.add(emptyPanel, BorderLayout.NORTH);
 
-//        add action listener to search button
         searchButton.addActionListener(e -> searchButtonActionPerformed(e, searchBar));
         searchBar.addActionListener(e -> searchButtonActionPerformed(e, searchBar));
 
@@ -1211,7 +1086,6 @@ public class AdminMenu {
         Actor foundActor = findActor(searchQuery);
         if (foundActor != null) {
             ImageIcon actorIcon = new ImageIcon("src/actor.jpg");
-//                    resize image
             Image image1 = actorIcon.getImage();
             Image newimg1 = image1.getScaledInstance(200, 320, Image.SCALE_SMOOTH);
             actorIcon = new ImageIcon(newimg1);
@@ -1223,14 +1097,12 @@ public class AdminMenu {
         if (foundProduction != null) {
             if (foundProduction instanceof Movie) {
                 ImageIcon movieIcon = new ImageIcon("src/movie.jpg");
-//                    resize
                 Image image1 = movieIcon.getImage();
                 Image newimg1 = image1.getScaledInstance(200, 320, Image.SCALE_SMOOTH);
                 movieIcon = new ImageIcon(newimg1);
                 ItemPopup.showItemPopup((Movie) foundProduction, movieIcon, IMDB.getInstance().currentUser);
             } else if (foundProduction instanceof Series) {
                 ImageIcon seriesIcon = new ImageIcon("src/series.jpg");
-//                    resize
                 Image image1 = seriesIcon.getImage();
                 Image newimg1 = image1.getScaledInstance(200, 320, Image.SCALE_SMOOTH);
                 seriesIcon = new ImageIcon(newimg1);
@@ -1239,7 +1111,6 @@ public class AdminMenu {
             return;
         }
 
-        // If nothing is found, display a popup
         JOptionPane.showMessageDialog(null, "No actor/production found with the given name.", "Not Found", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -1263,20 +1134,16 @@ public class AdminMenu {
     }
 
     private static void displayAllActors() {
-        // Create a panel with actors
         JPanel actorsPanel = createActorsPanel();
         JScrollPane scrollPane = new JScrollPane(actorsPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 
-        // Update the right panel with the actorsPanel
         updateRightPanel(scrollPane);
     }
 
     public static JPanel createActorsPanel() {
-        // Create a copy of the actors list to avoid modifying the original list
         ArrayList<Actor> sortedActors = new ArrayList<>(IMDB.getInstance().actors);
 
-        // Sort the actors alphabetically by name
         Collections.sort(sortedActors, Comparator.comparing(actor -> actor.name));
 
         JPanel actorsPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns, with gaps
@@ -1291,9 +1158,7 @@ public class AdminMenu {
             JButton actorButton = new JButton(actorIcon);
 
             actorButton.addActionListener(e -> {
-                // Handle the button click, e.g., display information about the actor
                 ImageIcon actorImageIcon = new ImageIcon("src/actor.jpg");
-                // Resize image
                 Image actorImage = actorImageIcon.getImage();
                 Image newActorImage = actorImage.getScaledInstance(200, 320, Image.SCALE_SMOOTH);
                 actorImageIcon = new ImageIcon(newActorImage);
@@ -1317,13 +1182,10 @@ public class AdminMenu {
         if (newContentPanel instanceof JScrollPane) {
             SwingUtilities.invokeLater(() -> {
                 if (rightPanel != null) {
-                    // Clear existing components in the right panel
                     rightPanel.removeAll();
 
-                    // Add the new content to the right panel
                     rightPanel.add((JScrollPane) newContentPanel, BorderLayout.CENTER);
 
-                    // Repaint the panel to reflect changes
                     rightPanel.revalidate();
                     rightPanel.repaint();
                 }

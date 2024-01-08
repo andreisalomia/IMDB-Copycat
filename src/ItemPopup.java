@@ -23,7 +23,6 @@ public class ItemPopup {
         JTextArea textArea = new JTextArea(itemInfo);
         textArea.setEditable(false);
 
-        // Set word wrapping properties
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
 
@@ -56,14 +55,12 @@ public class ItemPopup {
         });
         buttonPanel.add(addToFavoritesButton);
 
-        // Add "Review" button for regular users
         if (user instanceof Regular) {
             JButton reviewButton = new JButton("Review");
             reviewButton.addActionListener(e -> addReview(user, item));
             buttonPanel.add(reviewButton);
         }
 
-//        get the contributions of user "admin"
         Admin admin = null;
         IMDB imdb = IMDB.getInstance();
         for(User user1 : imdb.users) {
@@ -212,7 +209,6 @@ public class ItemPopup {
     private static void addReview(User user, Object item) {
         String productionTitle = null;
 
-//        if the user is a contributor and the item is a production that he contributed to then he can't review it
         if(user instanceof Contributor && item instanceof Production) {
             Production production = (Production) item;
             if(((Contributor<?>) user).contributions.contains(production)) {
@@ -221,7 +217,6 @@ public class ItemPopup {
             }
         }
 
-        // Assuming the item is a Production, you can modify this logic if needed
         if (item instanceof Production) {
             Production production = (Production) item;
             productionTitle = production.title;
@@ -249,7 +244,6 @@ public class ItemPopup {
 
                     if (item instanceof Production) {
                         Production production = (Production) item;
-//                        cast user to regular
                         Regular regular = (Regular) user;
                         regular.addRating(newRating, production);
                         JOptionPane.showMessageDialog(null, "Review added!");
@@ -305,7 +299,6 @@ public class ItemPopup {
         if (movie.actors != null) builder.append("Actors: ").append(movie.actors).append("\n");
         if (movie.genres != null) builder.append("Genres: ").append(movie.genres).append("\n");
 
-        // Separate ratings into its own line
         if (movie.ratings != null && !movie.ratings.isEmpty()) {
             builder.append("Ratings:\n");
             for (Rating rating : movie.ratings) {

@@ -12,7 +12,14 @@ public class UserFactory {
                 .setGender(gender)
                 .setBirthDate(birthDate);
 
-        User.Information userInformation = informationBuilder.build();
+        User.Information userInformation;
+
+        try {
+            userInformation = informationBuilder.build();
+        } catch (InformationIncompleteException e) {
+            e.printStackTrace();
+            return null;
+        }
 
         switch (type) {
             case Regular:

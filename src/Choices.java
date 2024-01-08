@@ -25,7 +25,6 @@ public class Choices {
                 Filter.listAllActors();
                 break;
             case 2:
-                // Sort alphabetically
                 Filter.listActorsAlphabetically();
                 break;
         }
@@ -405,7 +404,6 @@ public class Choices {
     }
 
     public static void viewSolveRequests(Admin user) {
-//        ask the admin if he wants to see personal requests or all requests
         IMDB imdb = IMDB.getInstance();
         int choice = Options.viewPersonalAllRequests();
         if(choice == 1) {
@@ -438,7 +436,6 @@ public class Choices {
             return;
         }
         Request r = (Request) user.userRequests.get(choice - 1);
-//        ask the user if he wants to delete the request or to solve it
         user.solveRequest(r);
     }
 
@@ -448,7 +445,6 @@ public class Choices {
         if (choice == 1) {
             user.updateActor(user, null);
         } else if (choice == 2) {
-//            call update production method
             user.updateProduction(user, null);
         }
     }
@@ -457,10 +453,8 @@ public class Choices {
         IMDB imdb = IMDB.getInstance();
         int choice = Options.addDeleteUserChoices();
         if (choice == 1) {
-//            add a user to the system
             Admin.addUser();
         } else if (choice == 2) {
-//            delete a user from the system
             Admin.removeUser();
         }
     }

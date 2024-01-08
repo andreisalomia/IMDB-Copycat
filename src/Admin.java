@@ -1,4 +1,3 @@
-//package org.example;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,7 +9,6 @@ public class Admin<T extends Comparable<T>> extends Staff<T>{
     }
 
     public static void addUser() {
-        // add user using IMDB class
         IMDB imdb = IMDB.getInstance();
         imdb.userInterface.displayOutput("Choose account type:\n1. Regular\n2. Contributor\n3. Admin\n");
         int accountType = ((TerminalUI) imdb.userInterface).getNumber();
@@ -18,13 +16,11 @@ public class Admin<T extends Comparable<T>> extends Staff<T>{
             imdb.userInterface.displayOutput("Invalid account type.\n");
             return;
         }
-//        cast accountType to enum AccountType
         AccountType type = AccountType.values()[accountType - 1];
         imdb.userInterface.displayOutput("Enter first and last name: ");
         String name = ((TerminalUI) imdb.userInterface).getInput();
         imdb.userInterface.displayOutput("Enter email: ");
         String email = ((TerminalUI) imdb.userInterface).getEmail();
-//        break the name into first and last name and create an username of tipe firstname_lastname_randomNumber
         String username = name.split(" ")[0] + "_" + name.split(" ")[1] + "_" + (int) (Math.random() * 1000);
 //        generate a random password made of 8 characters
         String password = generateRandomPassword(8);

@@ -71,7 +71,15 @@ public abstract class User<T extends Comparable<T>> implements Observer {
                 return this;
             }
 
-            public Information build() {
+            public Information build() throws InformationIncompleteException {
+                if (name == null) {
+                    throw new InformationIncompleteException("Name is required to build Information.");
+                }
+
+                if (credentials == null) {
+                    throw new InformationIncompleteException("Credentials are required to build Information.");
+                }
+
                 return new Information(credentials, name, country, age, gender, birthDate);
             }
         }
@@ -104,7 +112,6 @@ public abstract class User<T extends Comparable<T>> implements Observer {
         Parser.insertFavActor(this, actor);
     }
 
-    //remove from favourites
     public void removeActorFromFavourites(Actor item) {
         favorites.remove(item);
         Parser.insertFavActor(this, item);
@@ -119,22 +126,16 @@ public abstract class User<T extends Comparable<T>> implements Observer {
     public String toString() {
         StringJoiner joiner = new StringJoiner(", ", "User{", "}");
 
-        // Append user information
         joiner.add("userInformation=" + (userInformation != null ? userInformation.toString() : "No Information"));
 
-        // Append account type
         joiner.add("accountType=" + accountType);
 
-        // Append username
         joiner.add("username='" + username + "'");
 
-        // Append experience
         joiner.add("experience=" + experience);
 
-        // Append notifications
         joiner.add("notifications=" + notifications);
 
-        // Append favorites
         if (!favorites.isEmpty()) {
             String favoritesString = favorites.stream()
                     .map(Object::toString)
@@ -165,7 +166,6 @@ public abstract class User<T extends Comparable<T>> implements Observer {
         }
     }
 
-    // update experience of user
     public void updateExperience(int experience) {
         if(this.accountType == AccountType.Admin) {
             return;
@@ -208,7 +208,6 @@ public abstract class User<T extends Comparable<T>> implements Observer {
 
     @Override
     public void update(String message) {
-//        only add if the notification doesent already exist
         if(this.notifications.contains(message)) {
             return;
         }

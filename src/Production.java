@@ -23,6 +23,8 @@ public abstract class Production implements Comparable<Object>, Subject {
         this.averageRating = calculateAverageRating(ratings);
     }
 
+    public void displayInfo() {}
+
     public static void removeRating(Production prod, User user) {
         IMDB imdb = IMDB.getInstance();
         boolean checkUser = false;
@@ -40,10 +42,6 @@ public abstract class Production implements Comparable<Object>, Subject {
         }
 
     }
-
-    public abstract void displayInfo();
-
-    // sort by title alphabetically
 
     @Override
     public int compareTo(Object o) {

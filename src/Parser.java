@@ -39,7 +39,6 @@ public class Parser {
         try (FileReader reader = new FileReader(filePath)) {
             Object obj = parser.parse(reader);
             JSONArray jsonArray = (JSONArray) obj;
-            // Iterate through elements in the array
             for (Object element : jsonArray) {
                 JSONObject jsonObject = (JSONObject) element;
                 JSONArray performances = (JSONArray) jsonObject.get("performances");
@@ -70,7 +69,6 @@ public class Parser {
             JSONParser parser = new JSONParser();
             Object obj = parser.parse(reader);
             JSONArray jsonArray = (JSONArray) obj;
-            // Iterate through elements in the array
             for (Object element : jsonArray) {
                 JSONObject jsonObject = (JSONObject) element;
                 String type = (String) jsonObject.get("type");
@@ -110,7 +108,6 @@ public class Parser {
             JSONParser parser = new JSONParser();
             Object obj = parser.parse(reader);
             JSONArray jsonArray = (JSONArray) obj;
-            // Iterate through elements in the array
             for (Object element : jsonArray) {
                 JSONObject jsonObject = (JSONObject) element;
                 String type = ((String) jsonObject.get("type")).toUpperCase();
@@ -181,14 +178,13 @@ public class Parser {
             JSONParser parser = new JSONParser();
             Object obj = parser.parse(reader);
             JSONArray jsonArray = (JSONArray) obj;
-            // Iterate through elements in the array
             for (Object element : jsonArray) {
                 JSONObject userJson = (JSONObject) element;
 
                 String username = (String) userJson.get("username");
                 String userType = ((String) userJson.get("userType"));
                 Object experienceObj = userJson.get("experience");
-                long experience = -1;  // Default value for undefined experience
+                long experience = -1;
 
                 if (experienceObj != null) {
                     if (experienceObj instanceof Number) {
@@ -208,7 +204,6 @@ public class Parser {
                         LocalDate.parse((String) informationJson.get("birthDate"), DateTimeFormatter.ISO_DATE),
                         (int) experience);
 
-                // extract from the json file the users notifications
                 JSONArray notifications = (JSONArray) userJson.get("notifications");
                 if (notifications != null) {
                     for (Object notification : notifications) {
@@ -241,7 +236,6 @@ public class Parser {
                 }
 
                 if (user instanceof Contributor<?> || user instanceof Admin<?>) {
-                    // extract from the json file the users productionsContributions and actorsContributions
                     JSONArray productionsContributions = (JSONArray) userJson.get("productionsContribution");
                     JSONArray actorsContributions = (JSONArray) userJson.get("actorsContribution");
                     if (productionsContributions != null) {
@@ -301,19 +295,15 @@ public class Parser {
         String filePath = "src/accounts.json";
 
         try {
-            // Read existing users from the JSON file
             JSONArray jsonArray = (JSONArray) new JSONParser().parse(new FileReader(filePath));
 
-            // Find the user in the JSONArray and update the favoriteProductions
             for (Object element : jsonArray) {
                 JSONObject userJson = (JSONObject) element;
                 String username = (String) userJson.get("username");
 
                 if (tUser.username.equals(username)) {
-                    // Delete existing favoriteProductions
                     userJson.remove("favoriteProductions");
 
-                    // Add the productions from user.favorites to favoriteProductions array
                     JSONArray favoriteProductions = new JSONArray();
                     for (Object favProduction : tUser.favorites) {
                         if (favProduction instanceof Production) {
@@ -327,7 +317,6 @@ public class Parser {
                 }
             }
 
-            // Write the updated JSON array back to the file
             try (FileWriter fileWriter = new FileWriter(filePath)) {
                 fileWriter.write(jsonArray.toJSONString());
                 fileWriter.flush();
@@ -344,19 +333,15 @@ public class Parser {
         String filePath = "src/accounts.json";
 
         try {
-            // Read existing users from the JSON file
             JSONArray jsonArray = (JSONArray) new JSONParser().parse(new FileReader(filePath));
 
-            // Find the user in the JSONArray and update the favoriteProductions
             for (Object element : jsonArray) {
                 JSONObject userJson = (JSONObject) element;
                 String username = (String) userJson.get("username");
 
                 if (tUser.username.equals(username)) {
-                    // Delete existing favoriteProductions
                     userJson.remove("favoriteActors");
 
-                    // Add the productions from user.favorites to favoriteProductions array
                     JSONArray favoriteActors = new JSONArray();
                     for (Object favActor : tUser.favorites) {
                         if (favActor instanceof Actor) {
@@ -370,7 +355,6 @@ public class Parser {
                 }
             }
 
-            // Write the updated JSON array back to the file
             try (FileWriter fileWriter = new FileWriter(filePath)) {
                 fileWriter.write(jsonArray.toJSONString());
                 fileWriter.flush();
@@ -386,14 +370,12 @@ public class Parser {
         String filePath = "src/requests.json";
 
         try {
-            // Convert requests to JSON array
             JSONArray jsonArray = new JSONArray();
             for (Request request : IMDB.getInstance().requests) {
                 JSONObject requestJson = new JSONObject();
                 requestJson.put("type", request.type.name());
                 requestJson.put("createdDate", request.createdDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
                 if (request.type == RequestTypes.ACTOR_ISSUE || request.type == RequestTypes.MOVIE_ISSUE) {
-                    //check if it's a movie title or a actor name use a for to check all lists of productions and actors
                     for (Production production : IMDB.getInstance().productions) {
                         if (production.title.equals(request.problemName)) {
                             requestJson.put("movieTitle", request.problemName);
@@ -413,7 +395,6 @@ public class Parser {
                 jsonArray.add(requestJson);
             }
 
-            // Write the JSON array to the file
             try (FileWriter fileWriter = new FileWriter(filePath)) {
                 fileWriter.write(jsonArray.toJSONString());
                 fileWriter.flush();
@@ -429,15 +410,12 @@ public class Parser {
         String filePath = "src/production.json";
 
         try {
-            // Read existing productions from the JSON file
             JSONArray jsonArray = (JSONArray) new JSONParser().parse(new FileReader(filePath));
 
-            // Update the ratings in the JSONArray
             for (Object element : jsonArray) {
                 JSONObject productionJson = (JSONObject) element;
                 String title = (String) productionJson.get("title");
 
-                // Find the production in the JSONArray and remove existing ratings
                 for (Production production : imdb.productions) {
                     if (production.title.equals(title)) {
                         productionJson.remove("ratings");
@@ -449,7 +427,6 @@ public class Parser {
                 }
             }
 
-            // Write the updated JSON array back to the file
             try (FileWriter fileWriter = new FileWriter(filePath)) {
                 fileWriter.write(jsonArray.toJSONString());
                 fileWriter.flush();
@@ -505,8 +482,6 @@ public class Parser {
 
             jsonArray.add(actorJson);
 
-//            System.out.println(actorJson.toJSONString());
-
             try (FileWriter fileWriter = new FileWriter(filePath)) {
 
                 fileWriter.write(jsonArray.toJSONString());
@@ -534,13 +509,11 @@ public class Parser {
 
             JSONObject seriesJson = new JSONObject();
             seriesJson.put("title", series.title);
-            seriesJson.put("type", "Series"); // Indicate that it's a series
+            seriesJson.put("type", "Series");
 
-            // Add other series-specific attributes (releaseYear, numberOfSeasons, episodes)
             seriesJson.put("releaseYear", series.releaseYear);
             seriesJson.put("numSeasons", series.numberOfSeasons);
 
-            // Convert episodes to JSON
             JSONObject seasonsJson = new JSONObject();
             for (Map.Entry<String, List<Episode>> entry : series.episodes.entrySet()) {
                 String seasonName = entry.getKey();
@@ -557,18 +530,17 @@ public class Parser {
             }
             seriesJson.put("seasons", seasonsJson);
 
-            // Add common production attributes (directors, actors, genres, ratings, description)
             seriesJson.put("directors", series.directors);
             seriesJson.put("actors", series.actors);
             seriesJson.put("genres", series.genres);
 
             JSONArray genresJson = new JSONArray();
             for (Genre genre : series.genres) {
-                genresJson.add(genre.toString()); // Assuming Genre.toString() returns the genre name
+                genresJson.add(genre.toString());
             }
             seriesJson.put("genres", genresJson);
 
-            seriesJson.put("ratings", new JSONArray()); // Assuming you want to initialize ratings as an empty array
+            seriesJson.put("ratings", new JSONArray());
             seriesJson.put("plot", series.description);
 
             jsonArray.add(seriesJson);
@@ -599,13 +571,11 @@ public class Parser {
 
             JSONObject movieJson = new JSONObject();
             movieJson.put("title", movie.title);
-            movieJson.put("type", "Movie"); // Indicate that it's a movie
+            movieJson.put("type", "Movie");
 
-            // Add other movie-specific attributes (duration, releaseYear)
             movieJson.put("duration", movie.duration + " minutes");
             movieJson.put("releaseYear", movie.releaseYear);
 
-            // Add common production attributes (directors, actors, genres, ratings, description)
             movieJson.put("directors", movie.directors);
             movieJson.put("actors", movie.actors);
 
@@ -615,7 +585,7 @@ public class Parser {
             }
             movieJson.put("genres", genresJson);
 
-            movieJson.put("ratings", new JSONArray()); // Assuming you want to initialize ratings as an empty array
+            movieJson.put("ratings", new JSONArray());
             movieJson.put("description", movie.description);
 
             jsonArray.add(movieJson);
@@ -639,26 +609,21 @@ public class Parser {
             if (obj instanceof JSONArray) {
                 JSONArray jsonArray = (JSONArray) obj;
 
-                // Iterate over the productions in the array
                 for (int i = 0; i < jsonArray.size(); i++) {
                     JSONObject productionJson = (JSONObject) jsonArray.get(i);
                     String title = (String) productionJson.get("title");
 
-                    // Check if the current production matches the one to be removed
                     if (title.equals(p.title)) {
-                        // Remove the production from the array
                         jsonArray.remove(i);
 
-                        // Update the JSON file
                         try (FileWriter fileWriter = new FileWriter(filePath)) {
                             fileWriter.write(jsonArray.toJSONString());
                             fileWriter.flush();
                         }
 
-                        return; // Exit the method after removing the production
+                        return;
                     }
                 }
-
                 System.out.println("Production not found.");
             } else {
                 System.out.println("Invalid JSON file structure.");
@@ -678,27 +643,22 @@ public class Parser {
             if (obj instanceof JSONArray) {
                 JSONArray jsonArray = (JSONArray) obj;
 
-                // Iterate over the actors in the array
                 for (int i = 0; i < jsonArray.size(); i++) {
                     JSONObject actorJson = (JSONObject) jsonArray.get(i);
                     String actorName = (String) actorJson.get("name");
 
-                    // Check if the current actor matches the one to be removed
                     if (actorName.equals(actor.name)) {
-                        // Remove the actor from the array
                         jsonArray.remove(i);
 
-                        // Update the JSON file
                         try (FileWriter fileWriter = new FileWriter(filePath)) {
                             fileWriter.write(jsonArray.toJSONString());
                             fileWriter.flush();
                         }
 
                         System.out.println("Actor removed successfully.");
-                        return; // Exit the method after removing the actor
+                        return;
                     }
                 }
-
                 System.out.println("Actor not found.");
             } else {
                 System.out.println("Invalid JSON file structure.");
@@ -724,7 +684,6 @@ public class Parser {
                 jsonArray = new JSONArray();
             }
 
-            // Find the user's JSON object in the array
             JSONObject userJson = null;
             for (Object jsonObj : jsonArray) {
                 JSONObject jsonUser = (JSONObject) jsonObj;
@@ -736,11 +695,9 @@ public class Parser {
             }
 
             if (userJson != null) {
-                // Remove existing contributions
                 userJson.remove("actorsContribution");
                 userJson.remove("productionsContribution");
 
-                // Add new contributions based on the user's contributions list
                 JSONArray actorContributions = new JSONArray();
                 JSONArray productionContributions = new JSONArray();
 
@@ -756,7 +713,6 @@ public class Parser {
                 userJson.put("productionsContribution", productionContributions);
             }
 
-            // Rewrite the updated array to the file
             try (FileWriter fileWriter = new FileWriter(filePath)) {
                 fileWriter.write(jsonArray.toJSONString());
                 fileWriter.flush();
@@ -777,7 +733,6 @@ public class Parser {
             productionJson.put("title", production.title);
             productionJson.put("releaseYear", production instanceof Movie ? ((Movie) production).releaseYear : ((Series) production).releaseYear);
 
-            // Add common production attributes (directors, actors, genres, ratings, description)
             productionJson.put("directors", production.directors);
             productionJson.put("actors", production.actors);
 
@@ -799,7 +754,6 @@ public class Parser {
 
             productionJson.put("plot", production.description);
 
-            // Add specific attributes based on the production type
             if (production instanceof Movie) {
                 Movie movie = (Movie) production;
                 productionJson.put("duration", movie.duration + " minutes");
@@ -827,7 +781,6 @@ public class Parser {
             jsonArray.add(productionJson);
         }
 
-        // Write the JSON array to the file
         try (FileWriter fileWriter = new FileWriter(filePath)) {
             fileWriter.write(jsonArray.toJSONString());
             fileWriter.flush();
@@ -861,7 +814,6 @@ public class Parser {
             jsonArray.add(actorJson);
         }
 
-        // Write the JSON array to the file
         try (FileWriter fileWriter = new FileWriter(filePath)) {
             fileWriter.write(jsonArray.toJSONString());
             fileWriter.flush();
@@ -892,10 +844,8 @@ public class Parser {
 
             userJson.put("information", informationJson);
 
-            // Add notifications, favoriteProductions, favoriteActors, etc.
             userJson.put("notifications", user.notifications);
 
-            // Add favoriteProductions and favoriteActors
             JSONArray favProductions = new JSONArray();
             JSONArray favActors = new JSONArray();
 
@@ -910,7 +860,6 @@ public class Parser {
             userJson.put("favoriteProductions", favProductions);
             userJson.put("favoriteActors", favActors);
 
-            // Add contributions for Contributor and Admin
             if (user instanceof Contributor<?> || user instanceof Admin<?>) {
                 JSONArray productionsContributions = new JSONArray();
                 JSONArray actorsContributions = new JSONArray();
@@ -937,10 +886,8 @@ public class Parser {
                 userJson.put("actorsContribution", actorsContributions);
             }
 
-            // Add the new user JSON to the existing array
             userArray.add(userJson);
 
-            // Write the updated JSON array back to the file
             try (FileWriter fileWriter = new FileWriter(filePath)) {
                 fileWriter.write(userArray.toJSONString());
             } catch (IOException e) {
@@ -966,18 +913,16 @@ public class Parser {
             Object obj = parser.parse(reader);
             JSONArray userArray = (JSONArray) obj;
 
-            // Iterate over the array and remove the user
             Iterator<JSONObject> iterator = userArray.iterator();
             while (iterator.hasNext()) {
                 JSONObject userJson = iterator.next();
                 String username = (String) userJson.get("username");
                 if (username.equals(user.username)) {
-                    iterator.remove();  // Remove the user JSON object
-                    break;  // Assuming each username is unique
+                    iterator.remove();
+                    break;
                 }
             }
 
-            // Write the updated JSON array back to the file
             try (FileWriter fileWriter = new FileWriter(filePath)) {
                 fileWriter.write(userArray.toJSONString());
             } catch (IOException e) {
@@ -995,24 +940,19 @@ public class Parser {
             Object obj = parser.parse(reader);
             JSONArray jsonArray = (JSONArray) obj;
 
-            // Iterate through elements in the array
             for (Object element : jsonArray) {
                 JSONObject userJson = (JSONObject) element;
                 String username = (String) userJson.get("username");
 
-                // Check if the current JSON object corresponds to the specified user
                 if (username.equals(user.username)) {
-                    // Update notifications for the user
                     userJson.put("notifications", user.notifications);
 
-                    // Write the updated JSON array back to the file
                     try (FileWriter fileWriter = new FileWriter(filePath)) {
                         fileWriter.write(jsonArray.toJSONString());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                    return;  // Assuming each username is unique, no need to continue searching
+                    return;
                 }
             }
         } catch (Exception e) {
@@ -1027,24 +967,20 @@ public class Parser {
             Object obj = parser.parse(reader);
             JSONArray jsonArray = (JSONArray) obj;
 
-            // Iterate through elements in the array
             for (Object element : jsonArray) {
                 JSONObject userJson = (JSONObject) element;
                 String username = (String) userJson.get("username");
 
-                // Check if the current JSON object corresponds to the specified user
                 if (username.equals(user.username)) {
-                    // Update experience for the user
                     userJson.put("experience", user.experience);
 
-                    // Write the updated JSON array back to the file
                     try (FileWriter fileWriter = new FileWriter(filePath)) {
                         fileWriter.write(jsonArray.toJSONString());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                    return;  // Assuming each username is unique, no need to continue searching
+                    return;
                 }
             }
         } catch (Exception e) {

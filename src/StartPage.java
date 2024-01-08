@@ -18,12 +18,10 @@ public class StartPage {
             frame.setSize(1024, 768);
             frame.setLocationRelativeTo(null);
 
-            // Left panel with split
             JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
             splitPane.setDividerSize(5);
             splitPane.setDividerLocation(280);
 
-            // User details panel
             JPanel userDetailsPanel = new JPanel(new GridLayout(3, 1));
             JLabel welcomeLabel = new JLabel("Welcome, " + user.userInformation.name + "!");
             JLabel usernameLabel = new JLabel("Username: " + user.username);
@@ -38,7 +36,6 @@ public class StartPage {
             userDetailsPanel.add(usernameLabel);
             userDetailsPanel.add(userDetailsLabel);
 
-            // User picture panel
             JPanel userPicturePanel = new JPanel(new FlowLayout());
             ImageIcon userIcon = new ImageIcon("src/no_image_user.jpg");
             Image image = userIcon.getImage();
@@ -47,7 +44,6 @@ public class StartPage {
             JLabel userImageLabel = new JLabel(userIcon);
             userPicturePanel.add(userImageLabel);
 
-            // Buttons panel with increased button height
             JPanel buttonsPanel = new JPanel(new GridLayout(3, 1));
             JButton recommendedButton = new JButton("Recommended");
             JButton actorsButton = new JButton("Actors");
@@ -65,24 +61,22 @@ public class StartPage {
             actorsButton.setBackground(Color.WHITE);
             menuButton.setBackground(Color.WHITE);
 
-            // Add action listener to the "Recommended" button
             recommendedButton.addActionListener(e -> displayRecommendedContent());
 
-            // Add action listener to the "Actors" button
             actorsButton.addActionListener(e -> displayAllActors());
 
             menuButton.addActionListener((ActionEvent e) -> {
                 if (user instanceof Regular) {
                     frame.setVisible(false);
-                    frame.dispose(); // Close the current frame
+                    frame.dispose();
                     RegularMenu.initializeMenu((Regular) user);
                 } else if (user instanceof Contributor) {
                     frame.setVisible(false);
-                    frame.dispose(); // Close the current frame
+                    frame.dispose();
                     ContributorMenu.initializeMenu((Contributor) user);
                 } else if (user instanceof Admin) {
                     frame.setVisible(false);
-                    frame.dispose(); // Close the current frame
+                    frame.dispose();
                     AdminMenu.initializeMenu((Admin) user);
                 }
             });
@@ -91,16 +85,13 @@ public class StartPage {
             buttonsPanel.add(actorsButton);
             buttonsPanel.add(menuButton);
 
-            // Combine left panel components
             leftPanel = new JPanel(new BorderLayout());
             leftPanel.add(userDetailsPanel, BorderLayout.NORTH);
             leftPanel.add(userPicturePanel, BorderLayout.CENTER);
             leftPanel.add(buttonsPanel, BorderLayout.SOUTH);
 
-            // Right panel (for more important content)
-            rightPanel = new JPanel(new BorderLayout()); // Initially empty
+            rightPanel = new JPanel(new BorderLayout());
 
-            // Add components to the split pane
             splitPane.setLeftComponent(leftPanel);
             splitPane.setRightComponent(rightPanel);
 
@@ -110,16 +101,12 @@ public class StartPage {
     }
 
     private static void displayAllActors() {
-        // Get all actors from IMDB
         List<Actor> actors = IMDB.getInstance().actors;
 
-        // Create a panel with actors
         JPanel actorsPanel = createActorsPanel();
 
-        // Wrap the actorsPanel in a JScrollPane
         JScrollPane scrollPane = new JScrollPane(actorsPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        // Replace the content of the right panel with the scrollPane
         rightPanel.removeAll();
         rightPanel.add(scrollPane, BorderLayout.CENTER);
         rightPanel.revalidate();
@@ -127,13 +114,11 @@ public class StartPage {
     }
 
     private static JPanel createActorsPanel() {
-        // Create a copy of the actors list to avoid modifying the original list
         ArrayList<Actor> sortedActors = new ArrayList<>(IMDB.getInstance().actors);
 
-        // Sort the actors alphabetically by name
         Collections.sort(sortedActors, Comparator.comparing(actor -> actor.name));
 
-        JPanel actorsPanel = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns, with gaps
+        JPanel actorsPanel = new JPanel(new GridLayout(0, 3, 10, 10));
         actorsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         for (Actor actor : sortedActors) {
@@ -145,9 +130,7 @@ public class StartPage {
             JButton actorButton = new JButton(actorIcon);
 
             actorButton.addActionListener(e -> {
-                // Handle the button click, e.g., display information about the actor
                 ImageIcon actorImageIcon = new ImageIcon("src/actor.jpg");
-                // Resize image
                 Image actorImage = actorImageIcon.getImage();
                 Image newActorImage = actorImage.getScaledInstance(200, 320, Image.SCALE_SMOOTH);
                 actorImageIcon = new ImageIcon(newActorImage);
@@ -175,13 +158,9 @@ public class StartPage {
     }
 
     private static void displayRecommendedContent() {
-        // For demonstration purposes, let's add some example content.
-
-        // Search bar
         JTextField searchBar = new JTextField();
         searchBar.setPreferredSize(new Dimension(200, 30));
 
-        // Label for search bar
         JLabel searchBarLabel = new JLabel("Search:");
         searchBarLabel.setFont(new Font("Arial", Font.PLAIN, 14));
 
@@ -189,7 +168,6 @@ public class StartPage {
         searchBarPanel.add(searchBarLabel);
         searchBarPanel.add(searchBar);
 
-        // Title for Recommended Actors/Productions
         JLabel recommendedTitleLabel = new JLabel("Recommended Actors/Productions");
         recommendedTitleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         recommendedTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -197,13 +175,10 @@ public class StartPage {
         JPanel recommendedTitlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         recommendedTitlePanel.add(recommendedTitleLabel);
 
-        // Create a panel for actors (initially showing all actors)
         JPanel recommendedActorsPanel = createRecommendedPanel(IMDB.getInstance().actors);
 
-        // Create a panel for productions (initially showing all productions)
         JPanel recommendedProductionsPanel = createRecommendedPanel(IMDB.getInstance().productions);
 
-        // Combine all components in a newContentPanel
         JPanel newContentPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -221,14 +196,12 @@ public class StartPage {
         gbc.gridy++;
         newContentPanel.add(recommendedProductionsPanel, gbc);
 
-        // Add ActionListener to the search bar
         searchBar.addActionListener(e -> {
             String searchQuery = searchBar.getText().trim().toLowerCase();
 
             Actor foundActor = findActor(searchQuery);
             if (foundActor != null) {
                 ImageIcon actorIcon = new ImageIcon("src/actor.jpg");
-//                    resize image
                 Image image1 = actorIcon.getImage();
                 Image newimg1 = image1.getScaledInstance(200, 320, Image.SCALE_SMOOTH);
                 actorIcon = new ImageIcon(newimg1);
@@ -240,7 +213,6 @@ public class StartPage {
             if (foundProduction != null) {
                 if(foundProduction instanceof Movie){
                     ImageIcon movieIcon = new ImageIcon("src/movie.jpg");
-//                    resize
                     Image image1 = movieIcon.getImage();
                     Image newimg1 = image1.getScaledInstance(200, 320, Image.SCALE_SMOOTH);
                     movieIcon = new ImageIcon(newimg1);
@@ -248,7 +220,6 @@ public class StartPage {
                 }
                 else if(foundProduction instanceof Series){
                     ImageIcon seriesIcon = new ImageIcon("src/series.jpg");
-//                    resize
                     Image image1 = seriesIcon.getImage();
                     Image newimg1 = image1.getScaledInstance(200, 320, Image.SCALE_SMOOTH);
                     seriesIcon = new ImageIcon(newimg1);
@@ -257,11 +228,9 @@ public class StartPage {
                 return;
             }
 
-            // If nothing is found, display a popup
             JOptionPane.showMessageDialog(null, "No actor/production found with the given name.", "Not Found", JOptionPane.INFORMATION_MESSAGE);
         });
 
-        // Update the right panel with the new content
         updateRightPanel(newContentPanel);
     }
 
@@ -289,7 +258,6 @@ public class StartPage {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // Generate random numbers for items
         int[] randomNumbers = new Random().ints(0, items.size()).distinct().limit(3).toArray();
 
         for (int i = 0; i < 3; i++) {
@@ -302,13 +270,10 @@ public class StartPage {
 
             JButton itemButton = new JButton(itemIcon);
 
-            // Add an ActionListener to the button (inline implementation)
             itemButton.addActionListener(e -> {
-                // Handle the button click, e.g., display information about the item
                 if (item instanceof Actor) {
                     Actor actor = (Actor) item;
                     ImageIcon actorIcon = new ImageIcon("src/actor.jpg");
-//                    resize image
                     Image image1 = actorIcon.getImage();
                     Image newimg1 = image1.getScaledInstance(200, 320, Image.SCALE_SMOOTH);
                     actorIcon = new ImageIcon(newimg1);
@@ -316,7 +281,6 @@ public class StartPage {
                 } else if (item instanceof Movie) {
                     Movie movie = (Movie) item;
                     ImageIcon movieIcon = new ImageIcon("src/movie.jpg");
-//                    resize
                     Image image1 = movieIcon.getImage();
                     Image newimg1 = image1.getScaledInstance(200, 320, Image.SCALE_SMOOTH);
                     movieIcon = new ImageIcon(newimg1);
@@ -324,7 +288,6 @@ public class StartPage {
                 } else if (item instanceof Series) {
                     Series series = (Series) item;
                     ImageIcon seriesIcon = new ImageIcon("src/series.jpg");
-//                    resize
                     Image image1 = seriesIcon.getImage();
                     Image newimg1 = image1.getScaledInstance(200, 320, Image.SCALE_SMOOTH);
                     seriesIcon = new ImageIcon(newimg1);
@@ -355,14 +318,12 @@ public class StartPage {
                         ItemPopup.showItemPopup((Movie) prod, new ImageIcon("src/movie_icon.jpg"), IMDB.getInstance().currentUser);
                     else if(prod instanceof Series)
                         ItemPopup.showItemPopup((Series) prod, new ImageIcon("src/series_icon.jpg"), IMDB.getInstance().currentUser);
-                    // Handle updates for Contributor and Admin
                     return;
                 }
             }
             for (Actor actor : imdb.actors) {
                 if (actor.name.equals(input)) {
                     ItemPopup.showItemPopup(actor, new ImageIcon("src/actor_icon.jpg"), IMDB.getInstance().currentUser);
-                    // Handle updates for Contributor and Admin
                     return;
                 }
             }
@@ -398,16 +359,12 @@ public class StartPage {
 
 
     private static void updateRightPanel(JPanel newContentPanel) {
-        // Update the right panel with the new content
         SwingUtilities.invokeLater(() -> {
             if (rightPanel != null) {
-                // Clear existing components in the right panel
                 rightPanel.removeAll();
 
-                // Add the new content to the right panel
                 rightPanel.add(newContentPanel);
 
-                // Repaint the panel to reflect changes
                 rightPanel.revalidate();
                 rightPanel.repaint();
             }

@@ -30,7 +30,6 @@ public class Contributor<T extends Comparable<T>> extends Staff<T> implements Re
 
     @Override
     public void removeRequest(Request r) {
-        // remove request using Request class
         IMDB imdb = IMDB.getInstance();
         imdb.requests.remove(r);
         Parser.writeRequests();

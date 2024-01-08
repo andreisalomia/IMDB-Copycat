@@ -45,7 +45,7 @@ public class Series extends Production {
         if (averageRating != 0)
             builder.append(String.format("Average Rating: %.2f\n", averageRating));
 
-        builder.append("----------------------------\n"); // Separator for better readability
+        builder.append("----------------------------\n");
         System.out.println(builder.toString());
     }
 

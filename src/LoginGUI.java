@@ -25,7 +25,7 @@ public class LoginGUI extends JFrame {
     private void initializeComponents() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5); // Padding
+        gbc.insets = new Insets(5, 5, 5, 5);
 
         welcomeLabel = new JLabel("Welcome back to IMDB! Please enter your email and password to login.");
         welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -72,7 +72,7 @@ public class LoginGUI extends JFrame {
         panel.add(feedbackLabel, gbc);
 
         add(panel);
-        pack(); // Resize the frame to fit its contents
+        pack();
     }
 
     private void performLogin() {
@@ -86,7 +86,6 @@ public class LoginGUI extends JFrame {
             welcomeLabel.setVisible(false);
             setVisible(false);
             IMDB.getInstance().currentUser = user;
-            // Proceed with further program logic here
             IMDB.getInstance().startPage(user);
         } else {
             feedbackLabel.setText("Invalid credentials. Please try again.");

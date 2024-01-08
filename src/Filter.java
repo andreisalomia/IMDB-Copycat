@@ -66,10 +66,9 @@ public class Filter {
 
             for (Production prod : displayedProductions) {
                 if (prod.title.equalsIgnoreCase(title)) {
-                    // Display details of the production
                     prod.displayInfo();
                     found = true;
-                    break; // Stop searching once a match is found
+                    break;
                 }
             }
 
@@ -96,10 +95,9 @@ public class Filter {
 
         for (Production prod : imdb.productions) {
             if (prod.title.equalsIgnoreCase(title)) {
-                // Display details of the production
                 prod.displayInfo();
                 found = true;
-                break; // Stop searching once a match is found
+                break;
             }
         }
         if (!found) {
@@ -112,7 +110,6 @@ public class Filter {
     }
 
     public static void listActorsAlphabetically() {
-        // Sort the actors alphabetically
         IMDB imdb = IMDB.getInstance();
         List<Actor> actors = new ArrayList<>(imdb.actors);
         Collections.sort(actors);
@@ -131,10 +128,9 @@ public class Filter {
 
         for (Actor actor : actors) {
             if (actor.name.equalsIgnoreCase(name)) {
-                // Display details of the actor
                 actor.displayInfo();
                 found = true;
-                break; // Stop searching once a match is found
+                break;
             }
         }
 
@@ -146,7 +142,7 @@ public class Filter {
         try {
             return Genre.valueOf(genreInput.toUpperCase());
         } catch (IllegalArgumentException e) {
-            return null; // Genre not found in the enum
+            return null;
         }
     }
 
